@@ -1,6 +1,7 @@
-import SkypeAccount = require('./skype_account');
+import SkypeAccount from './skype_account';
 import { CookieJar } from "request";
-declare class Login {
+import { Promise } from "es6-promise";
+export declare class Login {
     private requestWithJar;
     constructor(cookieJar: CookieJar);
     doLogin(skypeAccount: SkypeAccount): Promise<{}>;
@@ -10,4 +11,4 @@ declare class Login {
     private createStatusEndpoint(skypeAccount, resolve, reject);
     private getSelfDisplayName(skypeAccout, resolve, reject);
 }
-export = Login;
+export default Login;

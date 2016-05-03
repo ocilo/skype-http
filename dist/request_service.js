@@ -1,7 +1,7 @@
 "use strict";
 var request = require('request');
 var Consts = require('./consts');
-var Utils = require('./utils');
+var utils_1 = require('./utils');
 var RequestService = (function () {
     function RequestService(cookieJar) {
         this.requestWithJar = request.defaults({ jar: cookieJar });
@@ -16,7 +16,7 @@ var RequestService = (function () {
                 return JSON.parse(body);
             }
             else {
-                Utils.throwError('Failed to accept friend.' + error + "/" + JSON.stringify(response));
+                utils_1.default.throwError('Failed to accept friend.' + error + "/" + JSON.stringify(response));
             }
         });
     };
@@ -30,11 +30,13 @@ var RequestService = (function () {
                 return JSON.parse(body);
             }
             else {
-                Utils.throwError('Failed to decline friend.' + error + "/" + JSON.stringify(response));
+                utils_1.default.throwError('Failed to decline friend.' + error + "/" + JSON.stringify(response));
             }
         });
     };
     return RequestService;
 }());
-module.exports = RequestService;
+exports.RequestService = RequestService;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = RequestService;
 //# sourceMappingURL=request_service.js.map

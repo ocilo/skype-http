@@ -1,8 +1,7 @@
 "use strict";
 var request = require('request');
 var Consts = require('./consts');
-var Utils = require('./utils');
-'use strict';
+var utils_1 = require('./utils');
 var MessageService = (function () {
     function MessageService(cookieJar) {
         this.requestWithJar = request.defaults({ jar: cookieJar });
@@ -22,7 +21,7 @@ var MessageService = (function () {
             if (!error && response.statusCode === 201) {
             }
             else {
-                Utils.throwError('Failed to send message.' +
+                utils_1.default.throwError('Failed to send message.' +
                     '.\n Error code: ' + response.statusCode +
                     '.\n Error: ' + error +
                     '.\n Body: ' + body);
@@ -31,5 +30,7 @@ var MessageService = (function () {
     };
     return MessageService;
 }());
-module.exports = MessageService;
+exports.MessageService = MessageService;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = MessageService;
 //# sourceMappingURL=message_service.js.map

@@ -1,11 +1,10 @@
 "use strict";
 var request = require('request');
 var cheerio = require('cheerio');
-var Utils = require('./utils');
+var utils_1 = require('./utils');
 var Consts = require('./consts');
 var url = require('url');
 var es6_promise_1 = require("es6-promise");
-'use strict';
 var Login = (function () {
     function Login(cookieJar) {
         this.requestWithJar = request.defaults({ jar: cookieJar });
@@ -27,7 +26,7 @@ var Login = (function () {
                 var pie = $('input[name="pie"]').val();
                 var etm = $('input[name="etm"]').val();
                 if (!pie || !etm) {
-                    Utils.throwError('Failed to find pie or etm.');
+                    utils_1.default.throwError('Failed to find pie or etm.');
                 }
                 var postParams = {
                     url: Consts.SKYPEWEB_LOGIN_URL,
@@ -36,8 +35,8 @@ var Login = (function () {
                         password: skypeAccount.password,
                         pie: pie,
                         etm: etm,
-                        timezone_field: Utils.getTimezone(),
-                        js_time: Utils.getCurrentTime()
+                        timezone_field: utils_1.default.getTimezone(),
+                        js_time: utils_1.default.getCurrentTime()
                     }
                 };
                 _this.requestWithJar.post(postParams, function (error, response, body) {
@@ -49,24 +48,24 @@ var Login = (function () {
                             resolve(skypeAccount);
                         }
                         else {
-                            Utils.throwError('Failed to get skypetoken. Username or password is incorrect OR you\'ve' +
+                            utils_1.default.throwError('Failed to get skypetoken. Username or password is incorrect OR you\'ve' +
                                 ' hit a CAPTCHA wall.' + $('.message_error').text());
                         }
                     }
                     else {
-                        Utils.throwError('Failed to get skypetoken');
+                        utils_1.default.throwError('Failed to get skypetoken');
                     }
                 });
             }
             else {
-                Utils.throwError('Failed to get pie and etm. Login failed.');
+                utils_1.default.throwError('Failed to get pie and etm. Login failed.');
             }
         });
     };
     Login.prototype.getRegistrationToken = function (skypeAccount, resolve, reject) {
         var _this = this;
-        var currentTime = Utils.getCurrentTime();
-        var lockAndKeyResponse = Utils.getMac256Hash(currentTime, Consts.SKYPEWEB_LOCKANDKEY_APPID, Consts.SKYPEWEB_LOCKANDKEY_SECRET);
+        var currentTime = utils_1.default.getCurrentTime();
+        var lockAndKeyResponse = utils_1.default.getMac256Hash(currentTime, Consts.SKYPEWEB_LOCKANDKEY_APPID, Consts.SKYPEWEB_LOCKANDKEY_SECRET);
         this.requestWithJar.post(Consts.SKYPEWEB_HTTPS + skypeAccount.messagesHost + '/v1/users/ME/endpoints', {
             headers: {
                 'LockAndKey': 'appId=' + Consts.SKYPEWEB_LOCKANDKEY_APPID + '; time=' + currentTime + '; lockAndKeyResponse=' + lockAndKeyResponse,
@@ -99,14 +98,14 @@ var Login = (function () {
                     raw: registrationTokenHeader
                 });
                 if (!registrationTokenParams.registrationToken || !registrationTokenParams.expires || !registrationTokenParams.endpointId) {
-                    Utils.throwError('Failed to find registrationToken or expires or endpointId.');
+                    utils_1.default.throwError('Failed to find registrationToken or expires or endpointId.');
                 }
                 registrationTokenParams.expires = parseInt(registrationTokenParams.expires);
                 skypeAccount.registrationTokenParams = registrationTokenParams;
                 resolve(skypeAccount);
             }
             else {
-                Utils.throwError('Failed to get registrationToken.' + error + JSON.stringify(response));
+                utils_1.default.throwError('Failed to get registrationToken.' + error + JSON.stringify(response));
             }
         });
     };
@@ -132,7 +131,7 @@ var Login = (function () {
                 resolve(skypeAccount);
             }
             else {
-                Utils.throwError('Failed to subscribe to resources.');
+                utils_1.default.throwError('Failed to subscribe to resources.');
             }
         });
     };
@@ -165,7 +164,7 @@ var Login = (function () {
                 resolve(skypeAccount);
             }
             else {
-                Utils.throwError('Failed to create endpoint for status.' +
+                utils_1.default.throwError('Failed to create endpoint for status.' +
                     '.\n Error code: ' + response.statusCode +
                     '.\n Error: ' + error +
                     '.\n Body: ' + body);
@@ -183,11 +182,13 @@ var Login = (function () {
                 resolve(skypeAccout);
             }
             else {
-                Utils.throwError('Failed to get selfInfo.');
+                utils_1.default.throwError('Failed to get selfInfo.');
             }
         });
     };
     return Login;
 }());
-module.exports = Login;
+exports.Login = Login;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Login;
 //# sourceMappingURL=login.js.map

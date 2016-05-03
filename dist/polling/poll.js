@@ -1,8 +1,7 @@
 "use strict";
 var request = require('request');
 var Consts = require('./../consts');
-var Utils = require("./../utils");
-"use strict";
+var utils_1 = require("./../utils");
 var Poll = (function () {
     function Poll(cookieJar) {
         this.requestWithJar = request.defaults({ jar: cookieJar });
@@ -19,7 +18,7 @@ var Poll = (function () {
                     Poll.parsePollResult(JSON.parse(body), messagesCallback);
                 }
                 else {
-                    Utils.throwError('Failed to poll messages.' +
+                    utils_1.default.throwError('Failed to poll messages.' +
                         '.\n Error code: ' + (response && response.statusCode ? response.statusCode : 'none') +
                         '.\n Error: ' + error +
                         '.\n Body: ' + body);
@@ -40,5 +39,7 @@ var Poll = (function () {
     };
     return Poll;
 }());
-module.exports = Poll;
+exports.Poll = Poll;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Poll;
 //# sourceMappingURL=poll.js.map

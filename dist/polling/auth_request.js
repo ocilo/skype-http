@@ -1,7 +1,7 @@
 "use strict";
 var request = require('request');
 var Consts = require('./../consts');
-var Utils = require("./../utils");
+var utils_1 = require("./../utils");
 var AuthRequest = (function () {
     function AuthRequest(cookieJar) {
         this.pollAll = function (skypeAccount, messagesCallback) {
@@ -16,7 +16,7 @@ var AuthRequest = (function () {
                         messagesCallback(JSON.parse(body));
                     }
                     else {
-                        Utils.throwError('Failed to get auth requests.' + error + "/" + JSON.stringify(response));
+                        utils_1.default.throwError('Failed to get auth requests.' + error + "/" + JSON.stringify(response));
                     }
                     _this.pollAll(skypeAccount, messagesCallback);
                 });
@@ -26,5 +26,7 @@ var AuthRequest = (function () {
     }
     return AuthRequest;
 }());
-module.exports = AuthRequest;
+exports.AuthRequest = AuthRequest;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = AuthRequest;
 //# sourceMappingURL=auth_request.js.map

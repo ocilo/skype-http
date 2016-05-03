@@ -1,7 +1,7 @@
 "use strict";
 var request = require('request');
 var Consts = require('./consts');
-var Utils = require('./utils');
+var utils_1 = require('./utils');
 var StatusService = (function () {
     function StatusService(cookieJar) {
         this.requestWithJar = request.defaults({ jar: cookieJar });
@@ -19,7 +19,7 @@ var StatusService = (function () {
             if (!error && response.statusCode === 200) {
             }
             else {
-                Utils.throwError('Failed to change status' +
+                utils_1.default.throwError('Failed to change status' +
                     '.\n Error code: ' + response.statusCode +
                     '.\n Error: ' + error +
                     '.\n Body: ' + body);
@@ -28,5 +28,7 @@ var StatusService = (function () {
     };
     return StatusService;
 }());
-module.exports = StatusService;
+exports.StatusService = StatusService;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = StatusService;
 //# sourceMappingURL=status_service.js.map

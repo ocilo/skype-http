@@ -1,5 +1,5 @@
 "use strict";
-var sha256 = require('js-sha256');
+var sha256 = require("js-sha256");
 var bigInt = require("big-integer");
 var Utils = (function () {
     function Utils() {
@@ -127,8 +127,8 @@ var Utils = (function () {
             qwMAC.mod(mod);
             qwSum.add(CS64_d);
             qwSum.mod(mod);
-            pOutHash[0] = parseInt(qwMAC.toString(), 10);
-            pOutHash[1] = parseInt(qwSum.toString(), 10);
+            pOutHash[0] = parseInt(qwMAC.toString(10), 10);
+            pOutHash[1] = parseInt(qwSum.toString(10), 10);
             return true;
         }
         var clearText = challenge + appId;
@@ -170,5 +170,7 @@ var Utils = (function () {
     };
     return Utils;
 }());
-module.exports = Utils;
+exports.Utils = Utils;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Utils;
 //# sourceMappingURL=utils.js.map

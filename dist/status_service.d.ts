@@ -1,9 +1,9 @@
-import SkypeAccount = require('./skype_account');
+import SkypeAccount from './skype_account';
 import { CookieJar } from "request";
-import Status = require("./status/status");
-declare class StatusService {
+import Status from "./status/status";
+export declare class StatusService {
     private requestWithJar;
     constructor(cookieJar: CookieJar);
     setStatus(skypeAccount: SkypeAccount, status: Status): void;
 }
-export = StatusService;
+export default StatusService;
