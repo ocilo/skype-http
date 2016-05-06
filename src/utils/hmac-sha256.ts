@@ -2,6 +2,7 @@ import {sha256} from "js-sha256";
 import * as bigInt from "big-integer";
 import {zeroPad} from "../utils";
 
+const HEX_CHARS = "0123456789abcdef";
 const MAX_INT32 = 0x7fffffff; // Math.pow(2, 31) - 1;
 
 /**
@@ -25,12 +26,26 @@ function uint8ArrayToUint32Array (uint8Array: Uint8Array): Uint32Array {
 }
 
 /**
- * Returns a zero-padded (8 chars long) hex-string representation the argument
+ * Returns a zero-padded (8 chars long) hex-string representation the argument as a little-endian.
+ *
+ * The relation between the characters of `.toString(16)` (big-endian) is:
+ * .toString(16):                <76543210>
+ * littleEndianInt32ToHexString: <10325476>
+ *
+ * Example:
+ * .toString(16):                ed81c15a
+ * littleEndianInt32ToHexString: 5ac181ed
+ *
  * @param int32
  * @returns {string}
  */
-function int32ToHexString (int32: number): string {
-  return zeroPad(int32.toString(16), 8);
+function littleEndianInt32ToHexString (int32: number): string {
+  let result: string = "";
+  for (let i = 0; i < 4; i++) {
+    result = result + HEX_CHARS.charAt((int32 >> i * 8 + 4) & 15);
+    result = result + HEX_CHARS.charAt((int32 >> i * 8) & 15);
+  }
+  return result;
 }
 
 // https://github.com/Demurgos/skype-web-reversed/blob/fe3931c4f091af06f6b2c2e8c14608aebf87448b/skype/latest/decompiled/fullExperience/rjs%24%24msr-crypto/lib/sha256Auth.js#L62
@@ -69,7 +84,7 @@ function magic64 (challengeParts: Uint32Array, hashParts: Uint32Array): Uint32Ar
   }
 
   low = low.add(HASH_1).mod(MAX_INT32);
-  high = low.add(HASH_3).mod(MAX_INT32);
+  high = high.add(HASH_3).mod(MAX_INT32);
 
   return new Uint32Array([low.toJSNumber(), high.toJSNumber()]);
 }
@@ -118,5 +133,5 @@ export function hmacSha256(input: Buffer, productId: Buffer, productKey: Buffer)
   sha256Parts[2] ^= magicResult[0];
   sha256Parts[3] ^= magicResult[1];
 
-  return int32ToHexString(sha256Parts[0]) + int32ToHexString(sha256Parts[1]) + int32ToHexString(sha256Parts[2]) + int32ToHexString(sha256Parts[3]);
+  return littleEndianInt32ToHexString(sha256Parts[0]) + littleEndianInt32ToHexString(sha256Parts[1]) + littleEndianInt32ToHexString(sha256Parts[2]) + littleEndianInt32ToHexString(sha256Parts[3]);
 }
