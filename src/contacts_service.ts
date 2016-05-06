@@ -1,7 +1,7 @@
 import * as request from 'request';
 import * as Consts from './consts';
 import SkypeAccount from './skype_account';
-import Utils from './utils';
+import * as Utils from './utils';
 import * as http from 'http';
 import {CookieJar} from "request";
 

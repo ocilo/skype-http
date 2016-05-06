@@ -6,6 +6,9 @@ node_modules
 typings
 
 ### Temporary files ###
+# Build directory
+dist
+
 # Temporary directory
 tmp
 
@@ -17,7 +20,6 @@ logs
 pids
 *.pid
 *.seed
-
 
 ### IDE files ###
 # Komodo Tools

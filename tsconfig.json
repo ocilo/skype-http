@@ -9,18 +9,20 @@
     "noImplicitAny" : true
   },
   "files": [
+    "src/consts.ts",
+    "src/contacts_service.ts",
+    "src/demo/demo.ts",
+    "src/skype_account.ts",
     "src/skyweb.ts",
     "src/login.ts",
-    "src/skype_account.ts",
-    "src/utils.ts",
-    "src/consts.ts",
     "src/message_service.ts",
-    "src/status_service.ts",
-    "src/contacts_service.ts",
-    "src/request_service.ts",
     "src/polling/auth_request.ts",
     "src/polling/poll.ts",
-    "src/demo/demo.ts",
+    "src/request_service.ts",
+    "src/status_service.ts",
+    "src/test/test.ts",
+    "src/utils.ts",
+    "src/utils/hmac-sha256.ts",
     "typings/main.d.ts"
   ]
 }

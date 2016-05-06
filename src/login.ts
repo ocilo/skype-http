@@ -1,6 +1,6 @@
 import * as request from 'request';
 import * as cheerio from 'cheerio';
-import Utils from './utils';
+import * as Utils from './utils';
 import SkypeAccount from './skype_account';
 import * as Consts from './consts';
 import * as http from 'http';
@@ -73,7 +73,7 @@ export class Login {
 
     private getRegistrationToken(skypeAccount:SkypeAccount, resolve: any, reject: any) {
         var currentTime = Utils.getCurrentTime();
-        var lockAndKeyResponse = Utils.getMac256Hash(currentTime, Consts.SKYPEWEB_LOCKANDKEY_APPID, Consts.SKYPEWEB_LOCKANDKEY_SECRET);
+        var lockAndKeyResponse = Utils.getHMAC128(Buffer.from(String(currentTime), "utf8"), Buffer.from(Consts.SKYPEWEB_LOCKANDKEY_APPID, "utf8"), Buffer.from(Consts.SKYPEWEB_LOCKANDKEY_SECRET, "utf8"));
         this.requestWithJar.post(Consts.SKYPEWEB_HTTPS + skypeAccount.messagesHost + '/v1/users/ME/endpoints', {
             headers: {
                 'LockAndKey': 'appId=' + Consts.SKYPEWEB_LOCKANDKEY_APPID + '; time=' + currentTime + '; lockAndKeyResponse=' + lockAndKeyResponse,

@@ -58,3 +58,5 @@ export function  getTimezone() {
 
   return `${sign}${zeroPad(minutes, 2)}|${zeroPad(hours, 2)}`;
 }
+
+export {hmacSha256 as getHMAC128} from "./utils/hmac-sha256";
