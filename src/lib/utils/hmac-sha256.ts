@@ -10,7 +10,7 @@ const MAX_INT32 = 0x7fffffff; // Math.pow(2, 31) - 1;
  * @param uint8Array Its length has to be a multiple of 4
  * @returns {Uint32Array}
  */
-function uint8ArrayToUint32Array (uint8Array: Uint8Array): Uint32Array {
+export function uint8ArrayToUint32Array (uint8Array: Uint8Array): Uint32Array {
   const len = uint8Array.length;
   if (len % 4 !== 0) {
     throw new Error("uint8Array.length must be a multiple of 4");
@@ -39,7 +39,7 @@ function uint8ArrayToUint32Array (uint8Array: Uint8Array): Uint32Array {
  * @param int32
  * @returns {string}
  */
-function int32ToLittleEndianHexString (int32: number): string {
+export function int32ToLittleEndianHexString (int32: number): string {
   let result: string = "";
   for (let i = 0; i < 4; i++) {
     result = result + HEX_CHARS.charAt((int32 >> i * 8 + 4) & 15);

@@ -7,7 +7,7 @@ typings
 
 ### Temporary files ###
 # Build directory
-dist
+build
 
 # Temporary directory
 tmp

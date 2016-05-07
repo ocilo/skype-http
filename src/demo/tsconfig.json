@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
-    "declaration": true,
+    "declaration": false,
     "target": "ES5",
     "module": "commonjs",
-    "outDir": "./dist",
-    "sourceMap": true,
+    "outDir": "./build/test",
+    "sourceMap": false,
     "removeComments": true,
     "noImplicitAny" : true
   },

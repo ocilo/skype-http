@@ -8,6 +8,10 @@
     "type": "git",
     "url": "git://github.com/ShyykoSerhiy/skyweb.git"
   },
+  "scripts": {
+    "build": "tsc -p src/lib",
+    "test": "tsc -p src/test && mocha build/test --recursive"
+  },
   "keywords": [
     "Skype"
   ],
@@ -18,5 +22,9 @@
     "js-sha256": "^0.3.0",
     "request": "2.61",
     "tough-cookie": "^2.0.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5"
   }
 }

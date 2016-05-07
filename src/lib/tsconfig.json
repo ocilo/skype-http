@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "target": "ES5",
+    "module": "commonjs",
+    "outDir": "../../build/local",
+    "sourceMap": true,
+    "removeComments": true,
+    "noImplicitAny" : true
+  },
+  "files": [
+    "consts.ts",
+    "contacts_service.ts",
+    "skype_account.ts",
+    "skyweb.ts",
+    "login.ts",
+    "message_service.ts",
+    "polling/auth_request.ts",
+    "polling/poll.ts",
+    "request_service.ts",
+    "status_service.ts",
+    "utils.ts",
+    "utils/hmac-sha256.ts",
+    "../../typings/main.d.ts"
+  ]
+}
