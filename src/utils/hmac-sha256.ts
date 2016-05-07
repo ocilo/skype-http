@@ -26,20 +26,20 @@ function uint8ArrayToUint32Array (uint8Array: Uint8Array): Uint32Array {
 }
 
 /**
- * Returns a zero-padded (8 chars long) hex-string representation the argument as a little-endian.
+ * Returns a zero-padded (8 chars long) hex-string of the little-endian representation the argument.
  *
  * The relation between the characters of `.toString(16)` (big-endian) is:
  * .toString(16):                <76543210>
- * littleEndianInt32ToHexString: <10325476>
+ * int32ToLittleEndianHexString: <10325476>
  *
  * Example:
  * .toString(16):                ed81c15a
- * littleEndianInt32ToHexString: 5ac181ed
+ * int32ToLittleEndianHexString: 5ac181ed
  *
  * @param int32
  * @returns {string}
  */
-function littleEndianInt32ToHexString (int32: number): string {
+function int32ToLittleEndianHexString (int32: number): string {
   let result: string = "";
   for (let i = 0; i < 4; i++) {
     result = result + HEX_CHARS.charAt((int32 >> i * 8 + 4) & 15);
@@ -58,11 +58,11 @@ function littleEndianInt32ToHexString (int32: number): string {
  * @param hashParts An Uint32Array of length 4
  * @returns {null}
  */
-function magic64 (challengeParts: Uint32Array, hashParts: Uint32Array): Uint32Array {
+function checkSum64 (challengeParts: Uint32Array, hashParts: Uint32Array): Uint32Array {
   if (challengeParts.length < 2 || challengeParts.length % 2 !== 0) {
     return null;
   }
-  const MAGIC = 0x0e79a9c1;
+  const MAGIC = 0x0e79a9c1; // A magic constant
   const HASH_0 = hashParts[0] & MAX_INT32; // Remove the sign bit
   const HASH_1 = hashParts[1] & MAX_INT32;
   const HASH_2 = hashParts[2] & MAX_INT32;
@@ -91,7 +91,7 @@ function magic64 (challengeParts: Uint32Array, hashParts: Uint32Array): Uint32Ar
 
 // https://github.com/Demurgos/skype-web-reversed/blob/fe3931c4f091af06f6b2c2e8c14608aebf87448b/skype/latest/decompiled/fullExperience/rjs$$msr-crypto/lib/sha256Auth.js#L48
 /**
- * This computes the Hash-based message authentication code (HMAC) of the input buffer by using SHA-256 and the magic64 function
+ * This computes the Hash-based message authentication code (HMAC) of the input buffer by using SHA-256 and the checkSum64 function
  * This is copied from the source of Skype's web application.
  *
  * See getMacHash in sha256Auth.js at skype-web-reversed for the original implementation
@@ -126,12 +126,12 @@ export function hmacSha256(input: Buffer, productId: Buffer, productKey: Buffer)
 
   let sha256Parts: Uint32Array = uint8ArrayToUint32Array(sha256Buffer.slice(0, 16)); // Get half of the sha256 as 4 uint32
 
-  const magicResult: Uint32Array = magic64(challengeParts, sha256Parts);
+  const checkSumParts: Uint32Array = checkSum64(challengeParts, sha256Parts);
 
-  sha256Parts[0] ^= magicResult[0];
-  sha256Parts[1] ^= magicResult[1];
-  sha256Parts[2] ^= magicResult[0];
-  sha256Parts[3] ^= magicResult[1];
+  sha256Parts[0] ^= checkSumParts[0];
+  sha256Parts[1] ^= checkSumParts[1];
+  sha256Parts[2] ^= checkSumParts[0];
+  sha256Parts[3] ^= checkSumParts[1];
 
-  return littleEndianInt32ToHexString(sha256Parts[0]) + littleEndianInt32ToHexString(sha256Parts[1]) + littleEndianInt32ToHexString(sha256Parts[2]) + littleEndianInt32ToHexString(sha256Parts[3]);
+  return int32ToLittleEndianHexString(sha256Parts[0]) + int32ToLittleEndianHexString(sha256Parts[1]) + int32ToLittleEndianHexString(sha256Parts[2]) + int32ToLittleEndianHexString(sha256Parts[3]);
 }
