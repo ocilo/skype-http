@@ -3,8 +3,6 @@
 Unofficial Skype API for Node.js via "Skype (HTTP)".
 This relies on the Skype Web Application and requires the credentials of the account you want to use: use it with care.
 
-If you just want to create a bot, take a look at https://github.com/Microsoft/BotBuilder first.
-
 ## Installation
 
 ````shell
@@ -89,6 +87,12 @@ Clean the directories, run linter and tests and if everything is fine, compile t
 ### `test`
 
 Lint the source files and runs the specs.
+
+## Resources
+
+If you just want to create a bot, take a look at https://github.com/Microsoft/BotBuilder first.
+
+You can find the decompiled source code of the Skype Web Application on [the `skype-web-reversed` repository](https://github.com/demurgos/skype-web-reversed).
 
 ## What's not working and probably never will.
 * [Old P2P group chats](https://github.com/ShyykoSerhiy/skyweb/issues/6). According to  [Skype community site ](http://community.skype.com/t5/Skype-for-Web-Beta/Group-chats-missing-on-skype-web/td-p/3884218) only new, Cloud based group chats are shown in SkypeWeb Beta(therefore works in this API). The old P2P group chats are not.  
