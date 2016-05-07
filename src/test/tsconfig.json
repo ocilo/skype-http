@@ -6,7 +6,7 @@
     "outDir": "../../build/test",
     "sourceMap": true,
     "removeComments": true,
-    "noImplicitAny" : true
+    "noImplicitAny": true
   },
   "files": [
     "../../typings/main.d.ts",

@@ -10,6 +10,7 @@
   },
   "scripts": {
     "build": "tsc -p src/lib",
+    "lint": "tslint \"src/**/*.ts\"",
     "test": "tsc -p src/test && mocha build/test --recursive"
   },
   "keywords": [
@@ -25,6 +26,8 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^2.4.5"
+    "mocha": "^2.4.5",
+    "tslint": "^3.9.0",
+    "typescript": "^1.8.10"
   }
 }

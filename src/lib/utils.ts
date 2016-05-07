@@ -1,6 +1,6 @@
 // TODO: get rid of this function
 export function throwError(message: any) {
-    console.error('Something went wrong!' + message); //FIXME
+  console.error("Something went wrong!" + message); // FIXME
 }
 
 /**
@@ -43,13 +43,13 @@ export function stringFromChar(char: string, count: number): string {
   return new Array(count - 1).join(char);
 }
 
-export function  getTimezone() {
+export function getTimezone() {
   let sign: string;
   let timezone = new Date().getTimezoneOffset() * (-1);
   if (timezone >= 0) {
-      sign = "+";
+    sign = "+";
   } else {
-      sign = "-";
+    sign = "-";
   }
 
   timezone = Math.abs(timezone);

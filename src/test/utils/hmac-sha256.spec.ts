@@ -1,7 +1,7 @@
 import {assert} from "chai";
 import {hmacSha256, int32ToLittleEndianHexString} from "../../lib/utils/hmac-sha256";
 
-describe ("int32ToLittleEndianHexString", function() {
+describe("int32ToLittleEndianHexString", function () {
   const knownValues = [
     {int32: 0x0, expected: "00000000"},
     {int32: 0x1, expected: "01000000"},
@@ -10,14 +10,14 @@ describe ("int32ToLittleEndianHexString", function() {
   ];
 
   for (let known of knownValues) {
-    it (`should return "${known.expected}" for ${known.int32} (0x${known.int32.toString(16)})`, function() {
+    it(`should return "${known.expected}" for ${known.int32} (0x${known.int32.toString(16)})`, function () {
       let result: string = int32ToLittleEndianHexString(known.int32);
       assert.equal(result, known.expected);
     });
   }
 });
 
-describe ("hmacSha256", function() {
+describe("hmacSha256", function () {
   const knownHashes = [
     {
       input: "1462570297",
@@ -28,7 +28,7 @@ describe ("hmacSha256", function() {
   ];
 
   for (let known of knownHashes) {
-    it (`should return "${known.expected}" for ("${known.input}", "${known.id}", "${known.key}")`, function() {
+    it(`should return "${known.expected}" for ("${known.input}", "${known.id}", "${known.key}")`, function () {
       let inputBuffer = Buffer.from(String(known.input), "utf8");
       let idBuffer = Buffer.from(String(known.id), "utf8");
       let keyBuffer = Buffer.from(String(known.key), "utf8");

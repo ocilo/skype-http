@@ -6,7 +6,7 @@
     "outDir": "./build/test",
     "sourceMap": false,
     "removeComments": true,
-    "noImplicitAny" : true
+    "noImplicitAny": true
   },
   "files": [
     "src/consts.ts",
