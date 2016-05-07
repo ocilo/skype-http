@@ -3,7 +3,7 @@
   "description": "Unofficial Skype API for Node.js via 'Skype (HTTP)'",
   "version": "0.0.4",
   "license": "MIT",
-  "main": "./dist/src/skyweb.js",
+  "main": "./dist/skyweb.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/demurgos/skype-http.git"
