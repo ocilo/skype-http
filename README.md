@@ -13,12 +13,12 @@ typings install --save npm:skype-http
 ````
 
 Import for Typescript or Javascript ES6:
-````
+````typescript
 import {Skyweb} from "skype-http";
 ````
 
 Import for Javascript ES5:
-````
+````js
 var Skyweb = require("skype-http").Skyweb;
 ````
 
