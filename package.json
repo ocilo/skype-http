@@ -12,8 +12,8 @@
     "build": "tsc -p src/lib",
     "clean": "node tools/clean.js",
     "lint": "tslint \"src/**/*.ts\"",
-    "prepublish": "npm run lint && npm run clean && npm run build && npm run test && node tools/prepublish.js",
-    "test": "tsc -p src/test && mocha build/test --recursive"
+    "prepublish": "npm run clean && npm run test && npm run build && node tools/prepublish.js",
+    "test": "npm run lint && tsc -p src/test && mocha build/test --recursive --colors"
   },
   "keywords": [
     "Skype",
