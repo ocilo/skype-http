@@ -1,20 +1,23 @@
 {
-  "name": "skyweb",
+  "name": "skype-http",
   "description": "Unofficial Skype API for nodejs via 'Skype (HTTP)'",
   "version": "0.0.4",
   "license": "MIT",
   "main": "./dist/src/skyweb.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/ShyykoSerhiy/skyweb.git"
+    "url": "git://github.com/demurgos/skype-http.git"
   },
   "scripts": {
     "build": "tsc -p src/lib",
+    "clean": "node tools/clean.js",
     "lint": "tslint \"src/**/*.ts\"",
     "test": "tsc -p src/test && mocha build/test --recursive"
   },
   "keywords": [
-    "Skype"
+    "Skype",
+    "Skype-Web",
+    "Skype-HTTP"
   ],
   "dependencies": {
     "big-integer": "^1.5.6",
@@ -26,6 +29,8 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "del": "^2.2.0",
+    "fs-extra": "^0.30.0",
     "mocha": "^2.4.5",
     "tslint": "^3.9.0",
     "typescript": "^1.8.10"
