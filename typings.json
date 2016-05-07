@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "big-integer": "registry:npm/big-integer#1.6.15+20160501004755",
+    "bluebird": "registry:npm/bluebird#3.3.4+20160427051630",
     "cheerio": "registry:npm/cheerio#0.20.0+20160422172414",
     "es6-promise": "registry:npm/es6-promise#3.0.0+20160211003958",
     "form-data": "registry:npm/form-data#1.0.0+20160211003958",

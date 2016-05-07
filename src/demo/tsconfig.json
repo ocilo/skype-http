@@ -1,28 +1,27 @@
 {
   "compilerOptions": {
-    "declaration": false,
+    "declaration": true,
     "target": "ES5",
     "module": "commonjs",
-    "outDir": "./build/test",
-    "sourceMap": false,
+    "outDir": "../../build/demo",
+    "sourceMap": true,
     "removeComments": true,
     "noImplicitAny": true
   },
   "files": [
-    "src/consts.ts",
-    "src/contacts_service.ts",
-    "src/demo/demo.ts",
-    "src/skype_account.ts",
-    "src/skyweb.ts",
-    "src/login.ts",
-    "src/message_service.ts",
-    "src/polling/auth_request.ts",
-    "src/polling/poll.ts",
-    "src/request_service.ts",
-    "src/status_service.ts",
-    "src/test/test.ts",
-    "src/utils.ts",
-    "src/utils/hmac-sha256.ts",
-    "typings/main.d.ts"
+    "../../typings/main.d.ts",
+    "../lib/consts.ts",
+    "../lib/contacts_service.ts",
+    "../lib/skype_account.ts",
+    "../lib/skyweb.ts",
+    "../lib/login.ts",
+    "../lib/message_service.ts",
+    "../lib/polling/auth_request.ts",
+    "../lib/polling/poll.ts",
+    "../lib/request_service.ts",
+    "../lib/status_service.ts",
+    "../lib/utils.ts",
+    "../lib/utils/hmac-sha256.ts",
+    "main.ts"
   ]
 }

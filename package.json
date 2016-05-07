@@ -11,6 +11,7 @@
   "scripts": {
     "build": "tsc -p src/lib",
     "clean": "node tools/clean.js",
+    "demo": "tsc -p src/demo && node build/demo/demo/main.js",
     "lint": "tslint \"src/**/*.ts\"",
     "prepublish": "npm run clean && npm run test && npm run build && node tools/prepublish.js",
     "test": "npm run lint && tsc -p src/test && mocha build/test --recursive --colors"
@@ -22,6 +23,7 @@
   ],
   "dependencies": {
     "big-integer": "^1.5.6",
+    "bluebird": "^3.3.5",
     "cheerio": "^0.19.0",
     "es6-promise": "^3.0.2",
     "js-sha256": "^0.3.0",
