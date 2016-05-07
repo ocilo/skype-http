@@ -1,7 +1,7 @@
-### Start of differences with .npmignore
+### Start of differences with .gitignore
 # This is the directory published to npm
-dist
-### End of differences with .npmignore
+!dist
+### End of differences with .gitignore
 
 ### Dependencies ###
 # Node dependencies directory

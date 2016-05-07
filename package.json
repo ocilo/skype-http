@@ -1,6 +1,6 @@
 {
   "name": "skype-http",
-  "description": "Unofficial Skype API for nodejs via 'Skype (HTTP)'",
+  "description": "Unofficial Skype API for Node.js via 'Skype (HTTP)'",
   "version": "0.0.4",
   "license": "MIT",
   "main": "./dist/src/skyweb.js",
@@ -12,6 +12,7 @@
     "build": "tsc -p src/lib",
     "clean": "node tools/clean.js",
     "lint": "tslint \"src/**/*.ts\"",
+    "prepublish": "npm run lint && npm run clean && npm run build && npm run test && node tools/prepublish.js",
     "test": "tsc -p src/test && mocha build/test --recursive"
   },
   "keywords": [
