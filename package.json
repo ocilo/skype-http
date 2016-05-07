@@ -1,6 +1,6 @@
 {
   "name": "skype-http",
-  "description": "Unofficial Skype API for Node.js via 'Skype (HTTP)'",
+  "description": "Unofficial Skype API for Node.js via \"Skype (HTTP)\"",
   "version": "0.0.4",
   "license": "MIT",
   "main": "./dist/skyweb.js",
