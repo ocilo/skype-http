@@ -6,6 +6,8 @@ describe("int32ToLittleEndianHexString", function () {
     {int32: 0x0, expected: "00000000"},
     {int32: 0x1, expected: "01000000"},
     {int32: 0x10, expected: "10000000"},
+    {int32: 0x100, expected: "00010000"},
+    {int32: 0x1000, expected: "00100000"},
     {int32: 0x12345678, expected: "78563412"},
   ];
 
