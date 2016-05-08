@@ -86,7 +86,7 @@ Clean the directories, run linter and tests and if everything is fine, compile t
 
 ### `test`
 
-Lint the source files and runs the specs.
+Lint the source files and runs the specs. This is executed during Travis CI builds.
 
 ## Resources
 
