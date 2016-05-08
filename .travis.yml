@@ -12,7 +12,7 @@ before_install:
   - npm install -g typings
 
 before_script:
-  - typings install
+  - npm run prepare
 
 script:
   - npm test
