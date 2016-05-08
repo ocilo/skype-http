@@ -13,7 +13,8 @@
     "clean": "node tools/clean.js",
     "demo": "tsc -p src/demo && node build/demo/demo/main.js",
     "lint": "tslint \"src/**/*.ts\"",
-    "prepublish": "npm run clean && npm run test && npm run build && node tools/prepublish.js",
+    "prepare": "typings install",
+    "prepublishOnly": "npm run clean && npm test && npm run build && node tools/prepublish.js",
     "test": "npm run lint && tsc -p src/test && mocha build/test --recursive --colors"
   },
   "keywords": [
