@@ -1,6 +1,9 @@
 # Skype-Http
 
-Unofficial Skype API for Node.js via "Skype (HTTP)".
+[![npm](https://img.shields.io/npm/v/skype-http.svg?maxAge=2592000)](https://www.npmjs.com/package/skype-http)
+[![Build status](https://img.shields.io/travis/demurgos/skype-http/master.svg?maxAge=2592000)](https://travis-ci.org/demurgos/skype-http)
+
+Unofficial Skype API for Node.js via HTTP.
 This relies on the Skype Web Application and requires the credentials of the account you want to use: use it with care.
 
 ## Installation
@@ -80,9 +83,17 @@ Compiles the demo to `build/demo` and runs the main demo file.
 
 Checks the source files with `tslint`
 
-### `prepublish`
+### `prepare`
+
+Installs `typings` definitions.
+
+### `prepublishOnly`
 
 Clean the directories, run linter and tests and if everything is fine, compile the core files and moves them to the `dist` directory to be published on `npm`.
+
+### `publishOnly`
+
+Runs `prepublishOnly` and then `npm publish`. This is a temporary fix until [this npm issue](https://github.com/npm/npm/issues/10074) is solved.
 
 ### `test`
 
