@@ -8,7 +8,7 @@ export function throwError(message: any) {
  * @returns {number}
  */
 export function getCurrentTime(): number {
-  return (new Date().getTime()) / 1000;
+  return Math.floor((new Date().getTime()) / 1000);
 }
 
 /**
