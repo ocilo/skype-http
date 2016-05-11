@@ -9,7 +9,11 @@
     "noImplicitAny": true
   },
   "files": [
+    "../../typings/main.d.ts",
     "interfaces/index.ts",
+    "polling/auth_request.ts",
+    "polling/poll.ts",
+    "utils/hmac-sha256.ts",
     "api.ts",
     "consts.ts",
     "contacts_service.ts",
@@ -21,11 +25,7 @@
     "skype-http.ts",
     "skype_account.ts",
     "skyweb.ts",
-    "polling/auth_request.ts",
-    "polling/poll.ts",
     "status_service.ts",
-    "utils.ts",
-    "utils/hmac-sha256.ts",
-    "../../typings/main.d.ts"
+    "utils.ts"
   ]
 }

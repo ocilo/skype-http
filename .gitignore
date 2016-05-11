@@ -10,6 +10,9 @@ node_modules
 # Typings definitions
 typings
 
+### Local config ###
+test-config.js
+
 ### Temporary files ###
 # Build directory
 build
