@@ -1,3 +1,4 @@
+import * as Bluebird from "bluebird";
 import * as request from "request";
 import * as cheerio from "cheerio";
 import * as Utils from "./utils";
@@ -7,6 +8,12 @@ import * as http from "http";
 import * as url from "url";
 import {CookieJar} from "request";
 import {Promise} from "es6-promise";
+import {IO} from "./io";
+import {Credentials} from "./interfaces/index";
+
+export function login(io: IO, credentials: Credentials): Bluebird<any> {
+  return null;
+}
 
 export class Login {
   private requestWithJar: any;
