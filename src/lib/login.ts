@@ -2,17 +2,127 @@ import * as Bluebird from "bluebird";
 import * as request from "request";
 import * as cheerio from "cheerio";
 import * as Utils from "./utils";
+import Incident from "incident";
+
 import SkypeAccount from "./skype_account";
 import * as Consts from "./consts";
 import * as http from "http";
 import * as url from "url";
 import {CookieJar} from "request";
 import {Promise} from "es6-promise";
-import {IO} from "./io";
+import * as io from "./io";
 import {Credentials} from "./interfaces/index";
 
-export function login(io: IO, credentials: Credentials): Bluebird<any> {
-  return null;
+interface LoginPageKeys {
+  pie: string;
+  etm: string;
+}
+
+interface AuthenticationData {
+  username: string;
+  password: string;
+  pie: string;
+  etm: string;
+  timezone_field: string;
+  js_time: number;
+}
+
+interface AuthenticationToken {
+  skypetoken: string;
+  expires_in: number;
+}
+
+export function login(io: io.IO, credentials: Credentials): Bluebird<any> {
+  let jar: request.CookieJar = request.jar();
+
+  return getLoginPageKeys(io, jar)
+    .then((keys: LoginPageKeys) => {
+      const authenticationData: AuthenticationData = {
+        username: credentials.username,
+        password: credentials.password,
+        pie: keys.pie,
+        etm: keys.etm,
+        timezone_field: Utils.getTimezone(),
+        js_time: Utils.getCurrentTime()
+      };
+      return getToken(io, jar, authenticationData)
+        .then((result) => {
+          // result.skypetoken;
+          // result.expires_in;
+        });
+    })
+    .thenReturn(null);
+}
+
+export function getLoginPageKeys(io: io.IO, jar: request.CookieJar): Bluebird<LoginPageKeys> {
+  const options: io.GetOptions = {
+    uri: Consts.SKYPEWEB_LOGIN_URL,
+    jar: jar
+  };
+
+  return Bluebird.resolve(io.get(options))
+    .then((res: io.Response) => {
+      if (res.statusCode !== 200) {
+        return Bluebird.reject(new Incident("net", "Unable to GET the login page"));
+      }
+
+      return Bluebird.resolve(scrapLoginPageKeys(res.body));
+    });
+}
+
+export function scrapLoginPageKeys (html: string): LoginPageKeys {
+  const $: cheerio.Static = cheerio.load(html);
+
+  const result: LoginPageKeys = {
+    pie: $('input[name="pie"]').val(),
+    etm: $('input[name="etm"]').val()
+  };
+
+  if (!result.pie || !result.etm) {
+    throw new Incident("scrapping", "Unable to retrieve the pie and etm keys from the login page");
+  }
+
+  return result;
+}
+
+export function getToken (io: io.IO, jar: request.CookieJar, data: AuthenticationData): Bluebird<any> {
+  const options: io.PostOptions = {
+    uri: Consts.SKYPEWEB_LOGIN_URL,
+    form: data,
+    jar: jar
+  };
+
+  return Bluebird.resolve(io.post(options))
+    .then((res: io.Response) => {
+      if (res.statusCode !== 200) {
+        return Bluebird.reject(new Incident("net", "Unable to get the response for the authentication POST request"));
+      }
+
+      return Bluebird.resolve(scrapSkypeToken(res.body));
+    });
+}
+
+export function scrapSkypeToken (html: string): AuthenticationToken {
+  const $: cheerio.Static = cheerio.load(html);
+
+  const result: AuthenticationToken = {
+    skypetoken: $('input[name="skypetoken"]').val(),
+    expires_in: parseInt($('input[name="expires_in"]').val(), 10) // 86400 by default
+  };
+
+  if (!result.skypetoken || !result.expires_in) {
+    const skypeErrorMessage = $(".message_error").text();
+    const errorName = "authentication-failed";
+    const errorMessage = "Failed to get skypetoken. Username or password is incorrect OR you've hit a CAPTCHA wall.";
+    if (skypeErrorMessage) {
+      const skypeError = new Incident("skype-error", skypeErrorMessage);
+      throw new Incident(skypeError, errorName, errorMessage);
+    } else {
+      throw new Incident(errorName, errorMessage);
+    }
+  }
+
+  return result;
 }
 
 export class Login {
