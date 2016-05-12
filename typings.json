@@ -5,6 +5,7 @@
     "cheerio": "registry:npm/cheerio#0.20.0+20160422172414",
     "es6-promise": "registry:npm/es6-promise#3.0.0+20160211003958",
     "form-data": "registry:npm/form-data#1.0.0+20160211003958",
+    "incident": "npm:incident",
     "js-sha256": "registry:npm/js-sha256#0.3.0+20160427051917",
     "request": "registry:npm/request#2.69.0+20160428223725"
   },
