@@ -10,6 +10,7 @@ node_js:
 
 before_install:
   - npm install -g typings
+  - openssl aes-256-cbc -K $encrypted_022e925ff3dd_key -iv $encrypted_022e925ff3dd_iv -in test-config.js.enc -out test-config.js -d
 
 before_script:
   - npm run prepare
