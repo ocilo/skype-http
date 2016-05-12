@@ -13,6 +13,12 @@ import * as io from "./io";
 import SkypeAccount from "./skype_account";
 import * as Utils from "./utils";
 
+export interface LoginOptions {
+  io: io.IO;
+  credentials: Credentials;
+  verbose?: boolean;
+}
+
 interface LoginPageKeys {
   pie: string;
   etm: string;
@@ -42,24 +48,24 @@ interface AuthenticationResponse {
  * @param credentials
  * @returns {Bluebird<ApiContext>}
  */
-export function login(io: io.IO, credentials: Credentials): Bluebird<ApiContext> {
+export function login(options: LoginOptions): Bluebird<ApiContext> {
   let jar: request.CookieJar = request.jar();
   let startTime = Date.now();
 
-  return getLoginPageKeys(io, jar)
+  return getLoginPageKeys(options.io, jar)
     .then((keys: LoginPageKeys) => {
       const authenticationData: AuthenticationRequest = {
-        username: credentials.username,
-        password: credentials.password,
+        username: options.credentials.username,
+        password: options.credentials.password,
         pie: keys.pie,
         etm: keys.etm,
         timezone_field: Utils.getTimezone(),
         js_time: Utils.getCurrentTime()
       };
-      return getToken(io, jar, authenticationData)
+      return getToken(options.io, jar, authenticationData)
         .then((result: AuthenticationResponse) => {
           let context: ApiContext = {
-            username: credentials.username,
+            username: options.credentials.username,
             skypeToken: result.skypetoken,
             skypeTokenExpirationDate: new Date(startTime + result.expires_in),
             cookieJar: jar
@@ -122,7 +128,7 @@ function scrapSkypeToken (html: string): AuthenticationResponse {
 
   const result: AuthenticationResponse = {
     skypetoken: $('input[name="skypetoken"]').val(),
-    expires_in: parseInt($('input[name="expires_in"]').val(), 10) // 86400 by default
+    expires_in: parseInt($('input[name="expires_in"]').val(), 10) * 1000 // 86400 sec by default, multiply by 1000 to get milliseconds
   };
 
   if (!result.skypetoken || !result.expires_in) {

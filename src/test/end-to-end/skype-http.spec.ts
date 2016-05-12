@@ -13,7 +13,7 @@ describe("SkypeHttp", function() {
   this.timeout(20000); // 20 seconds
 
   it("should connect to the main account trough authentication", function() {
-    return SkypeHttp.connect({credentials: mainAccount})
+    return SkypeHttp.connect({credentials: mainAccount, verbose: testConfig.verbose})
       .then((result: Api) => {
         api = result;
         assert.equal(api.context.username, mainAccount.username);

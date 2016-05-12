@@ -10,6 +10,7 @@ const testConfigPath = resolvePath(projectRoot, TEST_CONFIG_PATH);
 
 export interface TestConfig {
   accounts: Credentials[];
+  verbose: boolean;
 }
 
 // tslint:disable-next-line:no-require-imports
@@ -35,3 +36,5 @@ testConfig.accounts.forEach((credentials: Credentials, index: number) => {
     throw new Incident("invalid-config", `non-string password in 'accounts' array at index ${index}`);
   }
 });
+
+testConfig.verbose = Boolean(testConfig.verbose);

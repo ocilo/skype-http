@@ -22,8 +22,12 @@ export function connect (options: ConnectOptions): Bluebird<api.Api> {
     return Bluebird.reject(new Incident("todo", "Connection from previous state is not yet supported."));
   } else {
     let io: IO = new RequestIO();
-    return login(io, options.credentials)
+    return login({io: io, credentials: options.credentials, verbose: options.verbose})
       .then((apiContext: api.Context) => {
+        if (options.verbose) {
+          console.log("Obtained context trough authentication:");
+          console.log(apiContext);
+        }
         return new api.Api(apiContext, io);
       });
   }
