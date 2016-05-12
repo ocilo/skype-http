@@ -17,7 +17,7 @@
     "../lib/api.ts",
     "../lib/consts.ts",
     "../lib/contacts_service.ts",
-    "../lib/io.ts",
+    "../lib/interfaces/io.ts",
     "../lib/login.ts",
     "../lib/message_service.ts",
     "../lib/request-io.ts",

@@ -2,7 +2,7 @@ import * as Bluebird from "bluebird";
 import * as request from "request";
 import Incident from "incident";
 import * as api from "./api";
-import {IO} from "./io";
+import {IO} from "./interfaces/io";
 import {RequestIO} from "./request-io";
 import {login} from "./login";
 import {Credentials} from "./interfaces/index";

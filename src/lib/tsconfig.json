@@ -17,7 +17,7 @@
     "api.ts",
     "consts.ts",
     "contacts_service.ts",
-    "io.ts",
+    "interfaces/io.ts",
     "login.ts",
     "message_service.ts",
     "request-io.ts",

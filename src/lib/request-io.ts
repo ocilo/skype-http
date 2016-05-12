@@ -1,6 +1,6 @@
 import * as request from "request";
 import * as Bluebird from "bluebird";
-import * as io from "./io";
+import * as io from "./interfaces/io";
 
 export class RequestIO implements io.IO {
   get (options: io.GetOptions): Bluebird<io.Response> {

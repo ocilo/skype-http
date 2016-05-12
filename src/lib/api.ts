@@ -1,6 +1,7 @@
 import {EventEmitter} from "events";
 import {CookieJar} from "request";
-import {IO} from "./io";
+import {IO} from "./interfaces/io";
+import * as Bluebird from "bluebird";
 
 export interface Context {
   username: string;
@@ -20,6 +21,17 @@ export class Api extends EventEmitter implements  ApiEvents {
   }
 
   sendMessage (conversationId: string, options: SendMessageOptions) {
+
+  }
+
+  /**
+   * Start polling and emitting events
+   */
+  listen (): Bluebird<any> {
+    return null;
+  }
+
+  protected handlePollingEvent(ev: any): any {
 
   }
 }

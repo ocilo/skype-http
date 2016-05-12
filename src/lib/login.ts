@@ -9,7 +9,7 @@ import * as url from "url";
 import {Credentials} from "./interfaces/index";
 import {Context as ApiContext} from "./api";
 import * as Consts from "./consts";
-import * as io from "./io";
+import * as io from "./interfaces/io";
 import SkypeAccount from "./skype_account";
 import * as Utils from "./utils";
 
