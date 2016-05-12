@@ -1,24 +1,24 @@
 import * as Bluebird from "bluebird";
-import * as request from "request";
 import * as cheerio from "cheerio";
-import * as Utils from "./utils";
-import Incident from "incident";
-
-import SkypeAccount from "./skype_account";
-import * as Consts from "./consts";
-import * as http from "http";
-import * as url from "url";
-import {CookieJar} from "request";
 import {Promise} from "es6-promise";
-import * as io from "./io";
+import Incident from "incident";
+import * as http from "http";
+import * as request from "request";
+import * as url from "url";
+
 import {Credentials} from "./interfaces/index";
+import {Context as ApiContext} from "./api";
+import * as Consts from "./consts";
+import * as io from "./io";
+import SkypeAccount from "./skype_account";
+import * as Utils from "./utils";
 
 interface LoginPageKeys {
   pie: string;
   etm: string;
 }
 
-interface AuthenticationData {
+interface AuthenticationRequest {
   username: string;
   password: string;
   pie: string;
@@ -27,17 +27,28 @@ interface AuthenticationData {
   js_time: number;
 }
 
-interface AuthenticationToken {
+interface AuthenticationResponse {
   skypetoken: string;
   expires_in: number;
 }
 
-export function login(io: io.IO, credentials: Credentials): Bluebird<any> {
+/**
+ * Builds an Api context trough a new authentication.
+ * This involves two request:
+ * GET <loginUrl> to scrap two keys (pie & etm)
+ * POST <loginUrl> to perform the authentication and aquire the Skype token
+ *
+ * @param io
+ * @param credentials
+ * @returns {Bluebird<ApiContext>}
+ */
+export function login(io: io.IO, credentials: Credentials): Bluebird<ApiContext> {
   let jar: request.CookieJar = request.jar();
+  let startTime = Date.now();
 
   return getLoginPageKeys(io, jar)
     .then((keys: LoginPageKeys) => {
-      const authenticationData: AuthenticationData = {
+      const authenticationData: AuthenticationRequest = {
         username: credentials.username,
         password: credentials.password,
         pie: keys.pie,
@@ -46,15 +57,19 @@ export function login(io: io.IO, credentials: Credentials): Bluebird<any> {
         js_time: Utils.getCurrentTime()
       };
       return getToken(io, jar, authenticationData)
-        .then((result) => {
-          // result.skypetoken;
-          // result.expires_in;
+        .then((result: AuthenticationResponse) => {
+          let context: ApiContext = {
+            username: credentials.username,
+            skypeToken: result.skypetoken,
+            skypeTokenExpirationDate: new Date(startTime + result.expires_in),
+            cookieJar: jar
+          };
+          return context;
         });
-    })
-    .thenReturn(null);
+    });
 }
 
-export function getLoginPageKeys(io: io.IO, jar: request.CookieJar): Bluebird<LoginPageKeys> {
+function getLoginPageKeys(io: io.IO, jar: request.CookieJar): Bluebird<LoginPageKeys> {
   const options: io.GetOptions = {
     uri: Consts.SKYPEWEB_LOGIN_URL,
     jar: jar
@@ -70,7 +85,7 @@ export function getLoginPageKeys(io: io.IO, jar: request.CookieJar): Bluebird<Lo
     });
 }
 
-export function scrapLoginPageKeys (html: string): LoginPageKeys {
+function scrapLoginPageKeys (html: string): LoginPageKeys {
   const $: cheerio.Static = cheerio.load(html);
 
   const result: LoginPageKeys = {
@@ -85,7 +100,7 @@ export function scrapLoginPageKeys (html: string): LoginPageKeys {
   return result;
 }
 
-export function getToken (io: io.IO, jar: request.CookieJar, data: AuthenticationData): Bluebird<any> {
+function getToken (io: io.IO, jar: request.CookieJar, data: AuthenticationRequest): Bluebird<any> {
   const options: io.PostOptions = {
     uri: Consts.SKYPEWEB_LOGIN_URL,
     form: data,
@@ -102,10 +117,10 @@ export function getToken (io: io.IO, jar: request.CookieJar, data: Authenticatio
     });
 }
 
-export function scrapSkypeToken (html: string): AuthenticationToken {
+function scrapSkypeToken (html: string): AuthenticationResponse {
   const $: cheerio.Static = cheerio.load(html);
 
-  const result: AuthenticationToken = {
+  const result: AuthenticationResponse = {
     skypetoken: $('input[name="skypetoken"]').val(),
     expires_in: parseInt($('input[name="expires_in"]').val(), 10) // 86400 by default
   };
@@ -128,7 +143,7 @@ export function scrapSkypeToken (html: string): AuthenticationToken {
 export class Login {
   private requestWithJar: any;
 
-  constructor(cookieJar: CookieJar) {
+  constructor(cookieJar: request.CookieJar) {
     this.requestWithJar = request.defaults({jar: cookieJar});
   }
 

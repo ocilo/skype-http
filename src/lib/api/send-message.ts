@@ -39,7 +39,7 @@ export function sendMessage(ctx: any, conversationId: string, options: SendMessa
             // ".\n Body: " + body
           }
           if (res.statusCode !== 201) {
-            return cb(new Error("Wrong return code..."))
+            return cb(new Error("Wrong return code..."));
           }
           return cb(null, null);
         }

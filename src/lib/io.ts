@@ -1,16 +1,16 @@
 import {Thenable} from "bluebird";
 import * as request from "request";
 
-interface Options {
+export interface BaseOptions {
   uri: string;
   jar: request.CookieJar;
 }
 
-export interface GetOptions extends Options {
+export interface GetOptions extends BaseOptions {
 
 }
 
-export interface PostOptions extends Options {
+export interface PostOptions extends BaseOptions {
   form: any;
 }
 
@@ -20,6 +20,6 @@ export interface Response {
 }
 
 export interface IO {
-  get (options: Options): Thenable<Response>;
-  post (options: Options): Thenable<Response>;
+  get (options: GetOptions): Thenable<Response>;
+  post (options: PostOptions): Thenable<Response>;
 }

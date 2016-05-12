@@ -10,19 +10,25 @@
   },
   "files": [
     "../../typings/main.d.ts",
+    "../lib/interfaces/index.ts",
     "../lib/polling/auth_request.ts",
     "../lib/polling/poll.ts",
     "../lib/utils/hmac-sha256.ts",
+    "../lib/api.ts",
     "../lib/consts.ts",
     "../lib/contacts_service.ts",
-    "../lib/skype_account.ts",
-    "../lib/skyweb.ts",
+    "../lib/io.ts",
     "../lib/login.ts",
     "../lib/message_service.ts",
+    "../lib/request-io.ts",
     "../lib/request_service.ts",
+    "../lib/skype-http.ts",
+    "../lib/skype_account.ts",
+    "../lib/skyweb.ts",
     "../lib/status_service.ts",
     "../lib/utils.ts",
-    "end-to-end/get-config.ts",
+    "end-to-end/config.ts",
+    "end-to-end/skype-http.spec.ts",
     "utils/hmac-sha256.spec.ts"
   ]
 }
