@@ -1,9 +1,11 @@
 import {Thenable} from "bluebird";
 import * as request from "request";
+import {Dictionary} from "./index";
 
 export interface BaseOptions {
   uri: string;
   jar: request.CookieJar;
+  headers?: Dictionary<any>;
 }
 
 export interface GetOptions extends BaseOptions {
@@ -11,12 +13,14 @@ export interface GetOptions extends BaseOptions {
 }
 
 export interface PostOptions extends BaseOptions {
-  form: any;
+  form?: any;
+  body?: any;
 }
 
 export interface Response {
   statusCode: number;
   body: string;
+  headers: Dictionary<any>;
 }
 
 export interface IO {

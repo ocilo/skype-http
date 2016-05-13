@@ -12,7 +12,8 @@ export class RequestIO implements io.IO {
 
         let ioResponse: io.Response = {
           statusCode: response.statusCode,
-          body: body
+          body: body,
+          headers: response.headers
         };
 
         cb(null, ioResponse);
@@ -29,7 +30,8 @@ export class RequestIO implements io.IO {
 
         let ioResponse: io.Response = {
           statusCode: response.statusCode,
-          body: body
+          body: body,
+          headers: response.headers
         };
 
         cb(null, ioResponse);

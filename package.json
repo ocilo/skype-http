@@ -32,6 +32,7 @@
     "es6-promise": "^3.0.2",
     "incident": "^1.0.5",
     "js-sha256": "^0.3.0",
+    "lodash": "^4.12.0",
     "request": "2.61",
     "tough-cookie": "^2.0.0"
   },

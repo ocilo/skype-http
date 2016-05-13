@@ -8,6 +8,7 @@ export interface Context {
   skypeToken: string;
   skypeTokenExpirationDate: Date;
   cookieJar: CookieJar;
+  apiHost: string;
 }
 
 export class Api extends EventEmitter implements  ApiEvents {
