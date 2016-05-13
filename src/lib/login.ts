@@ -40,6 +40,17 @@ interface AuthenticationResponse {
   expires_in: number;
 }
 
+interface HelpersOptions {
+  io: io.IO;
+  jar: request.CookieJar;
+}
+
+interface RegistrationToken {
+  value: string;
+  expirationDate: Date;
+  endpointId: string;
+}
+
 /**
  * Builds an Api context trough a new authentication.
  * This involves two request:
@@ -55,7 +66,7 @@ export function login(options: LoginOptions): Bluebird<ApiContext> {
   let startTime = Date.now();
   let apiHost = this.messagesHost = Consts.SKYPEWEB_DEFAULT_MESSAGES_HOST;
 
-  return getLoginPageKeys(options.io, jar)
+  return getLoginPageKeys({io: options.io, jar: jar})
     .then((keys: LoginPageKeys) => {
       const authenticationData: AuthenticationRequest = {
         username: options.credentials.username,
@@ -65,7 +76,7 @@ export function login(options: LoginOptions): Bluebird<ApiContext> {
         timezone_field: Utils.getTimezone(),
         js_time: Utils.getCurrentTime()
       };
-      return getToken(options.io, jar, authenticationData)
+      return getToken({io: options.io, jar: jar}, authenticationData)
         .then((result: AuthenticationResponse) => {
           let context: ApiContext = {
             username: options.credentials.username,
@@ -79,13 +90,13 @@ export function login(options: LoginOptions): Bluebird<ApiContext> {
     });
 }
 
-function getLoginPageKeys(io: io.IO, jar: request.CookieJar): Bluebird<LoginPageKeys> {
-  const options: io.GetOptions = {
+function getLoginPageKeys(options: HelpersOptions): Bluebird<LoginPageKeys> {
+  const requestOptions: io.GetOptions = {
     uri: Consts.SKYPEWEB_LOGIN_URL,
-    jar: jar
+    jar: options.jar
   };
 
-  return Bluebird.resolve(io.get(options))
+  return Bluebird.resolve(options.io.get(requestOptions))
     .then((res: io.Response) => {
       if (res.statusCode !== 200) {
         return Bluebird.reject(new Incident("net", "Unable to GET the login page"));
@@ -110,14 +121,14 @@ function scrapLoginPageKeys (html: string): LoginPageKeys {
   return result;
 }
 
-function getToken (io: io.IO, jar: request.CookieJar, data: AuthenticationRequest): Bluebird<any> {
-  const options: io.PostOptions = {
+function getToken (options: HelpersOptions, data: AuthenticationRequest): Bluebird<any> {
+  const requestOptions: io.PostOptions = {
     uri: Consts.SKYPEWEB_LOGIN_URL,
     form: data,
-    jar: jar
+    jar: options.jar
   };
 
-  return Bluebird.resolve(io.post(options))
+  return Bluebird.resolve(options.io.post(requestOptions))
     .then((res: io.Response) => {
       if (res.statusCode !== 200) {
         return Bluebird.reject(new Incident("net", "Unable to get the response for the authentication POST request"));
@@ -165,12 +176,12 @@ function decodeData (data: string): string {
   return decodeURIComponent(data.replace(/\+/gm, " "));
 }
 
-function serializeParams (params: Dictionary<string>) {
+function stringifyHeaderParams (params: Dictionary<string>) {
   return _.map(params, (value, key) => `${encodeData(key)}=${encodeData(value)}`).join("; ");
 }
 
 // TODO: check with skype-web-reversed
-function deserializeParams (params: string): Dictionary<string> {
+function parseHeaderParams (params: string): Dictionary<string> {
   return _.fromPairs(
     <[string, string][]> params
       .split(/\s*;\s*/)
@@ -189,18 +200,19 @@ function getUri(host: string, path: string) {
 }
 
 // This token is used to subscribe to resources
-function getRegistrationToken(io: io.IO, jar: request.CookieJar, apiContext: ApiContext): any {
+function getRegistrationToken(options: HelpersOptions, apiContext: ApiContext, retry: number = 2): Bluebird<RegistrationToken> {
+  const startTime: number = Date.now();
   return Bluebird
     .try(() => {
       const currentTime: number = Utils.getCurrentTime();
       const lockAndKeyResponse: string = getLockAndKeyResponse(currentTime);
       const headers: Dictionary<string> = {
-        LockAndKey: serializeParams({
+        LockAndKey: stringifyHeaderParams({
           appId: Consts.SKYPEWEB_LOCKANDKEY_APPID,
           time: String(currentTime),
           lockAndKeyResponse: lockAndKeyResponse,
         }),
-        ClientInfo: serializeParams({
+        ClientInfo: stringifyHeaderParams({
           os: "Windows",
           osVer: "10",
           lcid: "en-us",
@@ -209,7 +221,7 @@ function getRegistrationToken(io: io.IO, jar: request.CookieJar, apiContext: Api
           clientName: Consts.SKYPEWEB_CLIENTINFO_NAME,
           clientVer: Consts.SKYPEWEB_CLIENTINFO_VERSION
         }),
-        Authentication: serializeParams({
+        Authentication: stringifyHeaderParams({
           skypetoken: apiContext.skypeToken
         })
       };
@@ -217,11 +229,11 @@ function getRegistrationToken(io: io.IO, jar: request.CookieJar, apiContext: Api
       const requestOptions: io.PostOptions = {
         uri: getUri(apiContext.apiHost, "/v1/users/ME/endpoints"),
         headers: headers,
-        jar: jar,
+        jar: options.jar,
         body: "{}" // Skype requires you to send an empty object as a body
       };
 
-      return Bluebird.resolve(io.post(requestOptions))
+      return Bluebird.resolve(options.io.post(requestOptions))
         .then((res: io.Response) => {
           if (res.statusCode !== 200) {
             return Bluebird.reject(new Incident("net", "Unable to register an endpoint"));
@@ -230,25 +242,33 @@ function getRegistrationToken(io: io.IO, jar: request.CookieJar, apiContext: Api
 
           let locationHeader = res.headers["location"];
 
-          // TODO:
-          // let location = url.parse(locationHeader);
-          // if (location.host !== apiContext.apiHost) { // mainly when 301, but sometimes when 201
-          //   apiContext.apiHost = location.host;
-          //   return this.getRegistrationToken(io, jar, apiContext);
-          // }
+          let location = url.parse(locationHeader);
+          if (location.host !== apiContext.apiHost) { // mainly when 301, but sometimes when 201
+            apiContext.apiHost = location.host;
+            if (retry > 0) {
+              return this.getRegistrationToken(options, apiContext, retry--);
+            } else {
+              return Bluebird.reject(new Incident("net", "Exceeded max tries"));
+            }
+          }
 
-          // expecting something like this "registrationToken=someString; expires=someNumber; endpointId={someString}"
+          // registrationTokenHeader is like "registrationToken=someString; expires=someNumber; endpointId={someString}"
           let registrationTokenHeader = res.headers["set-registrationtoken"];
-          let registrationToken = deserializeParams(registrationTokenHeader);
+          let parsedHeader = parseHeaderParams(registrationTokenHeader);
 
-          if (!registrationToken["registrationToken"] || !registrationToken["expires"] || !registrationToken["endpointId"]) {
+          if (!parsedHeader["registrationToken"] || !parsedHeader["expires"] || !parsedHeader["endpointId"]) {
             return Bluebird.reject(new Incident("protocol", "Missing parameters for the registrationToken"));
           }
 
-          const expires = parseInt(registrationToken["expires"], 10);
+          const expires = parseInt(parsedHeader["expires"], 10); // in seconds
 
-          // TODO: return a something...
-          return Bluebird.resolve(null);
+          const registrationToken: RegistrationToken = {
+            value: parsedHeader["registrationToken"],
+            expirationDate: new Date(startTime + 1000 * expires),
+            endpointId: parsedHeader["endpointId"]
+          };
+
+          return Bluebird.resolve(registrationToken);
         });
     });
 }
