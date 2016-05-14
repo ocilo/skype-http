@@ -18,7 +18,7 @@
     "../lib/polling/poll.ts",
     "../lib/utils/hmac-sha256.ts",
     "../lib/api.ts",
-    "../lib/api-uri.ts",
+    "../lib/messages-uri.ts",
     "../lib/consts.ts",
     "../lib/contacts_service.ts",
     "../lib/interfaces/io.ts",

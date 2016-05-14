@@ -16,7 +16,7 @@ import SkypeAccount from "./skype_account";
 import * as Utils from "./utils";
 import {stringifyHeaderParams, parseHeaderParams} from "./utils";
 import {hmacSha256} from "./utils/hmac-sha256";
-import * as apiUri from "./api-uri";
+import * as apiUri from "./messages-uri";
 
 export interface LoginOptions {
   io: io.IO;
