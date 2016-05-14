@@ -1,18 +1,15 @@
 language: node_js
-
 notifications:
   email:
     on_success: never
     on_failure: change
-
 node_js:
-  - "stable"
-
+- stable
 before_install:
-  - npm install -g typings
-
+- openssl aes-256-cbc -K $encrypted_6182332a02a7_key -iv $encrypted_6182332a02a7_iv
+  -in test-config.js.enc -out test-config.js -d
+- npm install -g typings
 before_script:
-  - npm run prepare
-
+- npm run prepare
 script:
-  - npm test
+- npm test

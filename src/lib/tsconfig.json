@@ -9,18 +9,24 @@
     "noImplicitAny": true
   },
   "files": [
-    "consts.ts",
-    "contacts_service.ts",
-    "skype_account.ts",
-    "skyweb.ts",
-    "login.ts",
-    "message_service.ts",
+    "../../typings/main.d.ts",
+    "interfaces/index.ts",
     "polling/auth_request.ts",
     "polling/poll.ts",
-    "request_service.ts",
-    "status_service.ts",
-    "utils.ts",
     "utils/hmac-sha256.ts",
-    "../../typings/main.d.ts"
+    "api.ts",
+    "api-uri.ts",
+    "consts.ts",
+    "contacts_service.ts",
+    "interfaces/io.ts",
+    "login.ts",
+    "message_service.ts",
+    "request-io.ts",
+    "request_service.ts",
+    "skype-http.ts",
+    "skype_account.ts",
+    "skyweb.ts",
+    "status_service.ts",
+    "utils.ts"
   ]
 }
