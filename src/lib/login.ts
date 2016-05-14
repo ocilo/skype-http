@@ -67,14 +67,26 @@ export function login (options: LoginOptions): Bluebird<ApiContext> {
 
   return getLoginKeys(ioOptions)
     .then((loginKeys: LoginKeys) => {
+      if (options.verbose) {
+        console.log("Acquired LoginKeys");
+      }
       return getSkypeToken(ioOptions, options.credentials, loginKeys);
     })
     .then((skypeToken: SkypeToken) => {
+      if (options.verbose) {
+        console.log("Acquired SkypeToken");
+      }
       return getRegistrationToken(ioOptions, skypeToken, Consts.SKYPEWEB_DEFAULT_MESSAGES_HOST)
         .tap((registrationToken: RegistrationToken) => {
+          if (options.verbose) {
+            console.log("Acquired RegistrationToken");
+          }
           return subscribeToResources(ioOptions, registrationToken);
         })
         .then((registrationToken: RegistrationToken) => {
+          if (options.verbose) {
+            console.log("Subscribed to resources");
+          }
           let context: ApiContext = {
             username: options.credentials.username,
             skypeToken: skypeToken,

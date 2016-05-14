@@ -10,6 +10,7 @@
   },
   "files": [
     "../../typings/main.d.ts",
+    "interfaces/api.ts",
     "interfaces/api-context.ts",
     "interfaces/index.ts",
     "interfaces/io.ts",

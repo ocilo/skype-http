@@ -45,10 +45,6 @@ function get(host: string, path: string) {
   return resolveUri(getOrigin(host), path);
 }
 
-function v1 (host: string): string {
-  return get(host, joinPath(buildV1()));
-}
-
 export function users (host: string): string {
   return get(host, joinPath(buildUsers()));
 }
