@@ -2,14 +2,7 @@ import {EventEmitter} from "events";
 import {CookieJar} from "request";
 import {IO} from "./interfaces/io";
 import * as Bluebird from "bluebird";
-
-export interface Context {
-  username: string;
-  skypeToken: string;
-  skypeTokenExpirationDate: Date;
-  cookieJar: CookieJar;
-  apiHost: string;
-}
+import {ApiContext as Context} from "./interfaces/api-context";
 
 export class Api extends EventEmitter implements  ApiEvents {
   context: Context;

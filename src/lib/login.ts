@@ -8,12 +8,13 @@ import * as url from "url";
 import * as _ from "lodash";
 
 import {Credentials, Dictionary} from "./interfaces/index";
-import {Context as ApiContext} from "./api";
+import {ApiContext, SkypeToken, RegistrationToken} from "./interfaces/api-context";
 import * as Consts from "./consts";
 import * as io from "./interfaces/io";
 import SkypeAccount from "./skype_account";
 import * as Utils from "./utils";
 import {hmacSha256} from "./utils/hmac-sha256";
+import * as apiUri from "./api-uri";
 
 export interface LoginOptions {
   io: io.IO;
@@ -21,12 +22,12 @@ export interface LoginOptions {
   verbose?: boolean;
 }
 
-interface LoginPageKeys {
+interface LoginKeys {
   pie: string;
   etm: string;
 }
 
-interface AuthenticationRequest {
+interface SkypeTokenRequest {
   username: string;
   password: string;
   pie: string;
@@ -35,62 +36,55 @@ interface AuthenticationRequest {
   js_time: number;
 }
 
-interface AuthenticationResponse {
+interface SkypeTokenResponse {
   skypetoken: string;
   expires_in: number;
 }
 
-interface HelpersOptions {
+interface IOOptions {
   io: io.IO;
   jar: request.CookieJar;
 }
 
-interface RegistrationToken {
-  value: string;
-  expirationDate: Date;
-  endpointId: string;
-}
-
 /**
  * Builds an Api context trough a new authentication.
- * This involves two request:
- * GET <loginUrl> to scrap two keys (pie & etm)
- * POST <loginUrl> to perform the authentication and aquire the Skype token
+ * This involves the requests:
+ * GET <loginUrl> to scrap the LoginKeys (pie & etm)
+ * POST <loginUrl> to get the SkypeToken from the credentials and LoginKeys
+ * POST <registrationUrl> to get RegistrationToken from the SkypeToken
+ *   Eventually, follow a redirection to use the assigned host
+ * POST <susbscription> to gain access to resources with the RegistrationToken
  *
- * @param io
- * @param credentials
+ * @param options
  * @returns {Bluebird<ApiContext>}
  */
-export function login(options: LoginOptions): Bluebird<ApiContext> {
+export function login (options: LoginOptions): Bluebird<ApiContext> {
   let jar: request.CookieJar = request.jar();
-  let startTime = Date.now();
-  let apiHost = this.messagesHost = Consts.SKYPEWEB_DEFAULT_MESSAGES_HOST;
 
-  return getLoginPageKeys({io: options.io, jar: jar})
-    .then((keys: LoginPageKeys) => {
-      const authenticationData: AuthenticationRequest = {
-        username: options.credentials.username,
-        password: options.credentials.password,
-        pie: keys.pie,
-        etm: keys.etm,
-        timezone_field: Utils.getTimezone(),
-        js_time: Utils.getCurrentTime()
-      };
-      return getToken({io: options.io, jar: jar}, authenticationData)
-        .then((result: AuthenticationResponse) => {
+  let ioOptions = {io: options.io, jar: jar};
+
+  return getLoginKeys(ioOptions)
+    .then((loginKeys: LoginKeys) => {
+      return getSkypeToken(ioOptions, options.credentials, loginKeys);
+    })
+    .then((skypeToken: SkypeToken) => {
+      return getRegistrationToken(ioOptions, skypeToken, Consts.SKYPEWEB_DEFAULT_MESSAGES_HOST)
+        .tap((registrationToken: RegistrationToken) => {
+          return subscribeToResources(ioOptions, registrationToken);
+        })
+        .then((registrationToken: RegistrationToken) => {
           let context: ApiContext = {
             username: options.credentials.username,
-            skypeToken: result.skypetoken,
-            skypeTokenExpirationDate: new Date(startTime + result.expires_in),
+            skypeToken: skypeToken,
             cookieJar: jar,
-            apiHost: apiHost
+            registrationToken: registrationToken
           };
           return context;
         });
     });
 }
 
-function getLoginPageKeys(options: HelpersOptions): Bluebird<LoginPageKeys> {
+function getLoginKeys (options: IOOptions): Bluebird<LoginKeys> {
   const requestOptions: io.GetOptions = {
     uri: Consts.SKYPEWEB_LOGIN_URL,
     jar: options.jar
@@ -101,15 +95,14 @@ function getLoginPageKeys(options: HelpersOptions): Bluebird<LoginPageKeys> {
       if (res.statusCode !== 200) {
         return Bluebird.reject(new Incident("net", "Unable to GET the login page"));
       }
-
-      return Bluebird.resolve(scrapLoginPageKeys(res.body));
+      return Bluebird.resolve(scrapLoginKeys(res.body));
     });
 }
 
-function scrapLoginPageKeys (html: string): LoginPageKeys {
+function scrapLoginKeys (html: string): LoginKeys {
   const $: cheerio.Static = cheerio.load(html);
 
-  const result: LoginPageKeys = {
+  const result: LoginKeys = {
     pie: $('input[name="pie"]').val(),
     etm: $('input[name="etm"]').val()
   };
@@ -121,29 +114,44 @@ function scrapLoginPageKeys (html: string): LoginPageKeys {
   return result;
 }
 
-function getToken (options: HelpersOptions, data: AuthenticationRequest): Bluebird<any> {
+function getSkypeToken (ioOptions: IOOptions, credentials: Credentials, loginKeys: LoginKeys): Bluebird<SkypeToken> {
+  const startTime = Utils.getCurrentTime();
+  const data: SkypeTokenRequest = {
+    username: credentials.username,
+    password: credentials.password,
+    pie: loginKeys.pie,
+    etm: loginKeys.etm,
+    timezone_field: Utils.getTimezone(),
+    js_time: Utils.getCurrentTime()
+  };
   const requestOptions: io.PostOptions = {
     uri: Consts.SKYPEWEB_LOGIN_URL,
     form: data,
-    jar: options.jar
+    jar: ioOptions.jar
   };
 
-  return Bluebird.resolve(options.io.post(requestOptions))
+  return Bluebird.resolve (ioOptions.io.post(requestOptions))
     .then((res: io.Response) => {
       if (res.statusCode !== 200) {
         return Bluebird.reject(new Incident("net", "Unable to get the response for the authentication POST request"));
       }
 
-      return Bluebird.resolve(scrapSkypeToken(res.body));
+      const scrapped: SkypeTokenResponse = scrapSkypeToken(res.body);
+      const skypeToken: SkypeToken = {
+        value: scrapped.skypetoken,
+        expirationDate: new Date(1000 * (startTime + scrapped.expires_in)) // multiply by 1000 to get milliseconds
+      };
+
+      return Bluebird.resolve(skypeToken);
     });
 }
 
-function scrapSkypeToken (html: string): AuthenticationResponse {
+function scrapSkypeToken (html: string): SkypeTokenResponse {
   const $: cheerio.Static = cheerio.load(html);
 
-  const result: AuthenticationResponse = {
+  const result: SkypeTokenResponse = {
     skypetoken: $('input[name="skypetoken"]').val(),
-    expires_in: parseInt($('input[name="expires_in"]').val(), 10) * 1000 // 86400 sec by default, multiply by 1000 to get milliseconds
+    expires_in: parseInt($('input[name="expires_in"]').val(), 10) // 86400 sec by default
   };
 
   if (!result.skypetoken || !result.expires_in) {
@@ -157,7 +165,6 @@ function scrapSkypeToken (html: string): AuthenticationResponse {
       throw new Incident(errorName, errorMessage);
     }
   }
-
   return result;
 }
 
@@ -168,16 +175,10 @@ function getLockAndKeyResponse (time: number): string {
   return hmacSha256(inputBuffer, appIdBuffer, secretBuffer);
 }
 
-function encodeData (data: string): string {
-  return encodeURIComponent(data).replace(/%20/gm, "+");
-}
-
-function decodeData (data: string): string {
-  return decodeURIComponent(data.replace(/\+/gm, " "));
-}
-
 function stringifyHeaderParams (params: Dictionary<string>) {
-  return _.map(params, (value, key) => `${encodeData(key)}=${encodeData(value)}`).join("; ");
+  return _.map(params, (value, key) => {
+    return `${key.replace(/%20/gm, "+")}=${value.replace(/%20/gm, "+")}`;
+  }).join("; ");
 }
 
 // TODO: check with skype-web-reversed
@@ -190,31 +191,27 @@ function parseHeaderParams (params: string): Dictionary<string> {
         if (pair.length !== 2) {
           throw new Incident("parse:params", "Unable to parse params");
         }
-        return pair;
+        return _.map(pair, p => p.replace(/\+/gm, " "));
       })
   );
 }
 
-function getUri(host: string, path: string) {
-  return Consts.SKYPEWEB_HTTPS + host + path;
-}
-
-// This token is used to subscribe to resources
-function getRegistrationToken(options: HelpersOptions, apiContext: ApiContext, retry: number = 2): Bluebird<RegistrationToken> {
-  const startTime: number = Date.now();
+// Get the token used to subscribe to resources
+function getRegistrationToken (options: IOOptions, skypeToken: SkypeToken, apiHost: string, retry: number = 2): Bluebird<RegistrationToken> {
   return Bluebird
     .try(() => {
-      const currentTime: number = Utils.getCurrentTime();
-      const lockAndKeyResponse: string = getLockAndKeyResponse(currentTime);
+      const startTime: number = Utils.getCurrentTime();
+      const lockAndKeyResponse: string = getLockAndKeyResponse(startTime);
       const headers: Dictionary<string> = {
         LockAndKey: stringifyHeaderParams({
           appId: Consts.SKYPEWEB_LOCKANDKEY_APPID,
-          time: String(currentTime),
+          time: String(startTime),
           lockAndKeyResponse: lockAndKeyResponse,
         }),
         ClientInfo: stringifyHeaderParams({
           os: "Windows",
           osVer: "10",
+          proc: "Win64",
           lcid: "en-us",
           deviceType: "1",
           country: "n/a",
@@ -222,12 +219,12 @@ function getRegistrationToken(options: HelpersOptions, apiContext: ApiContext, r
           clientVer: Consts.SKYPEWEB_CLIENTINFO_VERSION
         }),
         Authentication: stringifyHeaderParams({
-          skypetoken: apiContext.skypeToken
+          skypetoken: skypeToken.value
         })
       };
 
       const requestOptions: io.PostOptions = {
-        uri: getUri(apiContext.apiHost, "/v1/users/ME/endpoints"),
+        uri: apiUri.getEndpoints(apiHost),
         headers: headers,
         jar: options.jar,
         body: "{}" // Skype requires you to send an empty object as a body
@@ -235,7 +232,7 @@ function getRegistrationToken(options: HelpersOptions, apiContext: ApiContext, r
 
       return Bluebird.resolve(options.io.post(requestOptions))
         .then((res: io.Response) => {
-          if (res.statusCode !== 200) {
+          if (res.statusCode !== 201 && res.statusCode !== 301) {
             return Bluebird.reject(new Incident("net", "Unable to register an endpoint"));
           }
           // TODO: handle statusCode 201 & 301
@@ -243,10 +240,10 @@ function getRegistrationToken(options: HelpersOptions, apiContext: ApiContext, r
           let locationHeader = res.headers["location"];
 
           let location = url.parse(locationHeader);
-          if (location.host !== apiContext.apiHost) { // mainly when 301, but sometimes when 201
-            apiContext.apiHost = location.host;
+          if (location.host !== apiHost) { // mainly when 301, but sometimes when 201
+            apiHost = location.host;
             if (retry > 0) {
-              return this.getRegistrationToken(options, apiContext, retry--);
+              return getRegistrationToken(options, skypeToken, apiHost, retry--);
             } else {
               return Bluebird.reject(new Incident("net", "Exceeded max tries"));
             }
@@ -264,12 +261,62 @@ function getRegistrationToken(options: HelpersOptions, apiContext: ApiContext, r
 
           const registrationToken: RegistrationToken = {
             value: parsedHeader["registrationToken"],
-            expirationDate: new Date(startTime + 1000 * expires),
-            endpointId: parsedHeader["endpointId"]
+            expirationDate: new Date(1000 * expires),
+            endpointId: parsedHeader["endpointId"],
+            raw: registrationTokenHeader,
+            host: apiHost
           };
 
           return Bluebird.resolve(registrationToken);
         });
+    });
+}
+
+function subscribeToResources(ioOptions: IOOptions, registrationToken: RegistrationToken): Bluebird<any> {
+  const requestDocument = {
+    interestedResources: [
+      "/v1/threads/ALL",
+      "/v1/users/ME/contacts/ALL",
+      "/v1/users/ME/conversations/ALL/messages",
+      "/v1/users/ME/conversations/ALL/properties"
+    ],
+    template: "raw",
+    channelType: "httpLongPoll"// TODO: use websockets ?
+  };
+
+  const requestOptions = {
+    uri: apiUri.getSubscriptions(registrationToken.host),
+    jar: ioOptions.jar,
+    body: JSON.stringify(requestDocument),
+    headers: {
+      RegistrationToken: registrationToken.raw
+    }
+  };
+
+  return Bluebird.resolve(ioOptions.io.post(requestOptions))
+    .then((res: io.Response) => {
+      if (res.statusCode !== 201) {
+        return Bluebird.reject(new Incident("net", "Unable to subscribe to resources"));
+      }
+
+      // Example response:
+      // {
+      //   "statusCode": 201,
+      //   "body": "{}",
+      //   "headers": {
+      //     "cache-control": "no-store, must-revalidate, no-cache",
+      //       "pragma": "no-cache",
+      //       "content-length": "2",
+      //       "content-type": "application/json; charset=utf-8",
+      //       "location": "https://db5-client-s.gateway.messenger.live.com/v1/users/ME/endpoints/SELF/subscriptions/0",
+      //       "x-content-type-options": "nosniff",
+      //       "contextid": "tcid=3434983151221922702,server=DB5SCH101121535",
+      //       "date": "Sat, 14 May 2016 16:41:17 GMT",
+      //       "connection": "close"
+      //   }
+      // }
+
+      return Bluebird.resolve(null);
     });
 }
 

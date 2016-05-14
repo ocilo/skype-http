@@ -15,6 +15,7 @@
     "polling/poll.ts",
     "utils/hmac-sha256.ts",
     "api.ts",
+    "api-uri.ts",
     "consts.ts",
     "contacts_service.ts",
     "interfaces/io.ts",
