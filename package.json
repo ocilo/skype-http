@@ -18,6 +18,7 @@
     "prepare": "typings install",
     "prepublishOnly": "npm run clean && npm test && npm run build && node tools/prepublish.js",
     "publishOnly": "npm run prepublishOnly && npm publish",
+    "test:offline": "npm run lint && npm run build:test && mocha build/test/test build/test/test/utils --colors",
     "test": "npm run lint && npm run build:test && mocha build/test --recursive --colors"
   },
   "keywords": [

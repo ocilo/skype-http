@@ -1,6 +1,6 @@
 import {Thenable} from "bluebird";
 import * as request from "request";
-import {Dictionary} from "./index";
+import {Dictionary} from "./utils";
 
 export interface BaseOptions {
   uri: string;
