@@ -1,8 +1,12 @@
-import {resolve as resolveUri} from "url";
+import {resolve as resolveUri, parse as parseUri} from "url";
 import {posix} from "path";
+import Incident from "incident";
 
 export const DEFAULT_USER: string = "ME";
 export const DEFAULT_ENDPOINT: string = "SELF";
+
+const CONVERSATION_PATTERN = /^\/v1\/users\/([^/]+)\/conversations\/([^/]+)$/;
+const MESSAGES_PATTERN = /^\/v1\/users\/([^/]+)\/conversations\/([^/]+)\/messages$/;
 
 function joinPath(parts: string[]): string {
   return posix.join.apply(null, parts);
@@ -50,7 +54,7 @@ function buildConversation (userId: string, conversationId: string): string[] {
 }
 
 function buildMessages (userId: string, conversationId: string): string[] {
-  return buildMessages(userId, conversationId).concat("messages");
+  return buildConversation(userId, conversationId).concat("messages");
 }
 
 /**
@@ -103,4 +107,23 @@ export function subscriptions (host: string, userId: string = DEFAULT_USER, endp
  */
 export function messages (host: string, userId: string, conversationId: string): string {
   return get(host, joinPath(buildMessages(userId, conversationId)));
+}
+
+export interface ConversationUri {
+  host: string;
+  user: string;
+  conversation: string;
+}
+
+export function parseConversation (uri: string): ConversationUri {
+  const parsed = parseUri(uri);
+  const match = CONVERSATION_PATTERN.exec(parsed.pathname);
+  if (match === null) {
+    throw new Incident("parse-error", "Expected URI to be a conversation uri");
+  }
+  return {
+    host: parsed.host,
+    user: match[1],
+    conversation: match[2]
+  };
 }

@@ -42,3 +42,7 @@ export interface TextResource extends Resource {
   clientId: string; // An id set by the client
   content: string;
 }
+
+export interface NewMessage {
+  textContent: string;
+}

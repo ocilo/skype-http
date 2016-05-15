@@ -29,6 +29,7 @@ export interface NativeEventMessage {
 }
 
 function formatTextResource (nativeResource: nativeResources.Text): api.TextResource {
+  const parsedConversationUri = messagesUri.parseConversation(nativeResource.conversationLink);
   return {
     type: "Text",
     id: nativeResource.id,
@@ -36,7 +37,7 @@ function formatTextResource (nativeResource: nativeResources.Text): api.TextReso
     composeTime: new Date(nativeResource.composetime),
     arrivalTime: new Date(nativeResource.originalarrivaltime),
     from: nativeResource.from,
-    conversation: nativeResource.conversationLink,
+    conversation: parsedConversationUri.conversation,
     content: nativeResource.content
   };
 }
