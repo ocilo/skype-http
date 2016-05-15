@@ -2,6 +2,7 @@ import * as Bluebird from "bluebird";
 import {createInterface} from "readline";
 
 import {Credentials} from "../lib/interfaces/index";
+import * as api from "../lib/interfaces/api";
 import * as skypeHttp from "../lib/skype-http";
 import {Api as SkypeApi} from "../lib/api";
 
@@ -16,9 +17,10 @@ function promptCredentials (): Bluebird<Credentials> {
     password: null
   };
 
-  return Bluebird.fromCallback((cb) => {
-    cliInterface.question("Username: ", (res) => cb(null, res));
-  })
+  return Bluebird
+    .fromCallback((cb) => {
+      cliInterface.question("Username: ", (res) => cb(null, res));
+    })
     .then((username: string) => {
       credentials.username = username;
       return Bluebird.fromCallback((cb) => {
@@ -43,9 +45,21 @@ promptCredentials()
     return skypeHttp.connect(options);
   })
   .then((api: SkypeApi) => {
+    // Log every event
+    // api.on("event", (ev: api.EventMessage) => {
+    //   console.log(JSON.stringify(ev, null, 2));
+    // });
+
+    api.on("Text", (resource: api.TextResource) => {
+      console.log("Received text:");
+      console.log(resource.content);
+    });
+
     return api.getContacts()
       .then((contacts) => {
         console.log("Your contacts:");
         console.log(JSON.stringify(contacts, null, 2));
+        console.log("Starting polling:");
+        return api.listen();
       });
   });

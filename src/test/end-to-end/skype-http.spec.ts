@@ -16,7 +16,7 @@ describe("SkypeHttp", function() {
     return SkypeHttp.connect({credentials: mainAccount, verbose: testConfig.verbose})
       .then((result: Api) => {
         api = result;
-        assert.equal(api.context.username, mainAccount.username);
+        assert.equal(api.apiContext.username, mainAccount.username);
       });
   });
 });

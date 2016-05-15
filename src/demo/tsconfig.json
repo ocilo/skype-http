@@ -17,7 +17,7 @@
     "../lib/login.ts",
     "../lib/message_service.ts",
     "../lib/polling/auth_request.ts",
-    "../lib/polling/poll.ts",
+    "../lib/polling/messages-poller.ts",
     "../lib/request_service.ts",
     "../lib/status_service.ts",
     "../lib/utils.ts",

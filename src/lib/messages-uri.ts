@@ -1,8 +1,8 @@
 import {resolve as resolveUri} from "url";
 import {posix} from "path";
 
-const DEFAULT_USER = "ME";
-const DEFAULT_ENDPOINT = "SELF";
+export const DEFAULT_USER: string = "ME";
+export const DEFAULT_ENDPOINT: string = "SELF";
 
 function joinPath(parts: string[]): string {
   return posix.join.apply(null, parts);
@@ -17,20 +17,40 @@ function buildUsers(): string[] {
   return buildV1().concat("users");
 }
 
-function buildUser (userId: string = DEFAULT_USER): string[] {
+function buildUser (userId: string): string[] {
   return buildUsers().concat(userId);
 }
 
-function buildEndpoints (userId: string = DEFAULT_USER): string[] {
+function buildEndpoints (userId: string): string[] {
   return buildUser(userId).concat("endpoints");
 }
 
-function buildEndpoint (userId: string = DEFAULT_USER, endpointId: string = DEFAULT_ENDPOINT): string[] {
+function buildEndpoint (userId: string, endpointId: string): string[] {
   return buildEndpoints(userId).concat(endpointId);
 }
 
-export function buildSubscriptions (userId: string = DEFAULT_USER, endpointId: string = DEFAULT_ENDPOINT): string[] {
+function buildSubscriptions (userId: string, endpointId: string): string[] {
   return buildEndpoint(userId, endpointId).concat("subscriptions");
+}
+
+function buildSubscription (userId: string, endpointId: string, subscriptionId: number): string[] {
+  return buildSubscriptions(userId, endpointId).concat(String(subscriptionId));
+}
+
+function buildPoll (userId: string, endpointId: string, subscriptionId: number): string[] {
+  return buildSubscription(userId, endpointId, subscriptionId).concat("poll");
+}
+
+function buildConversations (userId: string): string[] {
+  return buildUser(userId).concat("conversations");
+}
+
+function buildConversation (userId: string, conversationId: string): string[] {
+  return buildConversations(userId).concat(conversationId);
+}
+
+function buildMessages (userId: string, conversationId: string): string[] {
+  return buildMessages(userId, conversationId).concat("messages");
 }
 
 /**
@@ -61,6 +81,10 @@ export function endpoint (host: string, userId: string = DEFAULT_USER, endpointI
   return get(host, joinPath(buildEndpoint(userId, endpointId)));
 }
 
+export function poll (host: string, userId: string = DEFAULT_USER, endpointId: string = DEFAULT_ENDPOINT, subscriptionId: number = 0): string {
+  return get(host, joinPath(buildPoll(userId, endpointId, subscriptionId)));
+}
+
 /**
  * Returns https://{host}/v1/users/{userId}/endpoints/{endpointId}/subscriptions
  * @param host
@@ -69,4 +93,14 @@ export function endpoint (host: string, userId: string = DEFAULT_USER, endpointI
  */
 export function subscriptions (host: string, userId: string = DEFAULT_USER, endpointId: string = DEFAULT_ENDPOINT): string {
   return get(host, joinPath(buildSubscriptions(userId, endpointId)));
+}
+
+/**
+ * Returns https://{host}/v1/users/{userId}/conversations/{conversationId}/messages
+ * @param host
+ * @param userId
+ * @param conversationId
+ */
+export function messages (host: string, userId: string, conversationId: string): string {
+  return get(host, joinPath(buildMessages(userId, conversationId)));
 }

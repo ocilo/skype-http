@@ -1,10 +1,10 @@
-import * as poll from "./polling/poll";
+import * as poll from "./polling/messages-poller";
 import SkypeAccount from "./skype_account";
 import ContactsService from "./contacts_service";
 import * as request from "request";
 import {CookieJar} from "request";
 import Login from "./login";
-import Poll from "./polling/poll";
+import Poll from "./polling/messages-poller";
 import MessageService from "./message_service";
 import StatusService from "./status_service";
 import AuthRequest from "./polling/auth_request";

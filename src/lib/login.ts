@@ -49,7 +49,7 @@ interface IOOptions {
 }
 
 /**
- * Builds an Api context trough a new authentication.
+ * Builds an Api apiContext trough a new authentication.
  * This involves the requests:
  * GET <loginUrl> to scrap the LoginKeys (pie & etm)
  * POST <loginUrl> to get the SkypeToken from the credentials and LoginKeys

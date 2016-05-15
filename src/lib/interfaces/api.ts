@@ -17,3 +17,28 @@ export interface Contact {
     nickname: string; // username, is it the local nickname that you can modify ?
   };
 }
+
+export interface EventMessage {
+  id: number;
+  type: string;
+  resourceType: string;
+  time: Date;
+  resourceLink: string;
+  resource: Resource;
+}
+
+export interface Resource {
+  type: "Text" /* | "Typing" | ... */;
+  id: string;
+  composeTime: Date;
+  arrivalTime: Date;
+  from: string; // username
+  conversation: string; // conversationId
+  content: string;
+}
+
+export interface TextResource extends Resource {
+  type: "Text";
+  clientId: string; // An id set by the client
+  content: string;
+}
