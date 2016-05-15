@@ -1,3 +1,7 @@
+import Incident from "incident";
+import * as _ from "lodash";
+import {Dictionary} from "./interfaces/utils";
+
 // TODO: get rid of this function
 export function throwError(message: any) {
   console.error("Something went wrong!" + message); // FIXME
@@ -57,6 +61,39 @@ export function getTimezone() {
   let hours = (timezone - minutes) / 60;
 
   return `${sign}${zeroPad(minutes, 2)}|${zeroPad(hours, 2)}`;
+}
+
+const HTTP_HEADER_SEPARATOR = ";";
+const HTTP_HEADER_OPERATOR = "=";
+
+export function stringifyHeaderParams (params: Dictionary<string>) {
+  return _.map(params, (value, key) => {
+    return `${key.replace(/%20/gm, "+")}=${value.replace(/%20/gm, "+")}`;
+  }).join(HTTP_HEADER_SEPARATOR + " "); // The space after the separator is important, otherwise Skype is unable to parse the header
+}
+
+// TODO: check with skype-web-reversed
+export function parseHeaderParams (params: string): Dictionary<string> {
+  let result: Dictionary<string> = {};
+
+  params
+    .split(HTTP_HEADER_SEPARATOR)
+    .forEach((paramString) => {
+      paramString = _.trim(paramString);
+      const operatorIdx = paramString.indexOf(HTTP_HEADER_OPERATOR);
+      let key: string, val: string;
+      if (operatorIdx >= 1 && operatorIdx + HTTP_HEADER_OPERATOR.length < paramString.length - 1) { // Ensure that the operator is in the middle of the string
+        key = _.trim(paramString.substring(0, operatorIdx));
+        val = _.trim(paramString.substring(operatorIdx + HTTP_HEADER_OPERATOR.length));
+      } else {
+        key = val = _.trim(paramString);
+      }
+      if (key.length > 0) {
+        result[key] = val;
+      }
+    });
+
+  return result;
 }
 
 export {hmacSha256 as getHMAC128} from "./utils/hmac-sha256";

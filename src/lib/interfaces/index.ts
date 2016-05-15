@@ -3,6 +3,8 @@ export interface Credentials {
   password: string;
 }
 
-export interface Dictionary<T> {
-  [key: string]: T;
+export interface ParsedUserId {
+  raw: string; // "{prefix}:{username}"
+  prefix: number; // 8 for normal users
+  username: string;
 }

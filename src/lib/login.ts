@@ -7,14 +7,16 @@ import * as request from "request";
 import * as url from "url";
 import * as _ from "lodash";
 
-import {Credentials, Dictionary} from "./interfaces/index";
+import {Credentials} from "./interfaces/index";
+import {Dictionary} from "./interfaces/utils";
 import {ApiContext, SkypeToken, RegistrationToken} from "./interfaces/api-context";
 import * as Consts from "./consts";
 import * as io from "./interfaces/io";
 import SkypeAccount from "./skype_account";
 import * as Utils from "./utils";
+import {stringifyHeaderParams, parseHeaderParams} from "./utils";
 import {hmacSha256} from "./utils/hmac-sha256";
-import * as apiUri from "./api-uri";
+import * as apiUri from "./messages-uri";
 
 export interface LoginOptions {
   io: io.IO;
@@ -47,7 +49,7 @@ interface IOOptions {
 }
 
 /**
- * Builds an Api context trough a new authentication.
+ * Builds an Api apiContext trough a new authentication.
  * This involves the requests:
  * GET <loginUrl> to scrap the LoginKeys (pie & etm)
  * POST <loginUrl> to get the SkypeToken from the credentials and LoginKeys
@@ -65,14 +67,26 @@ export function login (options: LoginOptions): Bluebird<ApiContext> {
 
   return getLoginKeys(ioOptions)
     .then((loginKeys: LoginKeys) => {
+      if (options.verbose) {
+        console.log("Acquired LoginKeys");
+      }
       return getSkypeToken(ioOptions, options.credentials, loginKeys);
     })
     .then((skypeToken: SkypeToken) => {
+      if (options.verbose) {
+        console.log("Acquired SkypeToken");
+      }
       return getRegistrationToken(ioOptions, skypeToken, Consts.SKYPEWEB_DEFAULT_MESSAGES_HOST)
         .tap((registrationToken: RegistrationToken) => {
+          if (options.verbose) {
+            console.log("Acquired RegistrationToken");
+          }
           return subscribeToResources(ioOptions, registrationToken);
         })
         .then((registrationToken: RegistrationToken) => {
+          if (options.verbose) {
+            console.log("Subscribed to resources");
+          }
           let context: ApiContext = {
             username: options.credentials.username,
             skypeToken: skypeToken,
@@ -175,27 +189,6 @@ function getLockAndKeyResponse (time: number): string {
   return hmacSha256(inputBuffer, appIdBuffer, secretBuffer);
 }
 
-function stringifyHeaderParams (params: Dictionary<string>) {
-  return _.map(params, (value, key) => {
-    return `${key.replace(/%20/gm, "+")}=${value.replace(/%20/gm, "+")}`;
-  }).join("; ");
-}
-
-// TODO: check with skype-web-reversed
-function parseHeaderParams (params: string): Dictionary<string> {
-  return _.fromPairs(
-    <[string, string][]> params
-      .split(/\s*;\s*/)
-      .map((pairString, idx) => {
-        let pair = pairString.split(/\s*=\s*/).map(s => _.trim(s));
-        if (pair.length !== 2) {
-          throw new Incident("parse:params", "Unable to parse params");
-        }
-        return _.map(pair, p => p.replace(/\+/gm, " "));
-      })
-  );
-}
-
 // Get the token used to subscribe to resources
 function getRegistrationToken (options: IOOptions, skypeToken: SkypeToken, apiHost: string, retry: number = 2): Bluebird<RegistrationToken> {
   return Bluebird
@@ -224,7 +217,7 @@ function getRegistrationToken (options: IOOptions, skypeToken: SkypeToken, apiHo
       };
 
       const requestOptions: io.PostOptions = {
-        uri: apiUri.getEndpoints(apiHost),
+        uri: apiUri.endpoints(apiHost),
         headers: headers,
         jar: options.jar,
         body: "{}" // Skype requires you to send an empty object as a body
@@ -285,7 +278,7 @@ function subscribeToResources(ioOptions: IOOptions, registrationToken: Registrat
   };
 
   const requestOptions = {
-    uri: apiUri.getSubscriptions(registrationToken.host),
+    uri: apiUri.subscriptions(registrationToken.host),
     jar: ioOptions.jar,
     body: JSON.stringify(requestDocument),
     headers: {

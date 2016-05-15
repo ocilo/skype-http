@@ -1,49 +1,42 @@
 import * as Bluebird from "bluebird";
-import {SendMessageOptions} from "../api";
-import {getCurrentTime} from "../utils";
+import Incident from "incident";
 
-export interface RequestBody {
+import * as api from "../interfaces/api";
+import {ApiContext} from "../interfaces/api-context";
+import * as io from "../interfaces/io";
+import {getCurrentTime} from "../utils";
+import * as messagesUri from "../messages-uri";
+
+interface RequestBody {
   clientmessageid: string;
   content: string;
   messagetype: string;
   contenttype: string;
 }
 
-function getConversationUrl(conversationId: string) {
-  return Consts.SKYPEWEB_HTTPS + skypeAccount.messagesHost + "/v1/users/ME/conversations/" + conversationId + "/messages";
-}
-
-export function sendMessage(ctx: any, conversationId: string, options: SendMessageOptions): Bluebird<any> {
-  let requestBody: RequestBody = {
-    clientmessageid: String(getCurrentTime()),
-    content: options.body,
-    messagetype: messagetype || "RichText",
-    contenttype: contenttype || "text"
-  };
-
-  let query = JSON.stringify(requestBody);
-
+export function sendMessage(io: io.IO, apiContext: ApiContext, message: api.NewMessage, conversationId: string): Bluebird<any> {
   return Bluebird
-    .fromCallback((cb) => {
-      return ctx.requestWithJar.post({
-        uri: getConversationUrl(conversationId),
-        body: requestBody,
+    .try(() => {
+      let requestBody: RequestBody = {
+        clientmessageid: String(getCurrentTime()),
+        content: String(message.textContent),
+        messagetype: "RichText",
+        contenttype: "text"
+      };
+      let requestOptions: io.PostOptions = {
+        uri: messagesUri.messages(apiContext.registrationToken.host, messagesUri.DEFAULT_USER, conversationId),
+        jar: apiContext.cookieJar,
+        body: JSON.stringify(requestBody),
         headers: {
-          "RegistrationToken": skypeAccount.registrationTokenParams.raw
-        },
-        callback: (err, res, body) => {
-          if (err) {
-            return cb(new Error("Failed to send message."));
-            // ".\n Error code: " + response.statusCode +
-            // ".\n Error: " + error +
-            // ".\n Body: " + body
-          }
-          if (res.statusCode !== 201) {
-            return cb(new Error("Wrong return code..."));
-          }
-          return cb(null, null);
+          "RegistrationToken": apiContext.registrationToken.raw
         }
-      });
+      };
+      return io.post(requestOptions);
+    })
+    .then((res: io.Response) => {
+      if (res.statusCode !== 201) {
+        return Bluebird.reject(new Incident("send-message", "Received wrong return code"));
+      }
     });
 }
 

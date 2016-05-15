@@ -10,12 +10,15 @@
   },
   "files": [
     "../../typings/main.d.ts",
+    "../lib/interfaces/api-context.ts",
     "../lib/interfaces/index.ts",
+    "../lib/interfaces/io.ts",
+    "../lib/interfaces/utils.ts",
     "../lib/polling/auth_request.ts",
-    "../lib/polling/poll.ts",
+    "../lib/polling/messages-poller.ts",
     "../lib/utils/hmac-sha256.ts",
     "../lib/api.ts",
-    "../lib/api-uri.ts",
+    "../lib/messages-uri.ts",
     "../lib/consts.ts",
     "../lib/contacts_service.ts",
     "../lib/interfaces/io.ts",
@@ -30,6 +33,7 @@
     "../lib/utils.ts",
     "end-to-end/config.ts",
     "end-to-end/skype-http.spec.ts",
-    "utils/hmac-sha256.spec.ts"
+    "utils/hmac-sha256.spec.ts",
+    "utils.spec.ts"
   ]
 }

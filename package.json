@@ -9,15 +9,17 @@
     "url": "git://github.com/demurgos/skype-http.git"
   },
   "scripts": {
-    "build": "npm run build:lib && npm run build:test",
+    "build": "npm run build:lib && npm run build:test && npm run build:demo",
+    "build:demo": "tsc -p src/demo",
     "build:lib": "tsc -p src/lib",
     "build:test": "tsc -p src/test",
     "clean": "node tools/clean.js",
-    "demo": "tsc -p src/demo && node build/demo/demo/main.js",
+    "demo": "npm run build:demo && node build/demo/demo/main.js",
     "lint": "tslint \"src/**/*.ts\"",
     "prepare": "typings install",
     "prepublishOnly": "npm run clean && npm test && npm run build && node tools/prepublish.js",
     "publishOnly": "npm run prepublishOnly && npm publish",
+    "test:offline": "npm run lint && npm run build:test && mocha build/test/test build/test/test/utils --colors",
     "test": "npm run lint && npm run build:test && mocha build/test --recursive --colors"
   },
   "keywords": [

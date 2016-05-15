@@ -26,7 +26,7 @@ export function connect (options: ConnectOptions): Bluebird<api.Api> {
     return login({io: io, credentials: options.credentials, verbose: options.verbose})
       .then((apiContext: ApiContext) => {
         if (options.verbose) {
-          console.log("Obtained context trough authentication:");
+          console.log("Obtained apiContext trough authentication:");
           console.log(apiContext);
         }
         return new api.Api(apiContext, io);
