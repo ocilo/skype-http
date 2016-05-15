@@ -7,7 +7,7 @@ import {ApiContext} from "../interfaces/api-context";
 import * as contactsUri from "../contacts-uri";
 
 interface ContactsBody {
-  contacts: Contact[],
+  contacts: Contact[];
   count: number; // contacts.length
   scope: "full" | string; // an enum ?
 }
@@ -30,7 +30,7 @@ export function getContacts(io: io.IO, apiContext: ApiContext): Bluebird<Contact
       }
       const body: ContactsBody = JSON.parse(res.body);
       return body.contacts;
-    })
+    });
 }
 
 export default getContacts;

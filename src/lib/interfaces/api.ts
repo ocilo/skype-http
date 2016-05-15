@@ -15,5 +15,5 @@ export interface Contact {
     first: string;
     surname: string; // also last-name ?
     nickname: string; // username, is it the local nickname that you can modify ?
-  }
+  };
 }

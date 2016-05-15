@@ -1,11 +1,11 @@
+import * as Bluebird from "bluebird";
 import {EventEmitter} from "events";
 import {CookieJar} from "request";
-import {IO} from "./interfaces/io";
-import * as Bluebird from "bluebird";
+
+import getContacts from "./api/get-contacts";
 import {Contact} from "./interfaces/api";
 import {ApiContext as Context} from "./interfaces/api-context";
-
-import getContacts from "./api/get-contacts"
+import {IO} from "./interfaces/io";
 
 export class Api extends EventEmitter implements  ApiEvents {
   context: Context;
