@@ -14,7 +14,7 @@
     "interfaces/api-context.ts",
     "interfaces/index.ts",
     "interfaces/io.ts",
-    "interfaces/native-resources.ts",
+    "interfaces/native-api.ts",
     "interfaces/utils.ts",
     "polling/auth_request.ts",
     "polling/messages-poller.ts",

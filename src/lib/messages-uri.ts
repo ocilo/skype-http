@@ -6,6 +6,7 @@ export const DEFAULT_USER: string = "ME";
 export const DEFAULT_ENDPOINT: string = "SELF";
 
 const CONVERSATION_PATTERN = /^\/v1\/users\/([^/]+)\/conversations\/([^/]+)$/;
+const CONTACT_PATTERN = /^\/v1\/users\/([^/]+)\/contacts\/([^/]+)$/;
 const MESSAGES_PATTERN = /^\/v1\/users\/([^/]+)\/conversations\/([^/]+)\/messages$/;
 
 function joinPath(parts: string[]): string {
@@ -107,6 +108,25 @@ export function subscriptions (host: string, userId: string = DEFAULT_USER, endp
  */
 export function messages (host: string, userId: string, conversationId: string): string {
   return get(host, joinPath(buildMessages(userId, conversationId)));
+}
+
+export interface ContactUri {
+  host: string;
+  user: string;
+  contact: string;
+}
+
+export function parseContact (uri: string): ContactUri {
+  const parsed = parseUri(uri);
+  const match = CONTACT_PATTERN.exec(parsed.pathname);
+  if (match === null) {
+    throw new Incident("parse-error", "Expected URI to be a conversation uri");
+  }
+  return {
+    host: parsed.host,
+    user: match[1],
+    contact: match[2]
+  };
 }
 
 export interface ConversationUri {

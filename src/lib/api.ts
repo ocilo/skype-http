@@ -52,6 +52,8 @@ export class Api extends EventEmitter implements ApiEvents {
 
     if (ev && ev.resource && ev.resource.type === "Text") {
       this.emit("Text", ev.resource);
+    } else if (ev && ev.resource && ev.resource.type === "RichText") {
+      this.emit("RichText", ev.resource);
     }
   }
 }

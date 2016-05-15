@@ -50,14 +50,21 @@ promptCredentials()
       console.log(JSON.stringify(ev, null, 2));
     });
 
-    api.on("Text", (resource: api.TextResource) => {
+    let onMessage = (resource: api.TextResource) => {
+      if (resource.from.username === api.apiContext.username) {
+        return;
+      }
+
       console.log("Received text:");
       console.log(resource.content);
       const response: string = `Hi! You said "${resource.content}". SkypeHttp works!`;
       console.log(`Responding to conversation ${resource.conversation}`);
       console.log(response);
       return api.sendMessage({textContent: response}, resource.conversation);
-    });
+    };
+
+    api.on("Text", onMessage);
+    api.on("RichText", onMessage);
 
     return api.getContacts()
       .then((contacts) => {
@@ -65,5 +72,5 @@ promptCredentials()
         console.log(JSON.stringify(contacts, null, 2));
         console.log("Starting polling:");
         return api.listen();
-      })
+      });
   });
