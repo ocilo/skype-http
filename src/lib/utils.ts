@@ -1,4 +1,3 @@
-import Incident from "incident";
 import * as _ from "lodash";
 import {Dictionary} from "./interfaces/utils";
 

@@ -1,4 +1,7 @@
 import {ParsedUserId} from "./index";
+
+export type Status = "Hidden" | "Online" | "Away" | "Busy";
+
 export interface Location {
   country: string; // almost certainly an enum...
   city?: string;

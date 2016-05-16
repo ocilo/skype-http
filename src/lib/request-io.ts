@@ -38,4 +38,22 @@ export class RequestIO implements io.IO {
       });
     });
   }
+
+  put (options: io.PutOptions): Bluebird<io.Response> {
+    return Bluebird.fromCallback((cb) => {
+      request.put(options, (error, response, body) => {
+        if (error) {
+          return cb(error);
+        }
+
+        let ioResponse: io.Response = {
+          statusCode: response.statusCode,
+          body: body,
+          headers: response.headers
+        };
+
+        cb(null, ioResponse);
+      });
+    });
+  }
 }

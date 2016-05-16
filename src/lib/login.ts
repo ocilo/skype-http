@@ -1,22 +1,18 @@
 import * as Bluebird from "bluebird";
 import * as cheerio from "cheerio";
-import {Promise} from "es6-promise";
 import Incident from "incident";
-import * as http from "http";
 import * as request from "request";
-import * as url from "url";
-import * as _ from "lodash";
+import {parse as parseUri} from "url";
 
 import {Credentials} from "./interfaces/index";
 import {Dictionary} from "./interfaces/utils";
 import {ApiContext, SkypeToken, RegistrationToken} from "./interfaces/api-context";
 import * as Consts from "./consts";
 import * as io from "./interfaces/io";
-import SkypeAccount from "./skype_account";
 import * as Utils from "./utils";
 import {stringifyHeaderParams, parseHeaderParams} from "./utils";
 import {hmacSha256} from "./utils/hmac-sha256";
-import * as apiUri from "./messages-uri";
+import * as messagesUri from "./messages-uri";
 
 export interface LoginOptions {
   io: io.IO;
@@ -83,9 +79,15 @@ export function login (options: LoginOptions): Bluebird<ApiContext> {
           }
           return subscribeToResources(ioOptions, registrationToken);
         })
-        .then((registrationToken: RegistrationToken) => {
+        .tap((registrationToken: RegistrationToken) => {
           if (options.verbose) {
             console.log("Subscribed to resources");
+          }
+          return createPresenceDocs(ioOptions, registrationToken);
+        })
+        .then((registrationToken: RegistrationToken) => {
+          if (options.verbose) {
+            console.log("Created presence docs");
           }
           let context: ApiContext = {
             username: options.credentials.username,
@@ -217,7 +219,7 @@ function getRegistrationToken (options: IOOptions, skypeToken: SkypeToken, apiHo
       };
 
       const requestOptions: io.PostOptions = {
-        uri: apiUri.endpoints(apiHost),
+        uri: messagesUri.endpoints(apiHost),
         headers: headers,
         jar: options.jar,
         body: "{}" // Skype requires you to send an empty object as a body
@@ -232,7 +234,7 @@ function getRegistrationToken (options: IOOptions, skypeToken: SkypeToken, apiHo
 
           let locationHeader = res.headers["location"];
 
-          let location = url.parse(locationHeader);
+          let location = parseUri(locationHeader); // TODO: parse in messages-uri.ts
           if (location.host !== apiHost) { // mainly when 301, but sometimes when 201
             apiHost = location.host;
             if (retry > 0) {
@@ -278,7 +280,7 @@ function subscribeToResources(ioOptions: IOOptions, registrationToken: Registrat
   };
 
   const requestOptions = {
-    uri: apiUri.subscriptions(registrationToken.host),
+    uri: messagesUri.subscriptions(registrationToken.host),
     jar: ioOptions.jar,
     body: JSON.stringify(requestDocument),
     headers: {
@@ -313,203 +315,46 @@ function subscribeToResources(ioOptions: IOOptions, registrationToken: Registrat
     });
 }
 
-export class Login {
-  private requestWithJar: any;
+function createPresenceDocs(ioOptions: IOOptions, registrationToken: RegistrationToken): Bluebird<any> {
+  return Bluebird
+    .try(() => {
+      if (!registrationToken.endpointId) {
+        return Bluebird.reject(new Incident("Missing endpoint id in registration token"));
+      }
 
-  constructor(cookieJar: request.CookieJar) {
-    this.requestWithJar = request.defaults({jar: cookieJar});
-  }
-
-  public doLogin(skypeAccount: SkypeAccount) {
-    let functions = [new Promise(this.sendLoginRequest.bind(this, skypeAccount)), this.getRegistrationToken, this.subscribeToResources, this.createStatusEndpoint, this.getSelfDisplayName];
-
-    return <Promise<{}>> (functions.reduce((previousValue: Promise<{}>, currentValue: any)=> {
-      return previousValue.then((skypeAccount: SkypeAccount) => {
-        return new Promise(currentValue.bind(this, skypeAccount));
-      });
-    }));
-  }
-
-  private sendLoginRequest(skypeAccount: SkypeAccount, resolve: any, reject: any) {
-    this.requestWithJar.get(Consts.SKYPEWEB_LOGIN_URL, (error: Error, response: any, body: any) => {
-      if (!error && response.statusCode === 200) {
-        let $ = cheerio.load(body);
-
-        // we'll need those values to do successful auth
-        let pie = $('input[name="pie"]').val();
-        let etm = $('input[name="etm"]').val();
-
-        if (!pie || !etm) {
-          Utils.throwError("Failed to find pie or etm.");
+      const requestBody = { // this is exact json that is needed to register endpoint for setting of status.
+        id: "endpointMessagingService",
+        type: "EndpointPresenceDoc",
+        selfLink: "uri",
+        privateInfo: {
+          epname: "skype" // Name of the endpoint (normally the name of the host)
+        },
+        publicInfo: {
+          capabilities: "video|audio",
+          type: 1,
+          skypeNameVersion: Consts.SKYPEWEB_CLIENTINFO_NAME,
+          nodeInfo: "xx",
+          version: Consts.SKYPEWEB_CLIENTINFO_VERSION + "//" + Consts.SKYPEWEB_CLIENTINFO_NAME
         }
+      };
 
-        let postParams = {
-          url: Consts.SKYPEWEB_LOGIN_URL,
-          form: {
-            username: skypeAccount.username,
-            password: skypeAccount.password,
-            pie: pie,
-            etm: etm,
-            timezone_field: Utils.getTimezone(),
-            js_time: Utils.getCurrentTime()
-          }
-        };
-        // auth step
-        this.requestWithJar.post(postParams, (error: Error, response: any, body: any) => {
-          if (!error && response.statusCode === 200) {
-            let $ = cheerio.load(body);
-            skypeAccount.skypeToken = $('input[name="skypetoken"]').val();
-            skypeAccount.skypeTokenExpiresIn = parseInt($('input[name="expires_in"]').val(), 10); // 86400 by default
-            if (skypeAccount.skypeToken && skypeAccount.skypeTokenExpiresIn) {
-              resolve(skypeAccount);
-            } else {
-              Utils.throwError("Failed to get skypetoken. Username or password is incorrect OR you've" +
-                " hit a CAPTCHA wall." + $(".message_error").text());
-            }
-          } else {
-            Utils.throwError("Failed to get skypetoken");
-          }
-        });
-      } else {
-        Utils.throwError("Failed to get pie and etm. Login failed.");
-      }
-    });
-  }
-
-  private getRegistrationToken(skypeAccount: SkypeAccount, resolve: any, reject: any) {
-    let currentTime = Utils.getCurrentTime();
-    let lockAndKeyResponse = Utils.getHMAC128(Buffer.from(String(currentTime), "utf8"), Buffer.from(Consts.SKYPEWEB_LOCKANDKEY_APPID, "utf8"), Buffer.from(Consts.SKYPEWEB_LOCKANDKEY_SECRET, "utf8"));
-    this.requestWithJar.post(Consts.SKYPEWEB_HTTPS + skypeAccount.messagesHost + "/v1/users/ME/endpoints", {
-      headers: {
-        "LockAndKey": "appId=" + Consts.SKYPEWEB_LOCKANDKEY_APPID + "; time=" + currentTime + "; lockAndKeyResponse=" + lockAndKeyResponse,
-        "ClientInfo": "os=Windows; osVer=10; proc=Win64; lcid=en-us; deviceType=1; country=n/a; clientName=" + Consts.SKYPEWEB_CLIENTINFO_NAME + "; clientVer=" + Consts.SKYPEWEB_CLIENTINFO_VERSION,
-        "Authentication": "skypetoken=" + skypeAccount.skypeToken
-      },
-      body: "{}" // don't ask why
-    }, (error: any, response: http.IncomingMessage, body: any) => {
-      // now lets try retrieve registration token
-      if (!error && response.statusCode === 201 || response.statusCode === 301) {
-        let locationHeader = response.headers["location"];
-        // expecting something like this "registrationToken=someSting; expires=someNumber; endpointId={someString}"
-        let registrationTokenHeader = response.headers["set-registrationtoken"];
-        let location = url.parse(locationHeader);
-        if (location.host !== skypeAccount.messagesHost) { // mainly when 301, but sometimes when 201
-          skypeAccount.messagesHost = location.host;
-          // looks like messagesHost has changed?
-          this.getRegistrationToken(skypeAccount, resolve, reject);
-          return;
+      const requestOptions = {
+        uri: messagesUri.endpointMessagingService(registrationToken.host, messagesUri.DEFAULT_USER, registrationToken.endpointId),
+        jar: ioOptions.jar,
+        body: JSON.stringify(requestBody),
+        headers: {
+          "RegistrationToken": registrationToken.raw
         }
+      };
 
-        let registrationTokenParams = registrationTokenHeader.split(/\s*;\s*/).reduce((params: any, current: string) => {
-          if (current.indexOf("registrationToken") === 0) {
-            params["registrationToken"] = current;
-          } else {
-            let index = current.indexOf("=");
-            if (index > 0) {
-              params[current.substring(0, index)] = current.substring(index + 1);
-            }
-          }
-          return params;
-        }, {
-          raw: registrationTokenHeader
-        });
-        if (!registrationTokenParams.registrationToken || !registrationTokenParams.expires || !registrationTokenParams.endpointId) {
-          Utils.throwError("Failed to find registrationToken or expires or endpointId.");
-        }
-        registrationTokenParams.expires = parseInt(registrationTokenParams.expires, 10);
-
-        skypeAccount.registrationTokenParams = registrationTokenParams;
-
-        // fixme add endpoint and expires!
-        resolve(skypeAccount);
-
-      } else {
-        Utils.throwError("Failed to get registrationToken." + error + JSON.stringify(response));
+      return ioOptions.io.put(requestOptions);
+    })
+    .then((res: io.Response) => {
+      if (res.statusCode !== 200) {
+        return Bluebird.reject(new Incident("net", "Unable to create presence endpoint"));
       }
+      return Bluebird.resolve(null);
     });
-  }
-
-  private subscribeToResources(skypeAccount: SkypeAccount, resolve: any, reject: any) {
-    let interestedResources = [
-      "/v1/threads/ALL",
-      "/v1/users/ME/contacts/ALL",
-      "/v1/users/ME/conversations/ALL/messages",
-      "/v1/users/ME/conversations/ALL/properties"
-    ];
-    let requestBody = JSON.stringify({
-      interestedResources: interestedResources,
-      template: "raw",
-      channelType: "httpLongPoll"// todo web sockets maybe ?
-    });
-
-    this.requestWithJar.post(Consts.SKYPEWEB_HTTPS + skypeAccount.messagesHost + "/v1/users/ME/endpoints/SELF/subscriptions", {
-      body: requestBody,
-      headers: {
-        "RegistrationToken": skypeAccount.registrationTokenParams.raw
-      }
-    }, (error: any, response: http.IncomingMessage, body: any) => {
-      if (!error && response.statusCode === 201) {
-        resolve(skypeAccount);
-      } else {
-        Utils.throwError("Failed to subscribe to resources.");
-      }
-    });
-  }
-
-  private createStatusEndpoint(skypeAccount: SkypeAccount, resolve: any, reject: any) {
-    if (!skypeAccount.registrationTokenParams.endpointId) {
-      // there is no need in this case to create endpoint?
-      resolve(skypeAccount);
-      return;
-    }
-    // a little bit more of skype madness
-    let requestBody = JSON.stringify({ // this is exact json that is needed to register endpoint for setting of status.
-      "id": "messagingService",
-      "type": "EndpointPresenceDoc",
-      "selfLink": "uri",
-      "privateInfo": {"epname": "skype"},
-      "publicInfo": {
-        "capabilities": "video|audio",
-        "type": 1,
-        "skypeNameVersion": Consts.SKYPEWEB_CLIENTINFO_NAME,
-        "nodeInfo": "xx",
-        "version": Consts.SKYPEWEB_CLIENTINFO_VERSION + "//" + Consts.SKYPEWEB_CLIENTINFO_NAME
-      }
-    });
-
-    this.requestWithJar.put(Consts.SKYPEWEB_HTTPS + skypeAccount.messagesHost +
-      "/v1/users/ME/endpoints/" + skypeAccount.registrationTokenParams.endpointId + "/presenceDocs/messagingService", {
-      body: requestBody,
-      headers: {
-        "RegistrationToken": skypeAccount.registrationTokenParams.raw
-      }
-    }, (error: any, response: http.IncomingMessage, body: any) => {
-      if (!error && response.statusCode === 200) {
-        resolve(skypeAccount);
-      } else {
-        Utils.throwError("Failed to create endpoint for status." +
-          ".\n Error code: " + response.statusCode +
-          ".\n Error: " + error +
-          ".\n Body: " + body
-        );
-      }
-    });
-  }
-
-  private getSelfDisplayName(skypeAccout: SkypeAccount, resolve: any, reject: any) {
-    this.requestWithJar.get(Consts.SKYPEWEB_HTTPS + Consts.SKYPEWEB_API_SKYPE_HOST + Consts.SKYPEWEB_SELF_DISPLAYNAME_URL, {
-      headers: {
-        "X-Skypetoken": skypeAccout.skypeToken
-      }
-    }, function (error: any, response: http.IncomingMessage, body: any) {
-      if (!error && response.statusCode === 200) {
-        skypeAccout.selfInfo = JSON.parse(body);
-        resolve(skypeAccout);
-      } else {
-        Utils.throwError("Failed to get selfInfo.");
-      }
-    });
-  }
 }
 
-export default Login;
+export default login;

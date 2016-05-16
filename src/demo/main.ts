@@ -72,5 +72,8 @@ promptCredentials()
         console.log(JSON.stringify(contacts, null, 2));
         console.log("Starting polling:");
         return api.listen();
+      })
+      .then((api: SkypeApi) => {
+        api.setStatus("Online");
       });
   });

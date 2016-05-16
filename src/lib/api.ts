@@ -2,8 +2,11 @@ import * as Bluebird from "bluebird";
 import {EventEmitter} from "events";
 import {CookieJar} from "request";
 
+import acceptContactRequest from "./api/accept-contact-request";
+import declineContactRequest from "./api/decline-contact-request";
 import getContacts from "./api/get-contacts";
 import sendMessage from "./api/send-message";
+import setStatus from "./api/set-status";
 import * as api from "./interfaces/api";
 import {ApiContext} from "./interfaces/api-context";
 import {IO} from "./interfaces/io";
@@ -23,12 +26,24 @@ export class Api extends EventEmitter implements ApiEvents {
     this.messagesPoller.on("event-message", (ev: api.EventMessage) => this.handlePollingEvent(ev));
   }
 
+  acceptContactRequest(contactUsername: string): Bluebird<this> {
+    return acceptContactRequest(this.io, this.apiContext, contactUsername).thenReturn(this);
+  }
+
+  declineContactRequest(contactUsername: string): Bluebird<this> {
+    return declineContactRequest(this.io, this.apiContext, contactUsername).thenReturn(this);
+  }
+
   getContacts(): Bluebird<api.Contact[]> {
     return getContacts(this.io, this.apiContext);
   }
 
   sendMessage (message: api.NewMessage, conversationId: string): Bluebird<any> {
     return sendMessage(this.io, this.apiContext, message, conversationId);
+  }
+
+  setStatus (status: api.Status): Bluebird<any> {
+    return setStatus(this.io, this.apiContext, status);
   }
 
   /**
