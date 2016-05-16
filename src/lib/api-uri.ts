@@ -33,7 +33,6 @@ function buildAuthRequestAccept (username: string, contact: string): string[] {
   return buildAuthRequest(username, contact).concat("accept");
 }
 
-
 function buildAuthRequestDecline (username: string, contact: string): string[] {
   return buildAuthRequest(username, contact).concat("decline");
 }

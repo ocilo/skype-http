@@ -1,10 +1,3 @@
-import * as request from "request";
-import * as Consts from "./../consts";
-import SkypeAccount from "./../skype_account";
-import * as Utils from "./../utils";
-import * as http from "http";
-import {CookieJar} from "request";
-
 import * as Bluebird from "bluebird";
 import {EventEmitter} from "events";
 import Incident from "incident";
@@ -13,7 +6,6 @@ import * as io from "../interfaces/io";
 import * as api from "../interfaces/api";
 import {ApiContext} from "../interfaces/api-context";
 import * as nativeApi from "../interfaces/native-api";
-import {Api} from "../api";
 import * as messagesUri from "../messages-uri";
 import {ParsedUserId} from "../interfaces/index";
 
@@ -173,44 +165,4 @@ export class MessagesPoller extends EventEmitter {
   }
 }
 
-export class Poll {
-  private requestWithJar: any;
-
-  private static parsePollResult(pollResult: any, messagesCallback: (messages: Array<any>)=>void) {
-    if (pollResult.eventMessages) {
-      let messages = pollResult.eventMessages.filter((item: any) => {
-        return item.resourceType === "NewMessage"; // Fixme there are a lot more EventMessage's types!
-      });
-      if (messages.length) {
-        messagesCallback(messages);
-      }
-    }
-  }
-
-  constructor(cookieJar: CookieJar) {
-    this.requestWithJar = request.defaults({jar: cookieJar});
-  }
-
-  public pollAll(skypeAccount: SkypeAccount, messagesCallback: (messages: Array<any>)=>void) {
-    setTimeout(()=> {
-      this.requestWithJar.post(Consts.SKYPEWEB_HTTPS + skypeAccount.messagesHost + "/v1/users/ME/endpoints/SELF/subscriptions/0/poll", {
-        headers: {
-          "RegistrationToken": skypeAccount.registrationTokenParams.raw
-        }
-      }, (error: any, response: http.IncomingMessage, body: any) => {
-        if (!error && response.statusCode === 200) {
-          Poll.parsePollResult(JSON.parse(body), messagesCallback);
-        } else {
-          Utils.throwError("Failed to poll messages." +
-            ".\n Error code: " + (response && response.statusCode ? response.statusCode : "none") +
-            ".\n Error: " + error +
-            ".\n Body: " + body
-          );
-        }
-        this.pollAll(skypeAccount, messagesCallback);
-      });
-    }, 1000);
-  }
-}
-
-export default Poll;
+export default MessagesPoller;

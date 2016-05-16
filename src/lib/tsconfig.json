@@ -20,22 +20,15 @@
     "interfaces/io.ts",
     "interfaces/native-api.ts",
     "interfaces/utils.ts",
-    "polling/auth_request.ts",
     "polling/messages-poller.ts",
     "utils/hmac-sha256.ts",
     "api.ts",
     "messages-uri.ts",
     "consts.ts",
-    "contacts_service.ts",
     "interfaces/io.ts",
     "login.ts",
-    "message_service.ts",
     "request-io.ts",
-    "request_service.ts",
     "skype-http.ts",
-    "skype_account.ts",
-    "skyweb.ts",
-    "status_service.ts",
     "utils.ts"
   ]
 }

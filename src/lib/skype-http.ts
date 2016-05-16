@@ -1,6 +1,6 @@
 import * as Bluebird from "bluebird";
-import * as request from "request";
 import Incident from "incident";
+
 import * as api from "./api";
 import {IO} from "./interfaces/io";
 import {ApiContext} from "./interfaces/api-context";

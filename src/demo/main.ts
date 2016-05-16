@@ -75,5 +75,5 @@ promptCredentials()
       })
       .then((api: SkypeApi) => {
         api.setStatus("Online");
-      })
+      });
   });
