@@ -4,6 +4,7 @@ import {CookieJar} from "request";
 
 import getContacts from "./api/get-contacts";
 import sendMessage from "./api/send-message";
+import setStatus from "./api/set-status";
 import * as api from "./interfaces/api";
 import {ApiContext} from "./interfaces/api-context";
 import {IO} from "./interfaces/io";
@@ -29,6 +30,10 @@ export class Api extends EventEmitter implements ApiEvents {
 
   sendMessage (message: api.NewMessage, conversationId: string): Bluebird<any> {
     return sendMessage(this.io, this.apiContext, message, conversationId);
+  }
+
+  setStatus (status: api.Status): Bluebird<any> {
+    return setStatus(this.io, this.apiContext, status);
   }
 
   /**

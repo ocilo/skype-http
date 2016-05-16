@@ -17,7 +17,7 @@ export class StatusService {
     let requestBody = JSON.stringify({
       status: status
     });
-    this.requestWithJar.put(Consts.SKYPEWEB_HTTPS + skypeAccount.messagesHost + "/v1/users/ME/presenceDocs/messagingService", {
+    this.requestWithJar.put(Consts.SKYPEWEB_HTTPS + skypeAccount.messagesHost + "/v1/users/ME/presenceDocs/endpointMessagingService", {
       body: requestBody,
       headers: {
         "RegistrationToken": skypeAccount.registrationTokenParams.raw

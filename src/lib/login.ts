@@ -16,7 +16,7 @@ import SkypeAccount from "./skype_account";
 import * as Utils from "./utils";
 import {stringifyHeaderParams, parseHeaderParams} from "./utils";
 import {hmacSha256} from "./utils/hmac-sha256";
-import * as apiUri from "./messages-uri";
+import * as messagesUri from "./messages-uri";
 
 export interface LoginOptions {
   io: io.IO;
@@ -83,9 +83,15 @@ export function login (options: LoginOptions): Bluebird<ApiContext> {
           }
           return subscribeToResources(ioOptions, registrationToken);
         })
-        .then((registrationToken: RegistrationToken) => {
+        .tap((registrationToken: RegistrationToken) => {
           if (options.verbose) {
             console.log("Subscribed to resources");
+          }
+          return createPresenceDocs(ioOptions, registrationToken);
+        })
+        .then((registrationToken: RegistrationToken) => {
+          if (options.verbose) {
+            console.log("Created presence docs");
           }
           let context: ApiContext = {
             username: options.credentials.username,
@@ -217,7 +223,7 @@ function getRegistrationToken (options: IOOptions, skypeToken: SkypeToken, apiHo
       };
 
       const requestOptions: io.PostOptions = {
-        uri: apiUri.endpoints(apiHost),
+        uri: messagesUri.endpoints(apiHost),
         headers: headers,
         jar: options.jar,
         body: "{}" // Skype requires you to send an empty object as a body
@@ -278,7 +284,7 @@ function subscribeToResources(ioOptions: IOOptions, registrationToken: Registrat
   };
 
   const requestOptions = {
-    uri: apiUri.subscriptions(registrationToken.host),
+    uri: messagesUri.subscriptions(registrationToken.host),
     jar: ioOptions.jar,
     body: JSON.stringify(requestDocument),
     headers: {
@@ -309,6 +315,48 @@ function subscribeToResources(ioOptions: IOOptions, registrationToken: Registrat
       //   }
       // }
 
+      return Bluebird.resolve(null);
+    });
+}
+
+function createPresenceDocs(ioOptions: IOOptions, registrationToken: RegistrationToken): Bluebird<any> {
+  return Bluebird
+    .try(() => {
+      if (!registrationToken.endpointId) {
+        return Bluebird.reject(new Incident("Missing endpoint id in registration token"));
+      }
+
+      const requestBody = { // this is exact json that is needed to register endpoint for setting of status.
+        id: "endpointMessagingService",
+        type: "EndpointPresenceDoc",
+        selfLink: "uri",
+        privateInfo: {
+          epname: "skype" // Name of the endpoint (normally the name of the host)
+        },
+        publicInfo: {
+          capabilities: "video|audio",
+          type: 1,
+          skypeNameVersion: Consts.SKYPEWEB_CLIENTINFO_NAME,
+          nodeInfo: "xx",
+          version: Consts.SKYPEWEB_CLIENTINFO_VERSION + "//" + Consts.SKYPEWEB_CLIENTINFO_NAME
+        }
+      };
+
+      const requestOptions = {
+        uri: messagesUri.endpointMessagingService(registrationToken.host, messagesUri.DEFAULT_USER, registrationToken.endpointId),
+        jar: ioOptions.jar,
+        body: JSON.stringify(requestBody),
+        headers: {
+          "RegistrationToken": registrationToken.raw
+        }
+      };
+
+      return ioOptions.io.put(requestOptions);
+    })
+    .then((res: io.Response) => {
+      if (res.statusCode !== 200) {
+        return Bluebird.reject(new Incident("net", "Unable to create presence endpoint"));
+      }
       return Bluebird.resolve(null);
     });
 }
@@ -464,7 +512,7 @@ export class Login {
     }
     // a little bit more of skype madness
     let requestBody = JSON.stringify({ // this is exact json that is needed to register endpoint for setting of status.
-      "id": "messagingService",
+      "id": "endpointMessagingService",
       "type": "EndpointPresenceDoc",
       "selfLink": "uri",
       "privateInfo": {"epname": "skype"},
@@ -478,7 +526,7 @@ export class Login {
     });
 
     this.requestWithJar.put(Consts.SKYPEWEB_HTTPS + skypeAccount.messagesHost +
-      "/v1/users/ME/endpoints/" + skypeAccount.registrationTokenParams.endpointId + "/presenceDocs/messagingService", {
+      "/v1/users/ME/endpoints/" + skypeAccount.registrationTokenParams.endpointId + "/presenceDocs/endpointMessagingService", {
       body: requestBody,
       headers: {
         "RegistrationToken": skypeAccount.registrationTokenParams.raw

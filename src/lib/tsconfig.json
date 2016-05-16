@@ -10,6 +10,9 @@
   },
   "files": [
     "../../typings/main.d.ts",
+    "api/get-contacts.ts",
+    "api/send-message.ts",
+    "api/set-status.ts",
     "interfaces/api.ts",
     "interfaces/api-context.ts",
     "interfaces/index.ts",

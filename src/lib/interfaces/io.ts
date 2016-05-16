@@ -17,6 +17,8 @@ export interface PostOptions extends BaseOptions {
   body?: any;
 }
 
+export type PutOptions = PostOptions;
+
 export interface Response {
   statusCode: number;
   body: string;
@@ -26,4 +28,5 @@ export interface Response {
 export interface IO {
   get (options: GetOptions): Thenable<Response>;
   post (options: PostOptions): Thenable<Response>;
+  put (options: PutOptions): Thenable<Response>;
 }

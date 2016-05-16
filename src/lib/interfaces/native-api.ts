@@ -24,7 +24,7 @@ export interface EventEndpointPresence extends EventMessage {
 
 export interface Resource {
   type: "Message" | "UserPresenceDoc" | "EndpointPresenceDoc" | string;
-  id: string; // If type is Message: a large integer, otherwise: "messagingService"
+  id: string; // If type is Message: a large integer, otherwise: "endpointMessagingService"
 }
 
 export interface MessageResource extends Resource {
@@ -115,17 +115,17 @@ export interface UriObject extends MessageResource {
 
 export interface UserPresenceResource extends Resource {
   type: "UserPresenceDoc" | string; // TODO
-  selfLink: string; // https://{host}/v1/users/{user}/presenceDocs/messagingService" user is 8:username
+  selfLink: string; // https://{host}/v1/users/{user}/presenceDocs/endpointMessagingService" user is 8:username
   availability: "Offline" | "Online" | string; // TODO
   status: "Offline" | "Online" | "Idle" | string; // TODO
   capabilities: string; // looks like capabilities.join(" | ") where capabilities is one of ["Seamless", "SmsUpgrade", "IsMobile"];
   lastSeenAt?: string; // a JSON date
-  endpointPresenceDocLinks: string[]; // https://{host}/v1/users/{user}/endpoints/{endpoint}/presenceDocs/messagingService
+  endpointPresenceDocLinks: string[]; // https://{host}/v1/users/{user}/endpoints/{endpoint}/presenceDocs/endpointMessagingService
 }
 
 export interface EndpointPresenceResource extends Resource {
   type: "EndpointPresenceDoc" | string; // TODO
-  selfLink: string; // https://{host}/v1/users/{user}/endpoints/{endpoint}/presenceDocs/messagingService
+  selfLink: string; // https://{host}/v1/users/{user}/endpoints/{endpoint}/presenceDocs/endpointMessagingService
   publicInfo: {
     capabilities: string; // looks like capabilities.join(" | ") where capabilities is one of ["Seamless", "SmsUpgrade"]; (no IsMobile apparently)
     typ: string; // TODO: known: ["11", "12", "13", "14", "16", "17"]
