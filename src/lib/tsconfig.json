@@ -23,6 +23,7 @@
     "polling/messages-poller.ts",
     "utils/hmac-sha256.ts",
     "api.ts",
+    "connect.ts",
     "messages-uri.ts",
     "consts.ts",
     "interfaces/io.ts",
