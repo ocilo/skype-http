@@ -15,7 +15,7 @@ export interface Phone {
 export interface Contact {
   id: string; // username
   person_id: string; // [0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}
-  type: "skype" | string; // enum ?
+  type: "skype" | string; // enum ? maybe "facebook" ?
   display_name: "string";
   authorized: boolean; // accepted contact request ?
   blocked: boolean;

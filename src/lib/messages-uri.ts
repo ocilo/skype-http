@@ -110,6 +110,7 @@ export function user (host: string, userId: string = DEFAULT_USER): string {
   return get(host, joinPath(buildUser(userId)));
 }
 
+// https://{host}/v1/users/{userId}/endpoints
 export function endpoints (host: string, userId: string = DEFAULT_USER): string {
   return get(host, joinPath(buildEndpoints(userId)));
 }
