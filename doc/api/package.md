@@ -1,18 +1,20 @@
-# API
+# Package
 
-## SkypeHttp
+## Functions
 
-### Functions
+### connect
 
-#### connect
+````ts
+skypeHttp.connect(options: ConnectOptions): Bluebird<Api>;
+````
 
 - options
-  - type: {`ConnectOptions`}
+  - Type: {`ConnectOptions`}
 - **return**
-  - type: {`Bluebird<SkypeApi>`}
+  - Type: {`Bluebird`<[`Api`](./classes/api.md)>}
 
-````typescript
-export type ConnectOptions = {
+````ts
+interface ConnectOptions {
   credentials?: {         // Create a new connection from credentials
     username: string;
     password: string;
@@ -21,11 +23,3 @@ export type ConnectOptions = {
   verbose?: boolean;      // Enable logging
 }
 ````
-
----
-
-## SkypeApi
-
-### Methods
-
-**TODO**

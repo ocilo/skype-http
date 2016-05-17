@@ -12,7 +12,7 @@ export interface StateContainer {
   state: any;
 }
 
-export type ConnectOptions = {
+export interface ConnectOptions {
   credentials?: Credentials;
   state?: any;
   verbose?: boolean;

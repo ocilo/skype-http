@@ -16,56 +16,35 @@ typings install --save npm:skype-http
 ````
 
 Import for Typescript or Javascript ES6:
-````typescript
-import {Skyweb} from "skype-http";
+````ts
+import * as skypeHttp from "skype-http";
 ````
 
 Import for Javascript ES5:
 ````js
-var Skyweb = require("skype-http").Skyweb;
+var skypeHttp = require("skype-http");
 ````
 
 ## Running example
 
-The demo will prompt you your username and password: you should use your Skype account (there is no support for Microsoft account for now).
+The demo will prompt you your username and password: you should use your Skype account (there is no support for
+Microsoft accounts for now).
 
-```shell
+````shell
 git clone https://github.com/demurgos/skype-http
 cd skype-http
 npm install && typings install
 npm run demo
-```
-After 'Skyweb is initialized now' appears in console any message you receive in your Skype will be automatically replied.
+````
+
+This will perform a verbose connection (it should log the acquisition of various tokens), display the list of contacts,
+set the status to `"Online"` and start to respond to messages.
 
 ## Usage
 
-### Initializing and login
-```js
-Skyweb = require('skyweb');
-var skyweb = new Skyweb();
-skyweb.login(username, password).then(function (skypeAccount) {
-    console.log('Skyweb is initialized now');
-});
-```
+[See the documentation](./doc/api/package.md)
 
-### Getting contacts info
-```js
-var skyweb = new Skyweb();
-skyweb.login(username, password).then((skypeAccount) => {    
-    console.log('Your contacts : ' + JSON.stringify(skyweb.contactsService.contacts, null, 2));
-});
-```
-
-### Setting status
-```js
-var skyweb = new Skyweb();
-skyweb.login(username, password).then((skypeAccount) => {
-    skyweb.setStatus('Hidden'); //Now everybody thinks I'm sleeping
-});
-```
-Currently supported values are : "Hidden" | "Online" | "Away" | "Busy"
-
-## npm scripts
+## Contributing - npm scripts
 
 ### `build`
 
