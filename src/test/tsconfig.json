@@ -9,7 +9,7 @@
     "noImplicitAny": true
   },
   "files": [
-    "../../typings/main.d.ts",
+    "../../typings/index.d.ts",
     "../lib/interfaces/api-context.ts",
     "../lib/interfaces/index.ts",
     "../lib/interfaces/io.ts",
@@ -22,7 +22,7 @@
     "../lib/interfaces/io.ts",
     "../lib/login.ts",
     "../lib/request-io.ts",
-    "../lib/skype-http.ts",
+    "../lib/connect.ts",
     "../lib/utils.ts",
     "end-to-end/config.ts",
     "end-to-end/skype-http.spec.ts",

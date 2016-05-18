@@ -9,7 +9,7 @@
     "noImplicitAny": true
   },
   "files": [
-    "../../typings/main.d.ts",
+    "../../typings/index.d.ts",
     "../lib/consts.ts",
     "../lib/login.ts",
     "../lib/polling/messages-poller.ts",

@@ -1,6 +1,6 @@
 import * as Bluebird from "bluebird";
 import * as cheerio from "cheerio";
-import Incident from "incident";
+import {Incident} from "incident";
 import * as request from "request";
 import {parse as parseUri} from "url";
 
@@ -192,7 +192,7 @@ function getLockAndKeyResponse (time: number): string {
 }
 
 // Get the token used to subscribe to resources
-function getRegistrationToken (options: IOOptions, skypeToken: SkypeToken, apiHost: string, retry: number = 2): Bluebird<RegistrationToken> {
+function getRegistrationToken (options: IOOptions, skypeToken: SkypeToken, messagesHost: string, retry: number = 2): Bluebird<RegistrationToken> {
   return Bluebird
     .try(() => {
       const startTime: number = Utils.getCurrentTime();
@@ -219,7 +219,7 @@ function getRegistrationToken (options: IOOptions, skypeToken: SkypeToken, apiHo
       };
 
       const requestOptions: io.PostOptions = {
-        uri: messagesUri.endpoints(apiHost),
+        uri: messagesUri.endpoints(messagesHost),
         headers: headers,
         jar: options.jar,
         body: "{}" // Skype requires you to send an empty object as a body
@@ -235,10 +235,10 @@ function getRegistrationToken (options: IOOptions, skypeToken: SkypeToken, apiHo
           let locationHeader = res.headers["location"];
 
           let location = parseUri(locationHeader); // TODO: parse in messages-uri.ts
-          if (location.host !== apiHost) { // mainly when 301, but sometimes when 201
-            apiHost = location.host;
+          if (location.host !== messagesHost) { // mainly when 301, but sometimes when 201
+            messagesHost = location.host;
             if (retry > 0) {
-              return getRegistrationToken(options, skypeToken, apiHost, retry--);
+              return getRegistrationToken(options, skypeToken, messagesHost, retry--);
             } else {
               return Bluebird.reject(new Incident("net", "Exceeded max tries"));
             }
@@ -259,7 +259,7 @@ function getRegistrationToken (options: IOOptions, skypeToken: SkypeToken, apiHo
             expirationDate: new Date(1000 * expires),
             endpointId: parsedHeader["endpointId"],
             raw: registrationTokenHeader,
-            host: apiHost
+            host: messagesHost
           };
 
           return Bluebird.resolve(registrationToken);

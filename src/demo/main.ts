@@ -3,7 +3,7 @@ import {createInterface} from "readline";
 
 import {Credentials} from "../lib/interfaces/index";
 import * as api from "../lib/interfaces/api";
-import * as skypeHttp from "../lib/skype-http";
+import * as skypeHttp from "../lib/connect";
 import {Api as SkypeApi} from "../lib/api";
 
 function promptCredentials (): Bluebird<Credentials> {

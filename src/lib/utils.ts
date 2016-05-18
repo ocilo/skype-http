@@ -59,7 +59,7 @@ export function getTimezone() {
   let minutes = timezone % 60;
   let hours = (timezone - minutes) / 60;
 
-  return `${sign}${zeroPad(minutes, 2)}|${zeroPad(hours, 2)}`;
+  return `${sign}${zeroPad(hours, 2)}|${zeroPad(minutes, 2)}`;
 }
 
 const HTTP_HEADER_SEPARATOR = ";";

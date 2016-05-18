@@ -1,6 +1,6 @@
 import {resolve as resolveUri, parse as parseUri} from "url";
 import {posix} from "path";
-import Incident from "incident";
+import {Incident} from "incident";
 
 export const DEFAULT_USER: string = "ME";
 export const DEFAULT_ENDPOINT: string = "SELF";
@@ -110,6 +110,7 @@ export function user (host: string, userId: string = DEFAULT_USER): string {
   return get(host, joinPath(buildUser(userId)));
 }
 
+// https://{host}/v1/users/{userId}/endpoints
 export function endpoints (host: string, userId: string = DEFAULT_USER): string {
   return get(host, joinPath(buildEndpoints(userId)));
 }
