@@ -1,6 +1,6 @@
 import * as Bluebird from "bluebird";
 import * as cheerio from "cheerio";
-import Incident from "incident";
+import {Incident} from "incident";
 import * as request from "request";
 import {parse as parseUri} from "url";
 

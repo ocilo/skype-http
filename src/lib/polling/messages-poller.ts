@@ -1,6 +1,6 @@
 import * as Bluebird from "bluebird";
 import {EventEmitter} from "events";
-import Incident from "incident";
+import {Incident} from "incident";
 
 import * as io from "../interfaces/io";
 import * as api from "../interfaces/api";

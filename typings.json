@@ -10,13 +10,13 @@
     "lodash": "registry:npm/lodash#4.0.0+20160416211519",
     "request": "registry:npm/request#2.69.0+20160428223725"
   },
-  "ambientDependencies": {
+  "globalDependencies": {
     "node": "registry:dt/node#4.0.0+20160501135006"
   },
   "devDependencies": {
     "chai": "registry:npm/chai#3.5.0+20160415060238"
   },
-  "ambientDevDependencies": {
+  "globalDevDependencies": {
     "mocha": "registry:dt/mocha#2.2.5+20160317120654"
   }
 }

@@ -1,5 +1,5 @@
 import * as Bluebird from "bluebird";
-import Incident from "incident";
+import {Incident} from "incident";
 
 import * as io from "../interfaces/io";
 import {Contact} from "../interfaces/api";

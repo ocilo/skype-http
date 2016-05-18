@@ -1,6 +1,6 @@
 import {resolve as resolveUri, parse as parseUri} from "url";
 import {posix} from "path";
-import Incident from "incident";
+import {Incident} from "incident";
 
 export const DEFAULT_USER: string = "ME";
 export const DEFAULT_ENDPOINT: string = "SELF";

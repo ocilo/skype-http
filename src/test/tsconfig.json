@@ -9,7 +9,7 @@
     "noImplicitAny": true
   },
   "files": [
-    "../../typings/main.d.ts",
+    "../../typings/index.d.ts",
     "../lib/interfaces/api-context.ts",
     "../lib/interfaces/index.ts",
     "../lib/interfaces/io.ts",

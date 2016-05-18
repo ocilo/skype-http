@@ -9,7 +9,7 @@
     "noImplicitAny": true
   },
   "files": [
-    "../../typings/main.d.ts",
+    "../../typings/index.d.ts",
     "api/accept-contact-request.ts",
     "api/get-contacts.ts",
     "api/send-message.ts",
