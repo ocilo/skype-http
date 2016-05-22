@@ -185,9 +185,9 @@ function scrapSkypeToken (html: string): SkypeTokenResponse {
 }
 
 function getLockAndKeyResponse (time: number): string {
-  const inputBuffer = Buffer.from(String(time), "utf8");
-  const appIdBuffer = Buffer.from(Consts.SKYPEWEB_LOCKANDKEY_APPID, "utf8");
-  const secretBuffer = Buffer.from(Consts.SKYPEWEB_LOCKANDKEY_SECRET, "utf8");
+  const inputBuffer: Buffer = (<any> Buffer).from(String(time), "utf8");
+  const appIdBuffer: Buffer = (<any> Buffer).from(Consts.SKYPEWEB_LOCKANDKEY_APPID, "utf8");
+  const secretBuffer: Buffer = (<any> Buffer).from(Consts.SKYPEWEB_LOCKANDKEY_SECRET, "utf8");
   return hmacSha256(inputBuffer, appIdBuffer, secretBuffer);
 }
 

@@ -31,9 +31,9 @@ describe("hmacSha256", function () {
 
   for (let known of knownHashes) {
     it(`should return "${known.expected}" for ("${known.input}", "${known.id}", "${known.key}")`, function () {
-      let inputBuffer = Buffer.from(String(known.input), "utf8");
-      let idBuffer = Buffer.from(String(known.id), "utf8");
-      let keyBuffer = Buffer.from(String(known.key), "utf8");
+      let inputBuffer: Buffer = (<any> Buffer).from(String(known.input), "utf8");
+      let idBuffer: Buffer = (<any> Buffer).from(String(known.id), "utf8");
+      let keyBuffer: Buffer = (<any> Buffer).from(String(known.key), "utf8");
 
       let result: string = hmacSha256(inputBuffer, idBuffer, keyBuffer);
       assert.equal(result, known.expected);

@@ -119,12 +119,12 @@ export function hmacSha256(input: Buffer, productId: Buffer, productKey: Buffer)
     msgLen = message.length;
   }
 
-  let challengeParts = uint8ArrayToUint32Array(message);
+  let challengeParts = uint8ArrayToUint32Array(<any> message);
 
   const sha256HexString: string = sha256(Buffer.concat([input, productKey]));
-  const sha256Buffer: Buffer = Buffer.from(sha256HexString, "hex");
+  const sha256Buffer: Buffer = (<any> Buffer).from(sha256HexString, "hex");
 
-  let sha256Parts: Uint32Array = uint8ArrayToUint32Array(sha256Buffer.slice(0, 16)); // Get half of the sha256 as 4 uint32
+  let sha256Parts: Uint32Array = uint8ArrayToUint32Array((<any> sha256Buffer).slice(0, 16)); // Get half of the sha256 as 4 uint32
 
   const checkSumParts: Uint32Array = checkSum64(challengeParts, sha256Parts);
 
