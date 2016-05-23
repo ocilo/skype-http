@@ -6,6 +6,7 @@ export interface BaseOptions {
   uri: string;
   jar: request.CookieJar;
   headers?: Dictionary<any>;
+  qs?: Dictionary<any>; // query string, TODO: rename to `queryString` and map to `qs` in request-io.ts
 }
 
 export interface GetOptions extends BaseOptions {

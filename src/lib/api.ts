@@ -1,10 +1,12 @@
 import * as Bluebird from "bluebird";
 import {EventEmitter} from "events";
 import {CookieJar} from "request";
+import {Incident} from "incident";
 
 import acceptContactRequest from "./api/accept-contact-request";
 import declineContactRequest from "./api/decline-contact-request";
 import getContacts from "./api/get-contacts";
+import getConversations from "./api/get-conversations";
 import sendMessage from "./api/send-message";
 import setStatus from "./api/set-status";
 import * as api from "./interfaces/api";
@@ -30,12 +32,20 @@ export class Api extends EventEmitter implements ApiEvents {
     return acceptContactRequest(this.io, this.apiContext, contactUsername).thenReturn(this);
   }
 
-  declineContactRequest(contactUsername: string): Bluebird<this> {
+  declineContactRequest (contactUsername: string): Bluebird<this> {
     return declineContactRequest(this.io, this.apiContext, contactUsername).thenReturn(this);
   }
 
-  getContacts(): Bluebird<api.Contact[]> {
+  getContacts (): Bluebird<api.Contact[]> {
     return getContacts(this.io, this.apiContext);
+  }
+
+  getConversation (conversationId: string): Bluebird<api.Conversation> {
+    return Bluebird.reject(new Incident("toto", "getConversation"));
+  }
+
+  getConversations (): Bluebird<api.Conversation[]> {
+    return getConversations(this.io, this.apiContext);
   }
 
   sendMessage (message: api.NewMessage, conversationId: string): Bluebird<any> {

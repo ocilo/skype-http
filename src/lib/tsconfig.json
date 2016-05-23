@@ -21,6 +21,7 @@
     "interfaces/native-api.ts",
     "interfaces/utils.ts",
     "polling/messages-poller.ts",
+    "utils/formatters.ts",
     "utils/hmac-sha256.ts",
     "api.ts",
     "connect.ts",

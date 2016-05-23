@@ -137,3 +137,24 @@ export interface EndpointPresenceResource extends Resource {
     epname: string; // Endpoint name (ie: computer name)
   };
 }
+
+export interface ThreadProperties {
+  topic?: string;
+  lastjoinat?: string; // a timestamp ? example: "1421342788493"
+  version?: string; // a timestamp ? example: "1464029299838"
+}
+
+export interface EmptyObject {}
+
+export interface Conversation {
+  targetLink: string; // https://{host}/v1/threads/{19:threadId} or // https://{host}/v1/users/ME/contacts/{8:contactId}
+  threadProperties?: ThreadProperties;
+  id: string;
+  type: "Conversation" | string;
+  version: number; // a timestamp ? example: 1464030261015
+  properties: {
+    consumptionhorizon?: string; // example: "1461605505609;1461605570732;10435004700722293356"
+  },
+  lastMessage: EmptyObject | MessageResource;
+  messages: string; // https://{host}/v1/users/ME/contacts/{thread}/messages (even if targetLink points to /v1/threads)
+}

@@ -15,7 +15,7 @@ export interface Phone {
 export interface Contact {
   id: string; // username
   person_id: string; // [0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}
-  type: "skype" | string; // enum ? maybe "facebook" ?
+  type: "skype" | "agent" | string; // enum ? maybe "facebook" ?
   display_name: "string";
   authorized: boolean; // accepted contact request ?
   blocked: boolean;
@@ -36,6 +36,10 @@ export interface EventMessage {
   time: Date;
   resourceLink: string;
   resource: Resource;
+}
+
+export interface Conversation {
+
 }
 
 export interface Resource {
@@ -62,4 +66,17 @@ export interface RichTextResource extends Resource {
 
 export interface NewMessage {
   textContent: string;
+}
+
+export interface ThreadProperties {
+  topic?: string;
+  lastjoinat?: string; // a timestamp ? example: "1421342788493"
+  version?: string; // a timestamp ? example: "1464029299838"
+}
+
+export interface Conversation {
+  threadProperties?: ThreadProperties;
+  id: string;
+  type: "Conversation" | string;
+  version: number; // a timestamp ? example: 1464030261015
 }

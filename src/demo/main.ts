@@ -70,6 +70,16 @@ promptCredentials()
       .then((contacts) => {
         console.log("Your contacts:");
         console.log(JSON.stringify(contacts, null, 2));
+        return null;
+      })
+      .then(() => {
+        return api.getConversations()
+          .then((conversations: api.Conversation[]) => {
+            console.log(conversations);
+            return null;
+          });
+      })
+      .then(() => {
         console.log("Starting polling:");
         return api.listen();
       })

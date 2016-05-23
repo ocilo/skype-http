@@ -133,6 +133,14 @@ export function subscriptions (host: string, userId: string = DEFAULT_USER, endp
   return get(host, joinPath(buildSubscriptions(userId, endpointId)));
 }
 
+export function conversations (host: string, user: string): string {
+  return get(host, joinPath(buildConversations(user)));
+}
+
+export function conversation (host: string, user: string, conversationId: string): string {
+  return get(host, joinPath(buildConversation(user, conversationId)));
+}
+
 /**
  * Returns https://{host}/v1/users/{user}/conversations/{conversationId}/messages
  * @param host
