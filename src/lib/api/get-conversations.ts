@@ -16,11 +16,11 @@ interface ConversationsBody {
     forwardLink: string; // url
     backwardLink: string; // url
     syncState: string; // url
-  }
+  };
 }
 
 interface GetConversationsQuery {
-  startTime: number, // a timestamp ?
+  startTime: number; // a timestamp ?
   view: "msnp24Equivalent" | string;
   targetType: string; // seen: Passport|Skype|Lync|Thread
 }

@@ -154,7 +154,7 @@ export interface Conversation {
   version: number; // a timestamp ? example: 1464030261015
   properties: {
     consumptionhorizon?: string; // example: "1461605505609;1461605570732;10435004700722293356"
-  },
+  };
   lastMessage: EmptyObject | MessageResource;
   messages: string; // https://{host}/v1/users/ME/contacts/{thread}/messages (even if targetLink points to /v1/threads)
 }
