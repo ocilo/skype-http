@@ -5,6 +5,7 @@ import {Incident} from "incident";
 
 import acceptContactRequest from "./api/accept-contact-request";
 import declineContactRequest from "./api/decline-contact-request";
+import getContact from "./api/get-contact";
 import getContacts from "./api/get-contacts";
 import getConversation from "./api/get-conversation";
 import getConversations from "./api/get-conversations";
@@ -37,6 +38,10 @@ export class Api extends EventEmitter implements ApiEvents {
     return declineContactRequest(this.io, this.apiContext, contactUsername).thenReturn(this);
   }
 
+  getContact (contactId: string): Bluebird<api.Contact> {
+    return Bluebird.reject(new Incident("todo", "Api:getContact is not implemented yet"));
+  }
+
   getContacts (): Bluebird<api.Contact[]> {
     return getContacts(this.io, this.apiContext);
   }
@@ -49,7 +54,7 @@ export class Api extends EventEmitter implements ApiEvents {
     return getConversations(this.io, this.apiContext);
   }
 
-  sendMessage (message: api.NewMessage, conversationId: string): Bluebird<any> {
+  sendMessage (message: api.NewMessage, conversationId: string): Bluebird<api.SendMessageResult> {
     return sendMessage(this.io, this.apiContext, message, conversationId);
   }
 

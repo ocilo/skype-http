@@ -23,6 +23,10 @@ function buildContacts (username: string): string[] {
   return buildUser(username).concat("contacts");
 }
 
+function buildContact (username: string, contactId: string): string[] {
+  return buildContacts(username).concat(contactId);
+}
+
 function getOrigin (): string {
   return "https://" + SKYPEWEB_CONTACTS_HOST;
 }
@@ -34,4 +38,9 @@ function get(path: string) {
 // https://contacts.skype.com/contacts/v1/users/{username}/contacts
 export function contacts (username: string): string {
   return get(joinPath(buildContacts(username)));
+}
+
+// https://contacts.skype.com/contacts/v1/users/{username}/contacts/{contact}
+export function contact (username: string, contact: string): string {
+  return get(joinPath(buildContact(username, contact)));
 }

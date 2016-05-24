@@ -6,6 +6,7 @@ import * as apiInterface from "./interfaces/api";
 export type Api = api.Api;
 export namespace Api {
   export type NewMessage = apiInterface.NewMessage;
+  export type SendMessageResult = apiInterface.SendMessageResult;
 }
 
 export type Contact = apiInterface.Contact;

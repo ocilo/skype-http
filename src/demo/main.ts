@@ -70,18 +70,26 @@ promptCredentials()
       .then((contacts) => {
         console.log("Your contacts:");
         console.log(JSON.stringify(contacts, null, 2));
-        return null;
+        return Bluebird.map(contacts, (contact: api.Contact) => {
+          return null;
+          // return api.getContact(contact.id)
+          //   .then(contact => {
+          //     console.log(JSON.stringify(contact, null, 2));
+          //   });
+        });
       })
-      .then(() => {
-        return api.getConversations()
-          .then((conversations: api.Conversation[]) => {
-            console.log(conversations);
-            return Bluebird.map(conversations, (conversation: api.Conversation) => {
-              return api.getConversation(conversation.id)
-                .then(console.log);
-            });
-          });
-      })
+      // .then(() => {
+      //   return api.getConversations()
+      //     .then((conversations: api.Conversation[]) => {
+      //       console.log(JSON.stringify(conversations, null, 2));
+      //       return Bluebird.map(conversations, (conversation: api.Conversation) => {
+      //         return api.getConversation(conversation.id)
+      //           .then(conv => {
+      //             console.log(JSON.stringify(conv, null, 2));
+      //           });
+      //       });
+      //     });
+      // })
       .then(() => {
         console.log("Starting polling:");
         return api.listen();
