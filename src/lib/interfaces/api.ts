@@ -77,6 +77,7 @@ export interface ThreadProperties {
 export interface Conversation {
   threadProperties?: ThreadProperties;
   id: string;
-  type: "Conversation" | string;
+  type: "Conversation" | "Thread" | string;
   version: number; // a timestamp ? example: 1464030261015
+  members?: string[]; // array of ids
 }

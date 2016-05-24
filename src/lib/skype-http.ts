@@ -13,3 +13,8 @@ export namespace Contact {
   export type Phone = apiInterface.Phone;
   export type Location = apiInterface.Location;
 }
+
+export type Conversation = apiInterface.Conversation;
+export namespace Conversation {
+  export type ThreadProperties = apiInterface.ThreadProperties;
+}
