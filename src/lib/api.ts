@@ -81,6 +81,11 @@ export class Api extends EventEmitter implements ApiEvents {
   protected handlePollingEvent(ev: api.EventMessage): any {
     this.emit("event", ev);
 
+    // Prevent echo
+    if (ev.resource.from.username === this.apiContext.username) {
+      return;
+    }
+
     if (ev && ev.resource && ev.resource.type === "Text") {
       this.emit("Text", ev.resource);
     } else if (ev && ev.resource && ev.resource.type === "RichText") {
