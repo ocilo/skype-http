@@ -6,6 +6,7 @@ import {Incident} from "incident";
 import acceptContactRequest from "./api/accept-contact-request";
 import declineContactRequest from "./api/decline-contact-request";
 import getContacts from "./api/get-contacts";
+import getConversation from "./api/get-conversation";
 import getConversations from "./api/get-conversations";
 import sendMessage from "./api/send-message";
 import setStatus from "./api/set-status";
@@ -41,7 +42,7 @@ export class Api extends EventEmitter implements ApiEvents {
   }
 
   getConversation (conversationId: string): Bluebird<api.Conversation> {
-    return Bluebird.reject(new Incident("toto", "getConversation"));
+    return getConversation(this.io, this.apiContext, conversationId);
   }
 
   getConversations (): Bluebird<api.Conversation[]> {

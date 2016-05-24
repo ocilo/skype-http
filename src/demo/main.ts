@@ -76,7 +76,10 @@ promptCredentials()
         return api.getConversations()
           .then((conversations: api.Conversation[]) => {
             console.log(conversations);
-            return null;
+            return Bluebird.map(conversations, (conversation: api.Conversation) => {
+              return api.getConversation(conversation.id)
+                .then(console.log);
+            });
           });
       })
       .then(() => {

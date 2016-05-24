@@ -20,6 +20,16 @@ function buildV1(): string[] {
   return ["v1"];
 }
 
+// /v1/threads
+function buildThreads(): string[] {
+  return buildV1().concat("threads");
+}
+
+// /v1/threads/{thread}
+function buildThread(thread: string): string[] {
+  return buildThreads().concat(thread);
+}
+
 // /v1/users
 function buildUsers(): string[] {
   return buildV1().concat("users");
@@ -100,6 +110,10 @@ function getOrigin (host: string): string {
 
 function get(host: string, path: string) {
   return resolveUri(getOrigin(host), path);
+}
+
+export function thread (host: string, threadId: string): string {
+  return get(host, joinPath(buildThread(threadId)));
 }
 
 export function users (host: string): string {
