@@ -1,8 +1,8 @@
 import * as Bluebird from "bluebird";
 import {Incident} from "incident";
 
-import * as api from "../interfaces/api";
-import {ApiContext} from "../interfaces/api-context";
+import * as api from "../interfaces/api/api";
+import {Context} from "../interfaces/api/context";
 import * as io from "../interfaces/io";
 import * as messagesUri from "../messages-uri";
 
@@ -10,7 +10,7 @@ interface RequestBody {
   status: string;
 }
 
-export function setStatus (io: io.IO, apiContext: ApiContext, status: api.Status): Bluebird<any> {
+export function setStatus (io: io.IO, apiContext: Context, status: api.Status): Bluebird<any> {
   return Bluebird
     .try(() => {
       let requestBody: RequestBody = {

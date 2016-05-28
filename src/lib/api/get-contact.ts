@@ -2,11 +2,11 @@ import * as Bluebird from "bluebird";
 import {Incident} from "incident";
 
 import * as io from "../interfaces/io";
-import {Contact} from "../interfaces/api";
-import {ApiContext} from "../interfaces/api-context";
+import {Contact} from "../interfaces/api/contact";
+import {Context} from "../interfaces/api/context";
 import * as contactsUri from "../contacts-uri";
 
-export function getContact (io: io.IO, apiContext: ApiContext, contactId: string): Bluebird<Contact> {
+export function getContact (io: io.IO, apiContext: Context, contactId: string): Bluebird<Contact> {
   return Bluebird
     .try(() => {
       console.log(contactId);

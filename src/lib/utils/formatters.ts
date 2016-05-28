@@ -1,21 +1,21 @@
 import * as _ from "lodash";
-import * as api from "../interfaces/api";
-import * as nativeApi from "../interfaces/native-api";
+import {Conversation, ThreadProperties} from "../interfaces/api/conversation";
+import {Conversation as NativeConversation, Thread as NativeThread} from "../interfaces/native-api/conversation";
 
-export function formatConversation (native: nativeApi.Conversation): api.Conversation {
+export function formatConversation (native: NativeConversation): Conversation {
   if (native.id.indexOf("19:") === 0) { // thread
     return native;
   } else { // private
     let contact = native.id;
-    let result = <api.Conversation> native;
+    let result = <Conversation> native;
     result.members = [contact];
     return result;
   }
 }
 
-export function formatThread (native: nativeApi.Thread): api.Conversation {
+export function formatThread (native: NativeThread): Conversation {
   let members = _.map(native.members, (member => member.id));
-  let properties: api.ThreadProperties = {};
+  let properties: ThreadProperties = {};
 
   if ("properties" in native) {
     if ("topic" in native.properties) {
@@ -29,7 +29,7 @@ export function formatThread (native: nativeApi.Thread): api.Conversation {
     }
   }
 
-  let result: api.Conversation = {
+  let result: Conversation = {
     threadProperties: properties,
     id: native.id,
     type: native.type,

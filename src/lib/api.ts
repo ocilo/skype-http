@@ -11,10 +11,14 @@ import getConversation from "./api/get-conversation";
 import getConversations from "./api/get-conversations";
 import sendMessage from "./api/send-message";
 import setStatus from "./api/set-status";
-import * as api from "./interfaces/api";
-import {ApiContext} from "./interfaces/api-context";
 import {IO} from "./interfaces/io";
 import {MessagesPoller} from "./polling/messages-poller";
+
+import * as apiEvents from "./interfaces/api/events";
+import * as api from "./interfaces/api/api";
+import {Contact} from "./interfaces/api/contact";
+import {Context as ApiContext} from "./interfaces/api/context";
+import {Conversation} from "./interfaces/api/conversation";
 
 export class Api extends EventEmitter implements ApiEvents {
   io: IO;
@@ -27,7 +31,7 @@ export class Api extends EventEmitter implements ApiEvents {
     this.io = io;
     this.messagesPoller = new MessagesPoller(this.io, this.apiContext);
     this.messagesPoller.on("error", (err: Error) => this.emit("error", err));
-    this.messagesPoller.on("event-message", (ev: api.EventMessage) => this.handlePollingEvent(ev));
+    this.messagesPoller.on("event-message", (ev: apiEvents.EventMessage) => this.handlePollingEvent(ev));
   }
 
   acceptContactRequest(contactUsername: string): Bluebird<this> {
@@ -38,19 +42,19 @@ export class Api extends EventEmitter implements ApiEvents {
     return declineContactRequest(this.io, this.apiContext, contactUsername).thenReturn(this);
   }
 
-  getContact (contactId: string): Bluebird<api.Contact> {
+  getContact (contactId: string): Bluebird<Contact> {
     return Bluebird.reject(new Incident("todo", "Api:getContact is not implemented yet"));
   }
 
-  getContacts (): Bluebird<api.Contact[]> {
+  getContacts (): Bluebird<Contact[]> {
     return getContacts(this.io, this.apiContext);
   }
 
-  getConversation (conversationId: string): Bluebird<api.Conversation> {
+  getConversation (conversationId: string): Bluebird<Conversation> {
     return getConversation(this.io, this.apiContext, conversationId);
   }
 
-  getConversations (): Bluebird<api.Conversation[]> {
+  getConversations (): Bluebird<Conversation[]> {
     return getConversations(this.io, this.apiContext);
   }
 
@@ -78,7 +82,7 @@ export class Api extends EventEmitter implements ApiEvents {
     return Bluebird.resolve(this);
   }
 
-  protected handlePollingEvent(ev: api.EventMessage): any {
+  protected handlePollingEvent(ev: apiEvents.EventMessage): any {
     this.emit("event", ev);
 
     // Prevent echo

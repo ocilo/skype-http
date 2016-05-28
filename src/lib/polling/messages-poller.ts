@@ -3,17 +3,21 @@ import {EventEmitter} from "events";
 import {Incident} from "incident";
 
 import * as io from "../interfaces/io";
-import * as api from "../interfaces/api";
-import {ApiContext} from "../interfaces/api-context";
-import * as nativeApi from "../interfaces/native-api";
+import * as api from "../interfaces/api/api";
+import {Context as ApiContext} from "../interfaces/api/context";
+import * as nativeMessageResources from "../interfaces/native-api/message-resources";
+import * as nativeResources from "../interfaces/native-api/resources";
+import * as nativeEvents from "../interfaces/native-api/events";
 import * as messagesUri from "../messages-uri";
-import {ParsedUserId} from "../interfaces/index";
+import {ParsedConversationId} from "../interfaces/api/api";
+import * as resources from "../interfaces/api/resources"
+import * as events from "../interfaces/api/events"
 
 // Perform one request every 1000 ms
 const POLLING_DELAY = 1000;
 
 const CONTACT_ID_PATTERN = /^(\d+):(.+)$/;
-function parseContactId(contactId: string): ParsedUserId {
+function parseContactId(contactId: string): ParsedConversationId {
   const match = CONTACT_ID_PATTERN.exec(contactId);
   if (match === null) {
     throw new Incident("parse-error", "Unable to parse userId");
@@ -25,7 +29,7 @@ function parseContactId(contactId: string): ParsedUserId {
   };
 }
 
-function formatRichTextResource (nativeResource: nativeApi.RichText): api.RichTextResource {
+function formatRichTextResource (nativeResource: nativeMessageResources.RichText): resources.RichTextResource {
   const parsedConversationUri = messagesUri.parseConversation(nativeResource.conversationLink);
   const parsedContactUri = messagesUri.parseContact(nativeResource.from);
   const parsedContactId = parseContactId(parsedContactUri.contact);
@@ -41,7 +45,7 @@ function formatRichTextResource (nativeResource: nativeApi.RichText): api.RichTe
   };
 }
 
-function formatTextResource (nativeResource: nativeApi.Text): api.TextResource {
+function formatTextResource (nativeResource: nativeMessageResources.Text): resources.TextResource {
   const parsedConversationUri = messagesUri.parseConversation(nativeResource.conversationLink);
   const parsedContactUri = messagesUri.parseContact(nativeResource.from);
   const parsedContactId = parseContactId(parsedContactUri.contact);
@@ -57,20 +61,20 @@ function formatTextResource (nativeResource: nativeApi.Text): api.TextResource {
   };
 }
 
-function formatMessageResource (nativeResource: nativeApi.MessageResource): api.Resource {
+function formatMessageResource (nativeResource: nativeResources.MessageResource): resources.Resource {
   switch (nativeResource.messagetype) {
     case "RichText":
-      return formatRichTextResource(<nativeApi.RichText> nativeResource);
+      return formatRichTextResource(<nativeMessageResources.RichText> nativeResource);
     case "Text":
-      return formatTextResource(<nativeApi.Text> nativeResource);
+      return formatTextResource(<nativeMessageResources.Text> nativeResource);
     default:
       // TODO
       return null;
   }
 }
 
-function formatEventMessage(native: nativeApi.EventMessage): api.EventMessage {
-  let resource: api.Resource;
+function formatEventMessage(native: nativeEvents.EventMessage): events.EventMessage {
+  let resource: resources.Resource;
   switch (native.resourceType) {
     case "UserPresence":
       resource = null;
@@ -79,7 +83,7 @@ function formatEventMessage(native: nativeApi.EventMessage): api.EventMessage {
       resource = null;
       break;
     case "NewMessage":
-      resource = formatMessageResource(<nativeApi.MessageResource> native.resource);
+      resource = formatMessageResource(<nativeResources.MessageResource> native.resource);
       break;
     default:
       return null;
@@ -129,7 +133,7 @@ export class MessagesPoller extends EventEmitter {
     return this;
   }
 
-  protected getMessages (): Bluebird<api.EventMessage> {
+  protected getMessages (): Bluebird<events.EventMessage> {
     return Bluebird
       .try(() => {
         const requestOptions = {
@@ -145,12 +149,12 @@ export class MessagesPoller extends EventEmitter {
         if (res.statusCode !== 200) {
           return Bluebird.reject(new Incident("poll", "Unable to poll"));
         }
-        const body: {eventMessages?: nativeApi.EventMessage[]} = JSON.parse(res.body);
+        const body: {eventMessages?: nativeEvents.EventMessage[]} = JSON.parse(res.body);
 
         if (body.eventMessages) {
           for (let msg of body.eventMessages) {
             // console.log(JSON.stringify(msg, null, 2));
-            let formatted: api.EventMessage = formatEventMessage(msg);
+            let formatted: events.EventMessage = formatEventMessage(msg);
             if (formatted && formatted.resource) {
               this.emit("event-message", formatted);
             }

@@ -1,7 +1,7 @@
 import {resolve as resolvePath} from "path";
 import {Incident} from "incident";
 
-import {Credentials} from "../../lib/interfaces/index";
+import {Credentials} from "../../lib/interfaces/api/api";
 
 const TEST_CONFIG_PATH = "test-config.js";
 

@@ -1,8 +1,10 @@
 import * as Bluebird from "bluebird";
 import {createInterface} from "readline";
 
-import {Credentials} from "../lib/interfaces/index";
-import * as api from "../lib/interfaces/api";
+import {Credentials} from "../lib/interfaces/api/api";
+import * as events from "../lib/interfaces/api/events";
+import {Contact} from "../lib/interfaces/api/contact";
+import * as resources from "../lib/interfaces/api/resources";
 import * as skypeHttp from "../lib/connect";
 import {Api as SkypeApi} from "../lib/api";
 
@@ -46,11 +48,11 @@ promptCredentials()
   })
   .then((api: SkypeApi) => {
     // Log every event
-    api.on("event", (ev: api.EventMessage) => {
+    api.on("event", (ev: events.EventMessage) => {
       console.log(JSON.stringify(ev, null, 2));
     });
 
-    let onMessage = (resource: api.TextResource) => {
+    let onMessage = (resource: resources.TextResource) => {
       if (resource.from.username === api.apiContext.username) {
         return;
       }
@@ -70,7 +72,7 @@ promptCredentials()
       .then((contacts) => {
         console.log("Your contacts:");
         console.log(JSON.stringify(contacts, null, 2));
-        return Bluebird.map(contacts, (contact: api.Contact) => {
+        return Bluebird.map(contacts, (contact: Contact) => {
           return null;
           // return api.getContact(contact.id)
           //   .then(contact => {

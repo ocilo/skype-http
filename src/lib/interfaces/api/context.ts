@@ -1,6 +1,6 @@
 import {CookieJar} from "request";
 
-export interface ApiContext {
+export interface Context {
   username: string;
   cookieJar: CookieJar;
   skypeToken: SkypeToken;

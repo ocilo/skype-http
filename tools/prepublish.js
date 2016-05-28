@@ -4,8 +4,8 @@
  * It copies the local build to the dist directory exposed to npm.
  */
 
-var path = require("path");
 var fs = require("fs-extra");
+var path = require("path");
 
 var projectRoot = path.resolve(__dirname, "..");
 

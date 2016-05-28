@@ -1,7 +1,7 @@
 import {assert} from "chai";
 
 import * as SkypeHttp from "../../lib/connect";
-import {Credentials} from "../../lib/interfaces/index";
+import {Credentials} from "../../lib/interfaces/api/api";
 import {Api} from "../../lib/api";
 
 import {testConfig} from "./config";
