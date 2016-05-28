@@ -4,14 +4,14 @@ import {Incident} from "incident";
 import * as io from "../interfaces/io";
 import {Contact} from "../interfaces/api/contact";
 import {Context} from "../interfaces/api/context";
-import * as contactsUri from "../contacts-uri";
+import * as apiUri from "../api-uri";
 
 export function getContact (io: io.IO, apiContext: Context, contactId: string): Bluebird<Contact> {
   return Bluebird
     .try(() => {
       console.log(contactId);
       const requestOptions: io.GetOptions = {
-        uri: contactsUri.contact(apiContext.username, contactId),
+        uri: apiUri.userProfile(contactId),
         jar: apiContext.cookieJar,
         headers: {
           "X-Skypetoken": apiContext.skypeToken.value

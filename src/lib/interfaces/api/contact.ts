@@ -1,3 +1,5 @@
+import {Nullable} from "../utils";
+
 export interface Location {
   country: string; // almost certainly an enum...
   city?: string;
@@ -23,4 +25,24 @@ export interface Contact {
     surname?: string; // also last-name ?
     nickname: string; // username, it is NOT the local nickname that you can modify
   };
+}
+
+export interface Profile {
+  fistname: string;
+  lastname: string;
+  birthday: Nullable<any>;
+  language: "en" | string; // enum ?
+  country: "us" | string; // enum ?
+  province: Nullable<any>;
+  city: Nullable<any>;
+  homepage: Nullable<any>;
+  about: Nullable<any>;
+  emails: any[];
+  phoneMobile: Nullable<any>;
+  phoneHome: Nullable<any>;
+  phoneOffice: Nullable<any>;
+  mood: Nullable<any>;
+  richMood: Nullable<any>;
+  avatarUrl: Nullable<any>;
+  username: string;
 }
