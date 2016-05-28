@@ -22,48 +22,48 @@ import {Conversation} from "./interfaces/api/conversation";
 
 export class Api extends EventEmitter implements ApiEvents {
   io: IO;
-  apiContext: ApiContext;
+  context: ApiContext;
   messagesPoller: MessagesPoller;
 
   constructor (context: ApiContext, io: IO) {
     super();
-    this.apiContext = context;
+    this.context = context;
     this.io = io;
-    this.messagesPoller = new MessagesPoller(this.io, this.apiContext);
+    this.messagesPoller = new MessagesPoller(this.io, this.context);
     this.messagesPoller.on("error", (err: Error) => this.emit("error", err));
     this.messagesPoller.on("event-message", (ev: apiEvents.EventMessage) => this.handlePollingEvent(ev));
   }
 
   acceptContactRequest(contactUsername: string): Bluebird<this> {
-    return acceptContactRequest(this.io, this.apiContext, contactUsername).thenReturn(this);
+    return acceptContactRequest(this.io, this.context, contactUsername).thenReturn(this);
   }
 
   declineContactRequest (contactUsername: string): Bluebird<this> {
-    return declineContactRequest(this.io, this.apiContext, contactUsername).thenReturn(this);
+    return declineContactRequest(this.io, this.context, contactUsername).thenReturn(this);
   }
 
   getContact (contactId: string): Bluebird<Contact> {
-    return Bluebird.reject(new Incident("todo", "Api:getContact is not implemented yet"));
+    return getContact(this.io, this.context, contactId);
   }
 
   getContacts (): Bluebird<Contact[]> {
-    return getContacts(this.io, this.apiContext);
+    return getContacts(this.io, this.context);
   }
 
   getConversation (conversationId: string): Bluebird<Conversation> {
-    return getConversation(this.io, this.apiContext, conversationId);
+    return getConversation(this.io, this.context, conversationId);
   }
 
   getConversations (): Bluebird<Conversation[]> {
-    return getConversations(this.io, this.apiContext);
+    return getConversations(this.io, this.context);
   }
 
   sendMessage (message: api.NewMessage, conversationId: string): Bluebird<api.SendMessageResult> {
-    return sendMessage(this.io, this.apiContext, message, conversationId);
+    return sendMessage(this.io, this.context, message, conversationId);
   }
 
   setStatus (status: api.Status): Bluebird<any> {
-    return setStatus(this.io, this.apiContext, status);
+    return setStatus(this.io, this.context, status);
   }
 
   /**
@@ -86,7 +86,7 @@ export class Api extends EventEmitter implements ApiEvents {
     this.emit("event", ev);
 
     // Prevent echo
-    if (ev.resource.from.username === this.apiContext.username) {
+    if (ev.resource.from.username === this.context.username) {
       return;
     }
 

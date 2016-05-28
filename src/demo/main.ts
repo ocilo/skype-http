@@ -53,7 +53,7 @@ promptCredentials()
     });
 
     let onMessage = (resource: resources.TextResource) => {
-      if (resource.from.username === api.apiContext.username) {
+      if (resource.from.username === api.context.username) {
         return;
       }
 
@@ -73,11 +73,10 @@ promptCredentials()
         console.log("Your contacts:");
         console.log(JSON.stringify(contacts, null, 2));
         return Bluebird.map(contacts, (contact: Contact) => {
-          return null;
-          // return api.getContact(contact.id)
-          //   .then(contact => {
-          //     console.log(JSON.stringify(contact, null, 2));
-          //   });
+          return api.getContact(contact.id)
+            .then(contact => {
+              console.log(JSON.stringify(contact, null, 2));
+            });
         });
       })
       // .then(() => {
