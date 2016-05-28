@@ -1,7 +1,9 @@
 export {connect} from "./connect";
 
 import * as api from "./api";
-import * as apiInterface from "./interfaces/api";
+import * as apiInterface from "./interfaces/api/api";
+import * as contact from "./interfaces/api/contact";
+import * as conversation from "./interfaces/api/conversation";
 
 export type Api = api.Api;
 export namespace Api {
@@ -9,13 +11,13 @@ export namespace Api {
   export type SendMessageResult = apiInterface.SendMessageResult;
 }
 
-export type Contact = apiInterface.Contact;
+export type Contact = contact.Contact;
 export namespace Contact {
-  export type Phone = apiInterface.Phone;
-  export type Location = apiInterface.Location;
+  export type Phone = contact.Phone;
+  export type Location = contact.Location;
 }
 
-export type Conversation = apiInterface.Conversation;
+export type Conversation = conversation.Conversation;
 export namespace Conversation {
-  export type ThreadProperties = apiInterface.ThreadProperties;
+  export type ThreadProperties = conversation.ThreadProperties;
 }

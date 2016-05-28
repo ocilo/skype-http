@@ -2,8 +2,8 @@ import * as Bluebird from "bluebird";
 import {Incident} from "incident";
 
 import * as io from "../interfaces/io";
-import {Contact} from "../interfaces/api";
-import {ApiContext} from "../interfaces/api-context";
+import {Contact} from "../interfaces/api/contact";
+import {Context} from "../interfaces/api/context";
 import * as contactsUri from "../contacts-uri";
 
 interface ContactsBody {
@@ -12,7 +12,7 @@ interface ContactsBody {
   scope: "full" | string; // an enum ?
 }
 
-export function getContacts(io: io.IO, apiContext: ApiContext): Bluebird<Contact[]> {
+export function getContacts(io: io.IO, apiContext: Context): Bluebird<Contact[]> {
   return Bluebird
     .try(() => {
       const requestOptions: io.GetOptions = {

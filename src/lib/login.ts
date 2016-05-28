@@ -4,9 +4,9 @@ import {Incident} from "incident";
 import * as request from "request";
 import {parse as parseUri} from "url";
 
-import {Credentials} from "./interfaces/index";
+import {Credentials} from "./interfaces/api/api";
 import {Dictionary} from "./interfaces/utils";
-import {ApiContext, SkypeToken, RegistrationToken} from "./interfaces/api-context";
+import {Context as ApiContext, SkypeToken, RegistrationToken} from "./interfaces/api/context";
 import * as Consts from "./consts";
 import * as io from "./interfaces/io";
 import * as Utils from "./utils";

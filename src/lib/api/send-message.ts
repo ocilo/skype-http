@@ -1,8 +1,8 @@
 import * as Bluebird from "bluebird";
 import {Incident} from "incident";
 
-import * as api from "../interfaces/api";
-import {ApiContext} from "../interfaces/api-context";
+import * as api from "../interfaces/api/api";
+import {Context} from "../interfaces/api/context";
 import * as io from "../interfaces/io";
 import {getCurrentTime} from "../utils";
 import * as messagesUri from "../messages-uri";
@@ -18,7 +18,7 @@ interface SendMessageQuery {
   contenttype: string;
 }
 
-export function sendMessage(io: io.IO, apiContext: ApiContext, message: api.NewMessage, conversationId: string): Bluebird<api.SendMessageResult> {
+export function sendMessage(io: io.IO, apiContext: Context, message: api.NewMessage, conversationId: string): Bluebird<api.SendMessageResult> {
   return Bluebird
     .try(() => {
       let query: SendMessageQuery = {

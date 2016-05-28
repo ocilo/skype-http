@@ -3,9 +3,9 @@ import * as _ from "lodash";
 import {Incident} from "incident";
 
 import * as io from "../interfaces/io";
-import {Conversation} from "../interfaces/api";
-import {Conversation as NativeConversation, Thread as NativeThread} from "../interfaces/native-api";
-import {ApiContext} from "../interfaces/api-context";
+import {Conversation} from "../interfaces/api/conversation";
+import {Conversation as NativeConversation, Thread as NativeThread} from "../interfaces/native-api/conversation";
+import {Context} from "../interfaces/api/context";
 import * as messagesUri from "../messages-uri";
 import {formatConversation, formatThread} from "../utils/formatters";
 
@@ -25,7 +25,7 @@ interface GetConversationQuery {
   targetType: string; // seen: Passport|Skype|Lync|Thread
 }
 
-export function getConversation (io: io.IO, apiContext: ApiContext, conversationId: string): Bluebird<Conversation> {
+export function getConversation (io: io.IO, apiContext: Context, conversationId: string): Bluebird<Conversation> {
   return Bluebird
     .try(() => {
       const query: GetConversationQuery = {

@@ -3,10 +3,10 @@ import {Incident} from "incident";
 
 import * as api from "./api";
 import {IO} from "./interfaces/io";
-import {ApiContext} from "./interfaces/api-context";
+import {Context} from "./interfaces/api/context";
 import {RequestIO} from "./request-io";
 import {login} from "./login";
-import {Credentials} from "./interfaces/index";
+import {Credentials} from "./interfaces/api/api";
 
 export interface StateContainer {
   state: any;
@@ -24,7 +24,7 @@ export function connect (options: ConnectOptions): Bluebird<api.Api> {
   } else {
     let io: IO = new RequestIO();
     return login({io: io, credentials: options.credentials, verbose: options.verbose})
-      .then((apiContext: ApiContext) => {
+      .then((apiContext: Context) => {
         if (options.verbose) {
           console.log("Obtained apiContext trough authentication:");
           console.log(apiContext);
