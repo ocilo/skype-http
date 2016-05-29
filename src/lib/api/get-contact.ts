@@ -5,6 +5,7 @@ import * as io from "../interfaces/io";
 import {Contact} from "../interfaces/api/contact";
 import {Context} from "../interfaces/api/context";
 import * as apiUri from "../api-uri";
+import * as contactsUri from "../contacts-uri";
 
 export function getContact (io: io.IO, apiContext: Context, contactId: string): Bluebird<Contact> {
   return Bluebird

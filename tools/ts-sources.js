@@ -41,8 +41,6 @@ function updateFiles (tsconfigPath, files) {
   writeJson(tsconfigPath, tsConfig);
 }
 
-console.log(libSources);
-
 updateFiles("src/lib/tsconfig.json", libSources);
 updateFiles("src/test/tsconfig.json", testSources);
 updateFiles("src/demo/tsconfig.json", demoSources);

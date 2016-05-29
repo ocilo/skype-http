@@ -57,6 +57,7 @@
     "../lib/utils.ts",
     "../lib/utils/formatters.ts",
     "../lib/utils/hmac-sha256.ts",
+    "../lib/utils/user-data-processor.ts",
     "main.ts"
   ]
 }

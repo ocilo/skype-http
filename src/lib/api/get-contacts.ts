@@ -1,13 +1,16 @@
 import * as Bluebird from "bluebird";
+import * as _ from "lodash";
 import {Incident} from "incident";
 
 import * as io from "../interfaces/io";
 import {Contact} from "../interfaces/api/contact";
+import {Contact as NativeContact} from "../interfaces/native-api/contact";
 import {Context} from "../interfaces/api/context";
 import * as contactsUri from "../contacts-uri";
+import {formatContact} from "../utils/formatters";
 
-interface ContactsBody {
-  contacts: Contact[];
+interface ContactsResponse {
+  contacts: NativeContact[];
   count: number; // contacts.length
   scope: "full" | string; // an enum ?
 }
@@ -28,8 +31,8 @@ export function getContacts(io: io.IO, apiContext: Context): Bluebird<Contact[]>
       if (res.statusCode !== 200) {
         return Bluebird.reject(new Incident("net", "Unable to fetch contacts"));
       }
-      const body: ContactsBody = JSON.parse(res.body);
-      return body.contacts;
+      const body: ContactsResponse = JSON.parse(res.body);
+      return _.map(body.contacts, formatContact);
     });
 }
 
