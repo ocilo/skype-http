@@ -10,8 +10,8 @@ import * as nativeResources from "../interfaces/native-api/resources";
 import * as nativeEvents from "../interfaces/native-api/events";
 import * as messagesUri from "../messages-uri";
 import {ParsedConversationId} from "../interfaces/api/api";
-import * as resources from "../interfaces/api/resources"
-import * as events from "../interfaces/api/events"
+import * as resources from "../interfaces/api/resources";
+import * as events from "../interfaces/api/events";
 
 // Perform one request every 1000 ms
 const POLLING_DELAY = 1000;

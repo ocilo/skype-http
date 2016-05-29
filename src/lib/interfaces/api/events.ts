@@ -9,5 +9,3 @@ export interface EventMessage {
   resourceLink: string;
   resource: Resource;
 }
-
-

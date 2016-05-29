@@ -55,6 +55,39 @@ function buildProfile (username: string): string[] {
   return buildUser(username).concat("profile");
 }
 
+// agentProvisioningService: { host: "https://api.aps.skype.com/v1/" },
+// stratusService: {
+//   avatarUrl: "users/${contactId}/profile/avatar?cacheHeaders=1",
+//     avatarUpdateUrl: "users/${contactId}/profile/avatar",
+//     blockContactEndpoint: "users/self/contacts/${contactId}/block",
+//     contactRequestEndpoint: "users/self/contacts/auth-request",
+//     contactRequestTimeInterval: 60000,
+//     contactsEndpoint: "users/self/authorized-contacts",
+//     directorySearchEndpointSkypeOnly: "search/users/any?keyWord=${keyword}&contactTypes[]=skype",
+//     directorySearchEndpoint: "search/users/any?keyWord=${keyword}",
+//     directorySearchByIdEndpoint: "search/users?skypename=${skypeName}",
+//     firstContactRequestDelay: 10000,
+//     host: "https://api.skype.com/",
+//     myContactsEndpoint: "users/self/contacts?hideDetails=true",
+//     profileEndpoint: "users/self/profile",
+//     profilesEndpoint: "users/self/contacts/profiles",
+//     batchProfilesEndpoint: "users/batch/profiles",
+//     userInfoEndpoint: "users/self",
+//     unblockContactEndpoint: "users/self/contacts/${contactId}/unblock",
+//     deleteContactEndpoint: "users/self/contacts/${contactId}",
+//     retry: n
+// },
+
+// /users/:user/profile/avatar?cacheHeaders=1
+function buildAvatar(username: string): string[] {
+  return buildProfile(username).concat("avatar?cacheHeaders=1");
+}
+
+// /users/:user/profile/avatar
+function buildUpdatedAvatar(username: string): string[] {
+  return buildProfile(username).concat("avatar");
+}
+
 function getOrigin (): string {
   return "https://" + SKYPEWEB_API_SKYPE_HOST;
 }
