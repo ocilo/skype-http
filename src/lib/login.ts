@@ -3,7 +3,6 @@ import * as cheerio from "cheerio";
 import {Incident} from "incident";
 import * as request from "request";
 import {parse as parseUri} from "url";
-
 import {Credentials} from "./interfaces/api/api";
 import {Dictionary} from "./interfaces/utils";
 import {Context as ApiContext, SkypeToken, RegistrationToken} from "./interfaces/api/context";
@@ -13,9 +12,10 @@ import * as Utils from "./utils";
 import {stringifyHeaderParams, parseHeaderParams} from "./utils";
 import {hmacSha256} from "./utils/hmac-sha256";
 import * as messagesUri from "./messages-uri";
+import * as microsoftAccount from "./providers/microsoft-account";
 
 export interface LoginOptions {
-  io: io.IO;
+  io: io.HttpIo;
   credentials: Credentials;
   verbose?: boolean;
 }
@@ -34,13 +34,8 @@ interface SkypeTokenRequest {
   js_time: number;
 }
 
-interface SkypeTokenResponse {
-  skypetoken: string;
-  expires_in: number;
-}
-
 interface IOOptions {
-  io: io.IO;
+  io: io.HttpIo;
   jar: request.CookieJar;
 }
 
@@ -56,143 +51,57 @@ interface IOOptions {
  * @param options
  * @returns {Bluebird<ApiContext>}
  */
-export function login (options: LoginOptions): Bluebird<ApiContext> {
-  let jar: request.CookieJar = request.jar();
+export async function login(options: LoginOptions): Promise<ApiContext> {
+  const jar: request.CookieJar = request.jar();
 
   let ioOptions = {io: options.io, jar: jar};
 
-  return getLoginKeys(ioOptions)
-    .then((loginKeys: LoginKeys) => {
-      if (options.verbose) {
-        console.log("Acquired LoginKeys");
-      }
-      return getSkypeToken(ioOptions, options.credentials, loginKeys);
-    })
-    .then((skypeToken: SkypeToken) => {
-      if (options.verbose) {
-        console.log("Acquired SkypeToken");
-      }
-      return getRegistrationToken(ioOptions, skypeToken, Consts.SKYPEWEB_DEFAULT_MESSAGES_HOST)
-        .tap((registrationToken: RegistrationToken) => {
-          if (options.verbose) {
-            console.log("Acquired RegistrationToken");
-          }
-          return subscribeToResources(ioOptions, registrationToken);
-        })
-        .tap((registrationToken: RegistrationToken) => {
-          if (options.verbose) {
-            console.log("Subscribed to resources");
-          }
-          return createPresenceDocs(ioOptions, registrationToken);
-        })
-        .then((registrationToken: RegistrationToken) => {
-          if (options.verbose) {
-            console.log("Created presence docs");
-          }
-          let context: ApiContext = {
-            username: options.credentials.username,
-            skypeToken: skypeToken,
-            cookieJar: jar,
-            registrationToken: registrationToken
-          };
-          return context;
-        });
-    });
-}
-
-function getLoginKeys (options: IOOptions): Bluebird<LoginKeys> {
-  const requestOptions: io.GetOptions = {
-    uri: Consts.SKYPEWEB_LOGIN_URL,
-    jar: options.jar
+  const getSkypeTokenOptions: microsoftAccount.GetSkypeTokenOptions = {
+    credentials: {
+      login: options.credentials.username,
+      password: options.credentials.password
+    },
+    httpIo: options.io,
+    jar: jar
   };
 
-  return Bluebird.resolve(options.io.get(requestOptions))
-    .then((res: io.Response) => {
-      if (res.statusCode !== 200) {
-        return Bluebird.reject(new Incident("net", "Unable to GET the login page"));
-      }
-      return Bluebird.resolve(scrapLoginKeys(res.body));
-    });
-}
-
-function scrapLoginKeys (html: string): LoginKeys {
-  const $: cheerio.Static = cheerio.load(html);
-
-  const result: LoginKeys = {
-    pie: $('input[name="pie"]').val(),
-    etm: $('input[name="etm"]').val()
-  };
-
-  if (!result.pie || !result.etm) {
-    throw new Incident("scrapping", "Unable to retrieve the pie and etm keys from the login page");
+  const skypeToken: SkypeToken = await microsoftAccount.getSkypeToken(getSkypeTokenOptions);
+  if (options.verbose) {
+    console.log("Acquired SkypeToken");
   }
 
-  return result;
-}
-
-function getSkypeToken (ioOptions: IOOptions, credentials: Credentials, loginKeys: LoginKeys): Bluebird<SkypeToken> {
-  const startTime = Utils.getCurrentTime();
-  const data: SkypeTokenRequest = {
-    username: credentials.username,
-    password: credentials.password,
-    pie: loginKeys.pie,
-    etm: loginKeys.etm,
-    timezone_field: Utils.getTimezone(),
-    js_time: Utils.getCurrentTime()
-  };
-  const requestOptions: io.PostOptions = {
-    uri: Consts.SKYPEWEB_LOGIN_URL,
-    form: data,
-    jar: ioOptions.jar
-  };
-
-  return Bluebird.resolve (ioOptions.io.post(requestOptions))
-    .then((res: io.Response) => {
-      if (res.statusCode !== 200) {
-        return Bluebird.reject(new Incident("net", "Unable to get the response for the authentication POST request"));
-      }
-
-      const scrapped: SkypeTokenResponse = scrapSkypeToken(res.body);
-      const skypeToken: SkypeToken = {
-        value: scrapped.skypetoken,
-        expirationDate: new Date(1000 * (startTime + scrapped.expires_in)) // multiply by 1000 to get milliseconds
-      };
-
-      return Bluebird.resolve(skypeToken);
-    });
-}
-
-function scrapSkypeToken (html: string): SkypeTokenResponse {
-  const $: cheerio.Static = cheerio.load(html);
-
-  const result: SkypeTokenResponse = {
-    skypetoken: $('input[name="skypetoken"]').val(),
-    expires_in: parseInt($('input[name="expires_in"]').val(), 10) // 86400 sec by default
-  };
-
-  if (!result.skypetoken || !result.expires_in) {
-    const skypeErrorMessage = $(".message_error").text();
-    const errorName = "authentication-failed";
-    const errorMessage = "Failed to get skypetoken. Username or password is incorrect OR you've hit a CAPTCHA wall.";
-    if (skypeErrorMessage) {
-      const skypeError = new Incident("skype-error", skypeErrorMessage);
-      throw new Incident(skypeError, errorName, errorMessage);
-    } else {
-      throw new Incident(errorName, errorMessage);
-    }
+  const registrationToken: RegistrationToken = await getRegistrationToken(ioOptions, skypeToken, Consts.SKYPEWEB_DEFAULT_MESSAGES_HOST);
+  if (options.verbose) {
+    console.log("Acquired RegistrationToken");
   }
-  return result;
+
+  await subscribeToResources(ioOptions, registrationToken);
+  if (options.verbose) {
+    console.log("Subscribed to resources");
+  }
+
+  await createPresenceDocs(ioOptions, registrationToken);
+  if (options.verbose) {
+    console.log("Created presence docs");
+  }
+
+  return {
+    username: options.credentials.username,
+    skypeToken: skypeToken,
+    cookieJar: jar,
+    registrationToken: registrationToken
+  };
 }
 
-function getLockAndKeyResponse (time: number): string {
-  const inputBuffer: Buffer = (<any> Buffer).from(String(time), "utf8");
-  const appIdBuffer: Buffer = (<any> Buffer).from(Consts.SKYPEWEB_LOCKANDKEY_APPID, "utf8");
-  const secretBuffer: Buffer = (<any> Buffer).from(Consts.SKYPEWEB_LOCKANDKEY_SECRET, "utf8");
+function getLockAndKeyResponse(time: number): string {
+  const inputBuffer: Buffer = Buffer.from(String(time), "utf8");
+  const appIdBuffer: Buffer = Buffer.from(Consts.SKYPEWEB_LOCKANDKEY_APPID, "utf8");
+  const secretBuffer: Buffer = Buffer.from(Consts.SKYPEWEB_LOCKANDKEY_SECRET, "utf8");
   return hmacSha256(inputBuffer, appIdBuffer, secretBuffer);
 }
 
 // Get the token used to subscribe to resources
-function getRegistrationToken (options: IOOptions, skypeToken: SkypeToken, messagesHost: string, retry: number = 2): Bluebird<RegistrationToken> {
+function getRegistrationToken(options: IOOptions, skypeToken: SkypeToken, messagesHost: string, retry: number = 2): Bluebird<RegistrationToken> {
   return Bluebird
     .try(() => {
       const startTime: number = Utils.getCurrentTime();
@@ -235,6 +144,9 @@ function getRegistrationToken (options: IOOptions, skypeToken: SkypeToken, messa
           let locationHeader = res.headers["location"];
 
           let location = parseUri(locationHeader); // TODO: parse in messages-uri.ts
+          if (location.host === undefined) {
+            throw new Incident("parse-error", "Expected location to define host");
+          }
           if (location.host !== messagesHost) { // mainly when 301, but sometimes when 201
             messagesHost = location.host;
             if (retry > 0) {
@@ -322,7 +234,7 @@ function createPresenceDocs(ioOptions: IOOptions, registrationToken: Registratio
         return Bluebird.reject(new Incident("Missing endpoint id in registration token"));
       }
 
-      const requestBody = { // this is exact json that is needed to register endpoint for setting of status.
+      const requestBody = { // this is the exact json that is needed to register endpoint for setting of status.
         id: "endpointMessagingService",
         type: "EndpointPresenceDoc",
         selfLink: "uri",

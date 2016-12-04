@@ -11,7 +11,7 @@ import getConversation from "./api/get-conversation";
 import getConversations from "./api/get-conversations";
 import sendMessage from "./api/send-message";
 import setStatus from "./api/set-status";
-import {IO} from "./interfaces/io";
+import {HttpIo} from "./interfaces/io";
 import {MessagesPoller} from "./polling/messages-poller";
 
 import * as apiEvents from "./interfaces/api/events";
@@ -21,11 +21,11 @@ import {Context as ApiContext} from "./interfaces/api/context";
 import {Conversation} from "./interfaces/api/conversation";
 
 export class Api extends EventEmitter implements ApiEvents {
-  io: IO;
+  io: HttpIo;
   context: ApiContext;
   messagesPoller: MessagesPoller;
 
-  constructor (context: ApiContext, io: IO) {
+  constructor (context: ApiContext, io: HttpIo) {
     super();
     this.context = context;
     this.io = io;
@@ -82,8 +82,12 @@ export class Api extends EventEmitter implements ApiEvents {
     return Bluebird.resolve(this);
   }
 
-  protected handlePollingEvent(ev: apiEvents.EventMessage): any {
+  protected handlePollingEvent(ev: apiEvents.EventMessage): void {
     this.emit("event", ev);
+
+    if (ev.resource === null) {
+      return;
+    }
 
     // Prevent echo
     if (ev.resource.from.username === this.context.username) {

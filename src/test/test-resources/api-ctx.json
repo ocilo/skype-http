@@ -1,0 +1,226 @@
+{
+  "username": "SKYPE_USERNAME",
+  "skypeToken": {
+    "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjEyIn0.eyJpYXQiOjE0ODM4Nzc5ODEsImV4cCI6MTQ4Mzk2NDM4MSwic2t5cGVpZCI6ImZhY2Vib3QuYWxpY2UiLCJzY3AiOjk1OCwiY3NpIjoiMyIsImNpZCI6IjExODM2M2IxMGViN2M3ZiIsImFhdCI6MTQ4Mzg3Nzk4MX0.w_jxZBiZ03oaPrjzeaqhEgp6tZLGzbAfWymSGaMHsGMg_vOPSRYNsBQdX-qT7Q6vsqsBDr8DlC_6LGyxPye5YPIEPGQm2D06wpFvw9Lirzf2JaY0CaSjLB-80e2_FSPMvaaK-Y2_KlyQih2VeaMoR3877Ak47_bXLqWfnalPkFMYFs0DqXlv-qA_3dDbP3_Bm-PaVvItrhUEzo1Q",
+    "expirationDate": "2017-01-09T12:19:38.617Z"
+  },
+  "cookieJar": {
+    "_jar": {
+      "version": "tough-cookie@2.3.2",
+      "storeType": "MemoryCookieStore",
+      "rejectPublicSuffixes": true,
+      "cookies": [
+        {
+          "key": "SC",
+          "value": "CC=:CCY=:LC=en:LIM=:TM=1483877979:TS=1483877979:TZ=:VAT=:VER=",
+          "expires": "2018-01-08T12:19:39.000Z",
+          "maxAge": 31536000,
+          "domain": "skype.com",
+          "path": "/",
+          "hostOnly": false,
+          "creation": "2017-01-08T12:19:39.067Z",
+          "lastAccessed": "2017-01-08T12:19:39.067Z"
+        },
+        {
+          "key": "login-vi",
+          "value": "e33da27152f58493250212a985ff6845",
+          "domain": "login.skype.com",
+          "path": "/",
+          "hostOnly": true,
+          "creation": "2017-01-08T12:19:39.068Z",
+          "lastAccessed": "2017-01-08T12:19:39.068Z"
+        },
+        {
+          "key": "uaid",
+          "value": "e33da27152f58493250212a985ff6845",
+          "domain": "login.live.com",
+          "path": "/",
+          "secure": true,
+          "httpOnly": true,
+          "extensions": [
+            "version=1"
+          ],
+          "hostOnly": false,
+          "creation": "2017-01-08T12:19:40.198Z",
+          "lastAccessed": "2017-01-08T12:19:41.312Z"
+        },
+        {
+          "key": "MSPRequ",
+          "value": "lt=1483877979&co=1&id=293290",
+          "domain": "login.live.com",
+          "path": "/",
+          "secure": true,
+          "httpOnly": true,
+          "extensions": [
+            "version=1"
+          ],
+          "hostOnly": true,
+          "creation": "2017-01-08T12:19:40.199Z",
+          "lastAccessed": "2017-01-08T12:19:40.399Z"
+        },
+        {
+          "key": "MSPOK",
+          "expires": "1980-10-30T16:00:00.000Z",
+          "domain": "login.live.com",
+          "path": "/",
+          "httpOnly": true,
+          "extensions": [
+            "version=1"
+          ],
+          "hostOnly": false,
+          "creation": "2017-01-08T12:19:40.199Z",
+          "lastAccessed": "2017-01-08T12:19:41.312Z"
+        },
+        {
+          "key": "CkTst",
+          "value": "1483877980397",
+          "domain": "login.live.com",
+          "path": "/",
+          "hostOnly": true,
+          "pathIsDefault": true,
+          "creation": "2017-01-08T12:19:40.397Z",
+          "lastAccessed": "2017-01-08T12:19:40.399Z"
+        },
+        {
+          "key": "PPAuth",
+          "value": "CfNkk42yFe!4hpiplTBFgA27NXRfX!n1GcSYlfBzGzGKwx7ybGgfQuwAQkodnj4*6coxhLSLk9sCwS3HJ8e9*rwsJHd28S6gn8zgbU1DxCMuyMCfGEHZFKfAi1pTmu4VkP6glTJie2iB0lQ!wQOAmectgUyNkER7!URqyoZ0Dt425kEje9UnrzK4UnY*Z8O82R4J1W!4PS4jYghdG!UCbRECznDYtmKBU6CtoI9W5Cd8B4TowPyZuGrKm0FV4!lByQN18R2Ritzn8!Qkf8BWWuhb6EPLJa6A8PJqWzsK5c2U",
+          "domain": "login.live.com",
+          "path": "/",
+          "secure": true,
+          "httpOnly": true,
+          "extensions": [
+            "version=1"
+          ],
+          "hostOnly": false,
+          "creation": "2017-01-08T12:19:41.312Z",
+          "lastAccessed": "2017-01-08T12:19:41.312Z"
+        },
+        {
+          "key": "PPLState",
+          "value": "1",
+          "domain": "live.com",
+          "path": "/",
+          "extensions": [
+            "version=1"
+          ],
+          "hostOnly": false,
+          "creation": "2017-01-08T12:19:41.313Z",
+          "lastAccessed": "2017-01-08T12:21:10.961Z"
+        },
+        {
+          "key": "MSPShared",
+          "expires": "1980-10-30T16:00:00.000Z",
+          "domain": "login.live.com",
+          "path": "/",
+          "httpOnly": true,
+          "hostOnly": false,
+          "creation": "2017-01-08T12:19:41.313Z",
+          "lastAccessed": "2017-01-08T12:19:41.313Z"
+        },
+        {
+          "key": "MSPPre",
+          "value": "SKYPE_USERNAME|0118363b10db7c7f||",
+          "expires": "2037-12-30T16:00:00.000Z",
+          "domain": "login.live.com",
+          "path": "/",
+          "secure": true,
+          "hostOnly": false,
+          "creation": "2017-01-08T12:19:41.314Z",
+          "lastAccessed": "2017-01-08T12:19:41.314Z"
+        },
+        {
+          "key": "MSPCID",
+          "value": "0118363b10eb7c7f",
+          "expires": "2037-12-30T16:00:00.000Z",
+          "domain": "login.live.com",
+          "path": "/",
+          "secure": true,
+          "httpOnly": true,
+          "hostOnly": false,
+          "creation": "2017-01-08T12:19:41.314Z",
+          "lastAccessed": "2017-01-08T12:19:41.314Z"
+        },
+        {
+          "key": "WLOpt",
+          "value": "credtype=1&act=[1]",
+          "expires": "2037-12-30T16:00:00.000Z",
+          "domain": "login.live.com",
+          "path": "/",
+          "secure": true,
+          "hostOnly": false,
+          "creation": "2017-01-08T12:19:41.314Z",
+          "lastAccessed": "2017-01-08T12:19:41.314Z"
+        },
+        {
+          "key": "MSPVis",
+          "value": "$293290",
+          "domain": "login.live.com",
+          "path": "/",
+          "secure": true,
+          "hostOnly": false,
+          "creation": "2017-01-08T12:19:41.315Z",
+          "lastAccessed": "2017-01-08T12:19:41.315Z"
+        },
+        {
+          "key": "LOpt",
+          "value": "1",
+          "domain": "login.live.com",
+          "path": "/",
+          "extensions": [
+            "version=1"
+          ],
+          "hostOnly": false,
+          "creation": "2017-01-08T12:19:41.315Z",
+          "lastAccessed": "2017-01-08T12:19:41.315Z"
+        },
+        {
+          "key": "SDIDC",
+          "value": "CRTFotHpOIJq6Hmr62KYvede!NZrq8*6D6jf5rH6PEfpifuaFt!pQz3cHXTPPXs8R0ACHJVid5SQtxUlP6YVTHFWYxgmI4bYrUOM3!uVq2*k0V!px*znyEv!4*kC*4plPDCdcqAi3M*eQDDu!uMnYMA$",
+          "expires": "2037-12-30T16:00:00.000Z",
+          "domain": "login.live.com",
+          "path": "/",
+          "secure": true,
+          "httpOnly": true,
+          "extensions": [
+            "version=1"
+          ],
+          "hostOnly": false,
+          "creation": "2017-01-08T12:19:41.316Z",
+          "lastAccessed": "2017-01-08T12:19:41.316Z"
+        },
+        {
+          "key": "MSPSoftVis",
+          "value": "@72198325083833620@:@",
+          "domain": "login.live.com",
+          "path": "/",
+          "secure": true,
+          "extensions": [
+            "version=1"
+          ],
+          "hostOnly": false,
+          "creation": "2017-01-08T12:19:41.316Z",
+          "lastAccessed": "2017-01-08T12:19:41.316Z"
+        },
+        {
+          "key": "MSPBack",
+          "value": "0",
+          "domain": "login.live.com",
+          "path": "/",
+          "extensions": [
+            "version=1"
+          ],
+          "hostOnly": false,
+          "creation": "2017-01-08T12:19:41.316Z",
+          "lastAccessed": "2017-01-08T12:19:41.316Z"
+        }
+      ]
+    }
+  },
+  "registrationToken": {
+    "value": "U2lnbmF0dXJlOjI6Mjg6QVFRQUFBQmFDV0FIeDVUTkJtcytGSUtlQUhuWjtWZXJzaW9uOjY6MToxO0lzc3VlVGltZTo0OjE5OjUyNDc4ODA3NjY1MzExNjY0Mzg7RXAuSWRUeXBlOjc6MToxO0VwLklkOjI6MzU6Y2lkLSg3ODg3MjYyMDc5MzgyMjMzNSlAb3V0bG9vay5jb207RXAuRXBpZDo1OjM2OmM4MzkwNzY3LTM3OTctNGZiYS1iNDEwLWQ0ZmM0ZWYyZWJmYTtFcC5Mb2dpblRpbWU6NzoxOjA7RXAuQXV0aFRpbWU6NDoxOTo1MjQ3ODgwNzY2NTMwMDcyNjQ4O0VwLkF1dGhUeXBlOjc6MjoxNTtFcC5FeHBUaW1lOjQ6MTk6NTI0Nzg4MTYzMDIzNzM4NzkwNDtVc3IuTmV0TWFzazoxMToxOjM7VXNyLlhmckNudDo2OjE6MDtVc3IuUmRyY3RGbGc6MjowOjtVc3IuRXhwSWQ6OToxOjA7VXNyLkV4cElkTGFzdExvZzo0OjE6MDtVc2VyLkF0aEN0eHQ6Mjo0MjQ6Q2xOcmVYQmxWRzlyWlc0alkybGtMU2czT0RnM01qWXlNRGM1TXpneU1qTXpOU2xBYjNWMGJHOXZheTVqYjIwQkExVnBZeFF4THpFdk1EQXdNU0F4TWpvd01Eb3dNQ0JCVFF4T2IzUlRjR1ZqYVdacFpXUi9mT3NRT3pZWUFRQUFBQUFBQUVBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBTlptRmpaV0p2ZEM1aGJHbGpaUUFBQUFBQUFBQUFBQWRPYjFOamIzSmxBQUFBQUFRQUFBQUFBQUFBQUFBQUFIOTg2eEE3TmhnQkFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQkRXWmhZMlZpYjNRdVlXeHBZMlVBQUFBQUFBTUFBQUFJQUFBQUExVnBZd2hKWkdWdWRHbDBlUTVKWkdWdWRHbDBlVlZ3WkdGMFpRaERiMjUwWVdOMGN3NURiMjUwWVdOMGMxVndaR0YwWlFoRGIyMXRaWEpqWlExRGIyMXRkVzVwWTJGMGFXOXVGVU52YlcxMWJtbGpZWFJwYjI1U1pXRmtUMjVzZVE9PTs=",
+    "expirationDate": "2017-01-09T12:19:41.000Z",
+    "endpointId": "{c8390767-3797-4fba-b410-d4fc4ef2ebfa}",
+    "raw": "registrationToken=U2lnbmF0dXJlOjI6Mjg6QVFRQUFBQmFDV0FIeDVUTkJtcytGSUtlQUhuWjtWZXJzaW9uOjY6MToxO0lzc3VlVGltZTo0OjE5OjUyNDc4ODA3NjY1MzExNjY0Mzg7RXAuSWRUeXBlOjc6MToxO0VwLklkOjI6MzU6Y2lkLSg3ODg3MjYyMDc5MzgyMjMzNSlAb3V0bG9vay5jb207RXAuRXBpZDo1OjM2OmM4MzkwNzY3LTM3OTctNGZiYS1iNDEwLWQ0ZmM0ZWYyZWJmYTtFcC5Mb2dpblRpbWU6NzoxOjA7RXAuQXV0aFRpbWU6NDoxOTo1MjQ3ODgwNzY2NTMwMDcyNjQ4O0VwLkF1dGhUeXBlOjc6MjoxNTtFcC5FeHBUaW1lOjQ6MTk6NTI0Nzg4MTYzMDIzNzM4NzkwNDtVc3IuTmV0TWFzazoxMToxOjM7VXNyLlhmckNudDo2OjE6MDtVc3IuUmRyY3RGbGc6MjowOjtVc3IuRXhwSWQ6OToxOjA7VXNyLkV4cElkTGFzdExvZzo0OjE6MDtVc2VyLkF0aEN0eHQ6Mjo0MjQ6Q2xOcmVYQmxWRzlyWlc0alkybGtMU2czT0RnM01qWXlNRGM1TXpneU1qTXpOU2xBYjNWMGJHOXZheTVqYjIwQkExVnBZeFF4THpFdk1EQXdNU0F4TWpvd01Eb3dNQ0JCVFF4T2IzUlRjR1ZqYVdacFpXUi9mT3NRT3pZWUFRQUFBQUFBQUVBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBTlptRmpaV0p2ZEM1aGJHbGpaUUFBQUFBQUFBQUFBQWRPYjFOamIzSmxBQUFBQUFRQUFBQUFBQUFBQUFBQUFIOTg2eEE3TmhnQkFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQkRXWmhZMlZpYjNRdVlXeHBZMlVBQUFBQUFBTUFBQUFJQUFBQUExVnBZd2hKWkdWdWRHbDBlUTVKWkdWdWRHbDBlVlZ3WkdGMFpRaERiMjUwWVdOMGN3NURiMjUwWVdOMGMxVndaR0YwWlFoRGIyMXRaWEpqWlExRGIyMXRkVzVwWTJGMGFXOXVGVU52YlcxMWJtbGpZWFJwYjI1U1pXRmtUMjVzZVE9PTs=; expires=1483964381; endpointId={c8390767-3797-4fba-b410-d4fc4ef2ebfa}",
+    "host": "db5-client-s.gateway.messenger.live.com"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "statusCode": 200,
+  "body": "<html><head><noscript>JavaScript required to sign in<meta http-equiv=\"Refresh\" content=\"0; URL=https://login.live.com/jsDisabled.srf?mkt=EN-US&lc=1033\"/></noscript><title>Continue</title><script type=\"text/javascript\">function OnBack(){}function OnNext(){}function DoSubmit(){var subt=false;if(!subt){subt=true;document.fmHF.submit();}}</script></head><body onload=\"javascript:DoSubmit();\"><form name=\"fmHF\" id=\"fmHF\" action=\"https://lw.skype.com/login/oauth/proxy?client_id=578134&site_name=lw.skype.com&redirect_uri=https%3A%2F%2Fweb.skype.com%2F&wa=wsignin1.0\" method=\"post\" target=\"_top\"><input type=\"hidden\" name=\"NAPExp\" id=\"NAPExp\" value=\"Tue, 18-Apr-2017 06:39:10 GMT\"><input type=\"hidden\" name=\"NAP\" id=\"NAP\" value=\"V%3D1.9%26E%3D12ed%26C%3DoeF3lrK5IdCriVmDxMueNPP3wWiT_nkAF8p57oGd0YOK_6io_YMBww%26W%3D1\"><input type=\"hidden\" name=\"ANON\" id=\"ANON\" value=\"A%3DE2408E2D35AFFDA49C37B202FFFFFFFF%26E%3D1347%26W%3D1\"><input type=\"hidden\" name=\"ANONExp\" id=\"ANONExp\" value=\"Thu, 27-Jul-2017 06:39:10 GMT\"><input type=\"hidden\" name=\"t\" id=\"t\" value=\"EgD5AQMAAAAEgAAADAABZOLMZSL5ujbZAell5FiUa6uxK8Eb4c4LW2/hEKtbBOCfxJ/rGHKJrazxk5ea1CPvuJkA9EYzXl/M7XhqRtXL6C+BaFH3lh0xxkwwnR22gY5yjB1kqfotcIoA/kt8cSalUlg2XkKbCc2KtiXlqgqH0AxvEKZuQCUsZFIxd4g5FebibYEtUOEATTwhvP6vzb1DFisjaIvoKEqOvbCsC7rWDeK/bBUswkuMi0K7RmE3wqWxaZBu9KETIHz0H2iKx63+4hd8BQHy01JGWnt/Vyg9lYX94Rre9JoetQ7TIQ/nukiHfhsbzSqbdXubmNlpeebsR6GizkVki8KGagqE6vVnaegAcQDoAP2/AwDhM7rmHXxxWB18cViqeQQAChEgQBAAAD4AAAAAAAABAAAAAAAAAAAAAAAAAAAAVUAgBEEACERlbXVyZ29zAAhEZW11cmdvcwAAAAAAAAAAAAAAAAAAAAAAAB/mZIhk+8NnAAAdfHFYHiPoWAAAAAAAAAAAAAAAAA0ANzkuOTQuMTMuMTE1AAQBAAAAAAAAAAAAAAAAAQQAAAAAAAAAAAAAAAAAAADaVSZ6F3OGYwAAAAAAAAAAAAAAAAAAAAAAAA0AZGVtdXJnb3MubmV0AAAAAAAAAAAAAAAAAAAAAAAAAA==\"></form></body></html>",
+  "headers": {
+    "cache-control": "no-cache",
+    "pragma": "no-cache",
+    "content-length": "1751",
+    "content-type": "text/html; charset=utf-8",
+    "expires": "Sat, 07 Jan 2017 23:38:10 GMT",
+    "server": "Microsoft-IIS/8.5",
+    "p3p": "CP=\"DSP CUR OTPi IND OTRi ONL FIN\"",
+    "set-cookie": [
+      "uaid=2bc3e3b04a013baf23b9d9f1c5335241; domain=login.live.com;secure= ;path=/;HTTPOnly= ;version=1",
+      "MSPOK= ; expires=Thu, 30-Oct-1980 16:00:00 GMT;domain=login.live.com;path=/;HTTPOnly= ;version=1",
+      "PPAuth=CbbNDBmRnW1qrpsBxFxZF46zR4uI4gYMPITo!9lOT4LX70djYe!5uXwL8d6q1WK5XApSNuz5rCRKZJMVU7nuypjvC7BPd8amKV0yOGkgsdZhscg4obpG*Esax6u2qsS!x*H6V5JfaI0w2yLX3*!PKQTbOWYkRbiJ5ItYEGYi!zEAiyRO8ilG9OvDc5rAyFKMQqoegt*HWX6ed!lLY6u1cqthPdH2WRzXVQbozjTiDEmnS5*jdzS3jnsBlbK1iRrcMKbP381V1nLqscHhxVxkmSNhKYM2EcKjgR44ziMWxc4N; domain=login.live.com;secure= ;path=/;HTTPOnly= ;version=1",
+      "PPLState=1; domain=.live.com;path=/;version=1",
+      "MSPShared= ; HTTPOnly= ; domain=login.live.com;path=/;Expires=Thu, 30-Oct-1980 16:00:00 GMT",
+      "MSPPre=SKYPE_USERNAME|64fbc3671ff46488||;domain=login.live.com;path=/;Expires=Wed, 30-Dec-2037 16:00:00 GMT;secure=",
+      "MSPCID=64fbc3671fe66488; HTTPOnly= ; domain=login.live.com;path=/;Expires=Wed, 30-Dec-2037 16:00:00 GMT;secure=",
+      "WLOpt=credtype=1&act=[1];domain=login.live.com;path=/;Expires=Wed, 30-Dec-2037 16:00:00 GMT;secure=",
+      "MSPVis=$293290;domain=login.live.com;path=/;secure=",
+      "pres=; expires=Thu, 30-Oct-1980 16:00:00 GMT;domain=.live.com;path=/;version=1",
+      "LOpt=1; domain=login.live.com;path=/;version=1",
+      "SDIDC=CckfISEA0V77wPAup18SIiA5HvJVWO*A5wKQ9cBlYF*WfzTbt0Ng1T7ry1n*xpniOVC6LFkq8Sd1EEK*TeLB!Dyf4xsBOiMB!tLdP*tdq51K7sRcZiJHcZq!BuGjNREUejB4knpF!2NKlgPi*alLs4M$; expires=Wed, 30-Dec-2037 16:00:00 GMT;domain=login.live.com;secure= ;path=/;HTTPOnly= ;version=1",
+      "MSPSoftVis=@72198325083833620@:@; domain=login.live.com;secure= ;path=/;version=1",
+      "MSPBack=0; domain=login.live.com;path=/;version=1"
+    ],
+    "x-content-type-options": "nosniff",
+    "strict-transport-security": "max-age=31536000",
+    "x-xss-protection": "1; mode=block",
+    "date": "Sat, 07 Jan 2017 23:39:10 GMT",
+    "connection": "close"
+  }
+}

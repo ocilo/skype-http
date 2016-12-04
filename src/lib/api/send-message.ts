@@ -18,7 +18,7 @@ interface SendMessageQuery {
   contenttype: string;
 }
 
-export function sendMessage(io: io.IO, apiContext: Context, message: api.NewMessage, conversationId: string): Bluebird<api.SendMessageResult> {
+export function sendMessage(io: io.HttpIo, apiContext: Context, message: api.NewMessage, conversationId: string): Bluebird<api.SendMessageResult> {
   return Bluebird
     .try(() => {
       let query: SendMessageQuery = {

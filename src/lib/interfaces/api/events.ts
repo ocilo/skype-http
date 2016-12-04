@@ -7,5 +7,5 @@ export interface EventMessage {
   resourceType: string;
   time: Date;
   resourceLink: string;
-  resource: Resource;
+  resource: Resource | null;
 }

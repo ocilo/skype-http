@@ -6,8 +6,8 @@ notifications:
 node_js:
 - stable
 before_install:
-- npm install -g typings
+- npm install -g typings gulp-cli npm
 before_script:
 - npm run prepare
 script:
-- npm run test:offline
+- npm test

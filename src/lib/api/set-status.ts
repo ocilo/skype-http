@@ -10,7 +10,7 @@ interface RequestBody {
   status: string;
 }
 
-export function setStatus (io: io.IO, apiContext: Context, status: api.Status): Bluebird<any> {
+export function setStatus (io: io.HttpIo, apiContext: Context, status: api.Status): Bluebird<any> {
   return Bluebird
     .try(() => {
       let requestBody: RequestBody = {
@@ -30,6 +30,7 @@ export function setStatus (io: io.IO, apiContext: Context, status: api.Status): 
       if (res.statusCode !== 200) {
         return Bluebird.reject(new Incident("send-message", "Received wrong return code"));
       }
+      return;
     });
 }
 

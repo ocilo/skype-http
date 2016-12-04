@@ -1,0 +1,15 @@
+{
+  "uri": "https://login.skype.com/login/oauth/microsoft",
+  "queryString": {
+    "client_id": "578134",
+    "redirect_uri": "https://web.skype.com/"
+  },
+  "jar": {
+    "_jar": {
+      "version": "tough-cookie@2.3.2",
+      "storeType": "MemoryCookieStore",
+      "rejectPublicSuffixes": true,
+      "cookies": []
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "uri": "https://login.skype.com/login/microsoft",
+  "queryString": {
+    "client_id": "578134",
+    "redirect_uri": "https://web.skype.com"
+  },
+  "form": {
+    "t": "EgD5AQMAAAAEgAAADAAB8EyHXqBhzIeB93XD6aMXIaP1f8+zs2eABP28bIPx44N+owx3+vex1AQz6OLjPYswFFl1qd8FEnmr9DngeBgbhCYiFAln5PO8bjB8F/1XgSGsoX4Ry3db+AKxAlGW9FPT3WRmIjZfAF/z7QVTp+xeOhIlFVzaNYJl+UXZHYHX/YG5JtLbPAPNwsbGGxaU7wHHMrTDmVHQQVDW4NAt7OsthVk0dZg0w+Wz0I2Y1WzfNSg+joL4uFTiqJnBja2dFisIdtZBlWuFGpSzN/A94ag4qjK2KjrriXsJRJip89Lml6NZiE1xxnC/F+WBJytba2FXSXRGrjmIatGE0RD7ssT7hOgAcQDoAP2/AwDhM7rmy4NxWMuDcViqeQQAChEgQBAAAD4AAAAAAAABAAAAAAAAAAAAAAAAAAAAVUAgBEEACERlbXVyZ29zAAhEZW11cmdvcwAAAAAAAAAAAAAAAAAAAAAAAB/mZIhk+8NnAADLg3FYzCroWAAAAAAAAAAAAAAAAA0ANzkuOTQuMTMuMTE1AAQBAAAAAAAAAAAAAAAAAQQAAAAAAAAAAAAAAAAAAAB/9V3nny91AAAAAAAAAAAAAAAAAAAAAAAAAA0AZGVtdXJnb3MubmV0AAAAAAAAAAAAAAAAAAAAAAAAAA==",
+    "client_id": "578134",
+    "oauthPartner": "999",
+    "site_name": "lw.skype.com",
+    "redirect_uri": "https://web.skype.com"
+  }
+}

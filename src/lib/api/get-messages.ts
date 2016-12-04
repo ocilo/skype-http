@@ -15,7 +15,7 @@
 //   targetType: string; // seen: Passport|Skype|Lync|Thread
 // }
 //
-// export function getMessages (io: io.IO, apiContext: ApiContext, conversationId: string): Bluebird<Message[]> {
+// export function getMessages (io: io.HttpIo, apiContext: ApiContext, conversationId: string): Bluebird<Message[]> {
 //   return Bluebird
 //     .try(() => {
 //       const query: GetMessagesQuery = {

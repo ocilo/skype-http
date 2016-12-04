@@ -1,0 +1,13 @@
+{
+  "statusCode": 404,
+  "body": "",
+  "headers": {
+    "server": "Microsoft-IIS/8.5",
+    "x-content-type-options": "nosniff",
+    "strict-transport-security": "max-age=31536000",
+    "x-xss-protection": "1; mode=block",
+    "date": "Sat, 07 Jan 2017 20:40:57 GMT",
+    "connection": "close",
+    "content-length": "0"
+  }
+}

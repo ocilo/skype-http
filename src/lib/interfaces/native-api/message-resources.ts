@@ -6,10 +6,12 @@ export interface Control extends MessageResource {
 
 export interface ControlClearTyping extends Control {
   messagetype: "Control/ClearTyping";
+  counterpartymessageid: string;
 }
 
 export interface ControlTyping extends Control {
   messagetype: "Control/Typing";
+  counterpartymessageid: string;
 }
 
 export interface ControlLiveState extends Control {

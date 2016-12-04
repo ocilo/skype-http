@@ -1,13 +1,13 @@
 import {ParsedConversationId} from "./api";
 
 export interface Resource {
-  type: "Text" | "RichText" /* | "Typing" | ... */;
+  type: "Text" | "RichText" | "Control/ClearTyping" | "Control/Typing" /* | "Typing" | ... */;
   id: string;
   composeTime: Date;
   arrivalTime: Date;
   from: ParsedConversationId; // username
   conversation: string; // conversationId
-  content: string;
+  native?: any;
 }
 
 export interface TextResource extends Resource {
@@ -20,4 +20,12 @@ export interface RichTextResource extends Resource {
   type: "RichText";
   clientId: string; // An id set by the client
   content: string;
+}
+
+export interface ControlClearTypingResource extends Resource {
+  type: "Control/ClearTyping";
+}
+
+export interface ControlTypingResource extends Resource {
+  type: "Control/Typing";
 }
