@@ -1,22 +1,23 @@
 {
+  "name": "hammerfest-api",
   "dependencies": {
     "big-integer": "registry:npm/big-integer#1.6.15+20160501004755",
-    "bluebird": "registry:npm/bluebird#3.3.4+20160427051630",
+    "bluebird": "registry:npm/bluebird#3.4.1+20160909132857",
     "cheerio": "registry:npm/cheerio#0.20.0+20160422172414",
-    "es6-promise": "registry:npm/es6-promise#3.0.0+20160211003958",
     "form-data": "registry:npm/form-data#1.0.0+20160211003958",
     "incident": "npm:incident",
     "js-sha256": "registry:npm/js-sha256#0.3.0+20160427051917",
-    "lodash": "registry:npm/lodash#4.0.0+20160416211519",
-    "request": "registry:npm/request#2.69.0+20160428223725"
+    "lodash": "registry:npm/lodash#4.0.0+20161015015725",
+    "request": "registry:npm/request#2.69.0+20160428223725",
+    "tough-cookie": "registry:npm/tough-cookie#2.2.0+20160723033700"
   },
   "devDependencies": {
-    "chai": "registry:npm/chai#3.5.0+20160415060238"
+    "chai": "registry:npm/chai#3.5.0+20160723033700"
   },
   "globalDependencies": {
-    "node": "github:demurgos/env-node/4#d64f790aaa018e9ae9e02bf7b4666f15eef39c08"
+    "node": "registry:env/node#6.0.0+20170102175725"
   },
   "globalDevDependencies": {
-    "mocha": "registry:dt/mocha#2.2.5+20160317120654"
+    "mocha": "registry:env/mocha#2.2.5+20160926180742"
   }
 }

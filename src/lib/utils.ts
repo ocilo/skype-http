@@ -67,6 +67,9 @@ const HTTP_HEADER_OPERATOR = "=";
 
 export function stringifyHeaderParams (params: Dictionary<string>) {
   return _.map(params, (value, key) => {
+    if (key === undefined) {
+      throw new Error("Undefined key");
+    }
     return `${key.replace(/%20/gm, "+")}=${value.replace(/%20/gm, "+")}`;
   }).join(HTTP_HEADER_SEPARATOR + " "); // The space after the separator is important, otherwise Skype is unable to parse the header
 }

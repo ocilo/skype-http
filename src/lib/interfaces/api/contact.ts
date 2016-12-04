@@ -13,14 +13,14 @@ export interface Phone {
 
 export interface Contact {
   id: FullId;
-  avatarUrl: string;
+  avatarUrl: string | null;
   phones: Phone[];
   name: {
     first: string;
     surname: string;
     nickname: string;
   };
-  activityMessage: string;
+  activityMessage: string | null;
   locations: Location[];
 }
 

@@ -25,7 +25,7 @@ interface GetConversationQuery {
   targetType: string; // seen: Passport|Skype|Lync|Thread
 }
 
-export function getConversation (io: io.IO, apiContext: Context, conversationId: string): Bluebird<Conversation> {
+export function getConversation (io: io.HttpIo, apiContext: Context, conversationId: string): Bluebird<Conversation> {
   return Bluebird
     .try(() => {
       const query: GetConversationQuery = {
@@ -44,7 +44,7 @@ export function getConversation (io: io.IO, apiContext: Context, conversationId:
       const requestOptions: io.GetOptions = {
         uri: uri,
         jar: apiContext.cookieJar,
-        qs: query,
+        queryString: query,
         headers: {
           "RegistrationToken": apiContext.registrationToken.raw
         }

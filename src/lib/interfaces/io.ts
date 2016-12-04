@@ -1,12 +1,11 @@
-import {Thenable} from "bluebird";
-import * as request from "request";
+import {CookieJar} from "request";
 import {Dictionary} from "./utils";
 
 export interface BaseOptions {
   uri: string;
-  jar: request.CookieJar;
+  jar?: CookieJar;
   headers?: Dictionary<any>;
-  qs?: Dictionary<any>; // query string, TODO: rename to `queryString` and map to `qs` in request-io.ts
+  queryString?: Dictionary<any>;
 }
 
 export interface GetOptions extends BaseOptions {
@@ -26,8 +25,8 @@ export interface Response {
   headers: Dictionary<any>;
 }
 
-export interface IO {
-  get (options: GetOptions): Thenable<Response>;
-  post (options: PostOptions): Thenable<Response>;
-  put (options: PutOptions): Thenable<Response>;
+export interface HttpIo {
+  get (options: GetOptions): PromiseLike<Response>;
+  post (options: PostOptions): PromiseLike<Response>;
+  put (options: PutOptions): PromiseLike<Response>;
 }

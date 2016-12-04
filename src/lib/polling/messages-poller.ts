@@ -17,7 +17,7 @@ import * as events from "../interfaces/api/events";
 const POLLING_DELAY = 1000;
 
 const CONTACT_ID_PATTERN = /^(\d+):(.+)$/;
-function parseContactId(contactId: string): ParsedConversationId {
+export function parseContactId(contactId: string): ParsedConversationId {
   const match = CONTACT_ID_PATTERN.exec(contactId);
   if (match === null) {
     throw new Incident("parse-error", "Unable to parse userId");
@@ -29,7 +29,7 @@ function parseContactId(contactId: string): ParsedConversationId {
   };
 }
 
-function formatRichTextResource (nativeResource: nativeMessageResources.RichText): resources.RichTextResource {
+export function formatRichTextResource (nativeResource: nativeMessageResources.RichText): resources.RichTextResource {
   const parsedConversationUri = messagesUri.parseConversation(nativeResource.conversationLink);
   const parsedContactUri = messagesUri.parseContact(nativeResource.from);
   const parsedContactId = parseContactId(parsedContactUri.contact);
@@ -45,7 +45,7 @@ function formatRichTextResource (nativeResource: nativeMessageResources.RichText
   };
 }
 
-function formatTextResource (nativeResource: nativeMessageResources.Text): resources.TextResource {
+export function formatTextResource (nativeResource: nativeMessageResources.Text): resources.TextResource {
   const parsedConversationUri = messagesUri.parseConversation(nativeResource.conversationLink);
   const parsedContactUri = messagesUri.parseContact(nativeResource.from);
   const parsedContactId = parseContactId(parsedContactUri.contact);
@@ -61,20 +61,53 @@ function formatTextResource (nativeResource: nativeMessageResources.Text): resou
   };
 }
 
+export function formatControlClearTypingResource (nativeResource: nativeMessageResources.ControlClearTyping): resources.ControlClearTypingResource {
+  const parsedConversationUri = messagesUri.parseConversation(nativeResource.conversationLink);
+  const parsedContactUri = messagesUri.parseContact(nativeResource.from);
+  const parsedContactId = parseContactId(parsedContactUri.contact);
+  return {
+    type: "Control/ClearTyping",
+    id: nativeResource.id,
+    composeTime: new Date(nativeResource.composetime),
+    arrivalTime: new Date(nativeResource.originalarrivaltime),
+    from: parsedContactId,
+    conversation: parsedConversationUri.conversation,
+    native: nativeResource
+  };
+}
+
+export function formatControlTypingResource (nativeResource: nativeMessageResources.ControlTyping): resources.ControlTypingResource {
+  const parsedConversationUri = messagesUri.parseConversation(nativeResource.conversationLink);
+  const parsedContactUri = messagesUri.parseContact(nativeResource.from);
+  const parsedContactId = parseContactId(parsedContactUri.contact);
+  return {
+    type: "Control/Typing",
+    id: nativeResource.id,
+    composeTime: new Date(nativeResource.composetime),
+    arrivalTime: new Date(nativeResource.originalarrivaltime),
+    from: parsedContactId,
+    conversation: parsedConversationUri.conversation,
+    native: nativeResource
+  };
+}
+
 function formatMessageResource (nativeResource: nativeResources.MessageResource): resources.Resource {
   switch (nativeResource.messagetype) {
     case "RichText":
       return formatRichTextResource(<nativeMessageResources.RichText> nativeResource);
     case "Text":
       return formatTextResource(<nativeMessageResources.Text> nativeResource);
+    case "Control/ClearTyping":
+      return formatControlClearTypingResource(<nativeMessageResources.ControlClearTyping> nativeResource);
+    case "Control/Typing":
+      return formatControlTypingResource(<nativeMessageResources.ControlTyping> nativeResource);
     default:
-      // TODO
-      return null;
+      throw new Error(`Unknown ressource.messageType (${JSON.stringify(nativeResource.messagetype)}) for resource:\n${JSON.stringify(nativeResource)}`);
   }
 }
 
 function formatEventMessage(native: nativeEvents.EventMessage): events.EventMessage {
-  let resource: resources.Resource;
+  let resource: resources.Resource | null;
   switch (native.resourceType) {
     case "UserPresence":
       resource = null;
@@ -86,7 +119,7 @@ function formatEventMessage(native: nativeEvents.EventMessage): events.EventMess
       resource = formatMessageResource(<nativeResources.MessageResource> native.resource);
       break;
     default:
-      return null;
+      throw new Error(`Unknown EventMessage.resourceType (${JSON.stringify(native.resourceType)}) for Event:\n${JSON.stringify(native)}`);
   }
 
   return {
@@ -100,11 +133,11 @@ function formatEventMessage(native: nativeEvents.EventMessage): events.EventMess
 }
 
 export class MessagesPoller extends EventEmitter {
-  io: io.IO;
+  io: io.HttpIo;
   apiContext: ApiContext;
-  intervalId: number | NodeJS.Timer;
+  intervalId: number | NodeJS.Timer | null;
 
-  constructor (io: io.IO, apiContext: ApiContext) {
+  constructor (io: io.HttpIo, apiContext: ApiContext) {
     super();
 
     this.io = io;
@@ -118,7 +151,7 @@ export class MessagesPoller extends EventEmitter {
 
   run (): this {
     if (this.isActive()) {
-      return;
+      return this;
     }
     this.intervalId = setInterval(this.getMessages.bind(this), POLLING_DELAY);
     return this;
@@ -126,46 +159,45 @@ export class MessagesPoller extends EventEmitter {
 
   stop (): this {
     if (!this.isActive()) {
-      return;
+      return this;
     }
     clearInterval(<any> this.intervalId);
     this.intervalId = null;
     return this;
   }
 
-  protected getMessages (): Bluebird<events.EventMessage> {
-    return Bluebird
-      .try(() => {
-        const requestOptions = {
-          uri: messagesUri.poll(this.apiContext.registrationToken.host), // TODO: explicitly define user, endpoint and subscription
-          jar: this.apiContext.cookieJar,
-          headers: {
-            RegistrationToken: this.apiContext.registrationToken.raw
-          }
-        };
-        return this.io.post(requestOptions);
-      })
-      .then((res: io.Response) => {
-        if (res.statusCode !== 200) {
-          return Bluebird.reject(new Incident("poll", "Unable to poll"));
+  protected async getMessages (): Promise<void> {
+    try {
+      const requestOptions = {
+        // TODO: explicitly define user, endpoint and subscription
+        uri: messagesUri.poll(this.apiContext.registrationToken.host),
+        jar: this.apiContext.cookieJar,
+        headers: {
+          RegistrationToken: this.apiContext.registrationToken.raw
         }
-        const body: {eventMessages?: nativeEvents.EventMessage[]} = JSON.parse(res.body);
+      };
+      const res: io.Response = await this.io.post(requestOptions);
 
-        if (body.eventMessages) {
-          for (let msg of body.eventMessages) {
-            // console.log(JSON.stringify(msg, null, 2));
-            let formatted: events.EventMessage = formatEventMessage(msg);
-            if (formatted && formatted.resource) {
-              this.emit("event-message", formatted);
-            }
+      if (res.statusCode !== 200) {
+        return Promise.reject(new Incident("poll", "Unable to poll"));
+      }
+
+      const body: {eventMessages?: nativeEvents.EventMessage[]} = JSON.parse(res.body);
+
+      if (body.eventMessages) {
+        for (let msg of body.eventMessages) {
+          // console.log(JSON.stringify(msg, null, 2));
+          let formatted: events.EventMessage = formatEventMessage(msg);
+          if (formatted && formatted.resource) {
+            this.emit("event-message", formatted);
           }
         }
-      })
-      .catch((err: Error) => {
-        this.stop();
-        this.emit("error", err);
-        return Bluebird.reject(err);
-      });
+      }
+    } catch (err) {
+      console.error("Detecting an error");
+      this.emit("error", err);
+      // this.stop();
+    }
   }
 }
 

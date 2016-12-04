@@ -181,6 +181,9 @@ export interface ContactUri {
 
 export function parseContact (uri: string): ContactUri {
   const parsed = parseUri(uri);
+  if (parsed.host === undefined || parsed.pathname === undefined) {
+    throw new Incident("parse-error", "Expected URI to have a host and path");
+  }
   const match = CONTACT_PATTERN.exec(parsed.pathname);
   if (match === null) {
     throw new Incident("parse-error", "Expected URI to be a conversation uri");
@@ -200,6 +203,9 @@ export interface ConversationUri {
 
 export function parseConversation (uri: string): ConversationUri {
   const parsed = parseUri(uri);
+  if (parsed.host === undefined || parsed.pathname === undefined) {
+    throw new Incident("parse-error", "Expected URI to have a host and path");
+  }
   const match = CONVERSATION_PATTERN.exec(parsed.pathname);
   if (match === null) {
     throw new Incident("parse-error", "Expected URI to be a conversation uri");

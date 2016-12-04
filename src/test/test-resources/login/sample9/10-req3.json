@@ -1,0 +1,31 @@
+{
+  "statusCode": 200,
+  "body": "<!DOCTYPE html><html class=\"noTabletState ltr \" lang=\"en\" dir=\"ltr\"><head><meta charset=\"utf-8\"/><meta content=\"text/html; charset=utf-8\" http-equiv=\"content-type\"/><title>Signing in to Skype, please wait</title><meta content=\"width=device-width, initial-scale=1\" name=\"viewport\"/><!-- IE10 snap mode fix - should be included before all linked resources to work properly --><style type=\"text/css\">@-webkit-viewport{width:device-width;} @-moz-viewport{width:device-width;} @-ms-viewport{width:device-width;} @-o-viewport{width:device-width;} @viewport{width:device-width;}</style><!-- Fix for IE10 viewport on mobile --><script type=\"text/javascript\">/*<![CDATA[*/    (function() {\n        if (\"-ms-user-select\" in document.documentElement.style && navigator.userAgent.match(/IEMobile\\/10\\.0/)) {\n            var msViewportStyle = document.createElement(\"style\");\n            msViewportStyle.appendChild(\n                document.createTextNode(\"@-ms-viewport{width:auto!important}\")\n            );\n            document.getElementsByTagName(\"head\")[0].appendChild(msViewportStyle);\n        }\n    })(); \n    /*]]>*/</script><!-- end IE10 snap mode fix --><link rel=\"icon\" type=\"image/vnd.microsoft.icon\" href=\"https://apps.skypeassets.com/static/4.1.0/skype.login/images/icons/favicon.ico\"/><link rel=\"shortcut icon\" href=\"https://apps.skypeassets.com/static/4.1.0/skype.login/images/icons/favicon.ico\"/><link rel=\"apple-touch-icon\" href=\"https://apps.skypeassets.com/static/4.1.0/skype.login/images/logos/skype_webclip.png\"/><link rel=\"stylesheet\" type=\"text/css\" media=\"screen\" href=\"https://apps.skypeassets.com/static/4.1.0/skype.login/css/reset.css;fonts.css;responsiveness.css;buttons.css;navigation.css\"/><link rel=\"stylesheet\" type=\"text/css\" media=\"screen\" href=\"https://apps.skypeassets.com/static/4.1.0/skype.login/css/loader.css\"/><style type=\"text/css\" media=\"screen\">html, body{ background-color: #fff; height: 100%; padding: 0px; margin: 0px; } #loader { padding: 0px; margin: 0px auto; position: relative; top: 45%; text-align:center; } #redirectForm { display: none; } .pageWrap { height: 100%; width: 100%; position: absolute; }</style><script src=\"https://apps.skypeassets.com/static/4.1.0/skype.login/js/jquery.js;skype.js;language.js\"></script><script type=\"text/javascript\">    var timeout = 0;\n    $(function(){\n        setTimeout(function() {\n            $(\"#redirectForm\").submit();\n        }, timeout);\n    });\n</script></head><body><div class=\"pageWrap\"><div class=\"skypeLogo\"><span class=\"skypeLogoImage\"></span></div><form id=\"redirectForm\" aria-hidden=\"true\" method=\"post\" action=\"https://web.skype.com\"><input type=\"hidden\" name=\"skypetoken\" value=\"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjEyIn0.eyJpYXQiOjE0ODM4MzQzODYsImV4cCI6MTQ4MzkyMDc4Niwic2t5cGVpZCI6ImRlbXVyZ29zLm5ldCIsInNjcCI6OTU4LCJjc2kiOiIwIiwiY2lkIjoiNjRmYmMzNjcxZmU2NjQ4OCIsImFhdCI6MTQ4MzgzNDMxNX0.ApFT6uA5e1VxBQ9tW7YOwIw_N0__YPwtVmqS0afA7Dx9SQGmpHTJCglOIUYYEjlG6ygJoAMTbItXOkDVcgZ86Dckfmy4bCpw9-gpvFxHNd11Pwe7SnS40mnTX_nyGy_jfmDMPkw2shrEZ4mLiznu5v7RuT9JAD0JsgjoFvFfzya17CL1CSK6B8WxJ0iIn_M8RoOogW5oEJUiYx6Q\"/> <input type=\"hidden\" name=\"expires_in\" value=\"86400\"/> <input type=\"hidden\" name=\"session_token\"/><input type=\"hidden\" name=\"skpvrf\"/></form><div id=\"loader\"><div class=\"largeSpinner\"><div class=\"spinner blue\"><div class=\"circle one\"><div class=\"rotate\"><div class=\"position\"><div class=\"scale\"><div class=\"shape\"></div></div></div></div></div><div class=\"circle two\"><div class=\"rotate\"><div class=\"position\"><div class=\"scale\"><div class=\"shape\"></div></div></div></div></div><div class=\"circle three\"><div class=\"rotate\"><div class=\"position\"><div class=\"scale\"><div class=\"shape\"></div></div></div></div></div><div class=\"circle four\"><div class=\"rotate\"><div class=\"position\"><div class=\"scale\"><div class=\"shape\"></div></div></div></div></div></div></div><noscript>This page requires JavaScript to be turned on. Please update your browser settings.</noscript><h2 class=\"text\">Signing in to Skype, please wait</h2></div></div></body></html>",
+  "headers": {
+    "server": "nginx",
+    "date": "Sun, 08 Jan 2017 00:13:07 GMT",
+    "content-type": "text/html; ver=1.0; charset=utf-8;",
+    "content-length": "4051",
+    "connection": "close",
+    "set-cookie": [
+      "SC=CC=:CCY=:LC=en:LIM=:TM=1483834386:TS=1483834386:TZ=:VAT=:VER=; expires=Mon, 08-Jan-2018 00:13:06 GMT; Max-Age=31536000; path=/; domain=.skype.com",
+      "login-vi=f8fa92848e224c2f7812280425a45bde; path=/",
+      "login-bt=578134; expires=Mon, 09-Jan-2017 00:14:06 GMT; Max-Age=86460; path=/; secure; HttpOnly",
+      "refresh-token=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjEyIn0.eyJpYXQiOjE0ODM4MzQzODYsImV4cCI6MTQ4MzkyMDcxNSwic2t5cGVpZCI6ImRlbXVyZ29zLm5ldCIsInNjcCI6MSwiY3NpIjoiMCIsImNpZCI6IjY0ZmJjMzY3MWZlNjY0ODgiLCJhYXQiOjE0ODM4MzQzMTV9.LjsehPUD3YgAXI7R3VbUfsHgs3NZpRck8DGU8OhQsGCMur_Ag40K8aBsP8H5qRrnd-qR277WXK7ZlzHc9JAGdIJSuaCeNCqJJpHHRIPFER-n26kcoGYmrYugq49tgT_toSGMp8wPLCTPXOzcJX3z0mA92_k5Y_vOKzTp3jWz8wFnxH1yJrd0W0C4pMQTsOV75MclgyENkq8XifPC; path=/; secure; HttpOnly",
+      "skplet=1483920715; path=/; domain=.skype.com",
+      "lastLogin=MS; expires=Fri, 07-Jul-2017 00:13:06 GMT; Max-Age=15552000; path=/"
+    ],
+    "x-stratus-processing-time": "0.1277",
+    "x-skype-request-id": "01c127b8",
+    "x-stratus-request-id": "01c127b8",
+    "pragma": "no-cache",
+    "cache-control": "no-store, no-cache, must-revalidate",
+    "expires": "Thu, 01 Jan 1970 00:00:01 +0000",
+    "p3p": "CP=\"CAO PSA OUR\"",
+    "x-frame-options": "DENY",
+    "x-stratus-config-namespace": "",
+    "x-content-type-options": "nosniff",
+    "strict-transport-security": "max-age=31536000; includeSubDomains",
+    "x-processing-time": "0.138"
+  }
+}

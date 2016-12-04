@@ -6,7 +6,10 @@ exports.verbose = false;
 // You must add credentials for at least one account
 exports.accounts = [
   {
-    username: "SKYPE_USERNAME", // replace by your username
-    password: "SKYPE_PASSWORD" // replace by your password
+    // replace by your username
+    username: "SKYPE_USERNAME",
+
+    // replace by your password
+    password: "SKYPE_PASSWORD"
   }
 ];

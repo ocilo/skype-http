@@ -53,11 +53,12 @@ function agentToPerson (native: any): any {
 
 }
 
-function ensureHttps (url: string) {
-  return url;
+// TODO: check that the uri uses the HTTPS protocol
+function ensureHttps (uri: string) {
+  return uri;
 }
 
-function define (...args) {
+function define (...args: any[]) {
   return null;
 }
 
@@ -78,7 +79,13 @@ function contactToPerson (native: NativeContact): Contact {
     AGENTS_ONLY: "AGENTS_ONLY"
   };
 
-  let activityMessage = sanitize(native.suggested ? SUGGESTED_CONTACT_ACTIVITY_MESSAGE : native.mood);
+  let activityMessage: string | null;
+
+  if (native.suggested === true) {
+    activityMessage = SUGGESTED_CONTACT_ACTIVITY_MESSAGE;
+  } else {
+    activityMessage = native.mood === undefined ? null : native.mood;
+  }
 
   let capabilities: string[];
   if (native.type === "agent") {
@@ -101,7 +108,7 @@ function contactToPerson (native: NativeContact): Contact {
   let typeKey: string = contactTypeNameToContactTypeKey (native.type);
   let isAgent = native.type === "agent";
 
-  let avatarUrl: string;
+  let avatarUrl: string | null;
 
   if (native.avatar_url) {
     avatarUrl = ensureHttps(native.avatar_url);
@@ -112,7 +119,7 @@ function contactToPerson (native: NativeContact): Contact {
 
   let displayName = sanitizeXml(native.display_name);
   let firstName = sanitizeXml(native.name.first);
-  let lastName = sanitizeXml(native.name.surname);
+  let lastName: string | null = native.name.surname === undefined ? null : sanitizeXml(native.name.surname);
 
   let phoneNumbers: any[] = [];
   let locations: any[] = [];

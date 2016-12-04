@@ -15,7 +15,7 @@ interface ContactsResponse {
   scope: "full" | string; // an enum ?
 }
 
-export function getContacts(io: io.IO, apiContext: Context): Bluebird<Contact[]> {
+export function getContacts(io: io.HttpIo, apiContext: Context): Bluebird<Contact[]> {
   return Bluebird
     .try(() => {
       const requestOptions: io.GetOptions = {

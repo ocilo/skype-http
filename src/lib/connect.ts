@@ -2,9 +2,8 @@ import * as Bluebird from "bluebird";
 import {Incident} from "incident";
 
 import * as api from "./api";
-import {IO} from "./interfaces/io";
 import {Context} from "./interfaces/api/context";
-import {RequestIO} from "./request-io";
+import requestIO from "./request-io";
 import {login} from "./login";
 import {Credentials} from "./interfaces/api/api";
 
@@ -19,17 +18,22 @@ export interface ConnectOptions {
 }
 
 export function connect (options: ConnectOptions): Bluebird<api.Api> {
-  if (options.state) {
+  if (options.state !== undefined) {
     return Bluebird.reject(new Incident("todo", "Connection from previous state is not yet supported."));
+  } else if (options.credentials === undefined) {
+    return Bluebird.reject(new Incident("todo", "Connect must define `credentials`"));
   } else {
-    let io: IO = new RequestIO();
-    return login({io: io, credentials: options.credentials, verbose: options.verbose})
+    const apiPromise: Promise<api.Api> = login({io: requestIO, credentials: options.credentials, verbose: options.verbose})
       .then((apiContext: Context) => {
         if (options.verbose) {
           console.log("Obtained context trough authentication:");
-          console.log(apiContext);
+          console.log({username: apiContext.username,
+            skypeToken: apiContext.skypeToken,
+            registrationToken: apiContext.registrationToken
+          });
         }
-        return new api.Api(apiContext, io);
+        return new api.Api(apiContext, requestIO);
       });
+    return Bluebird.resolve(apiPromise);
   }
 }

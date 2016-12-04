@@ -1,0 +1,62 @@
+{
+  "compilerOptions": {
+    "allowJs": false,
+    "allowSyntheticDefaultImports": false,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "charset": "utf8",
+    "declaration": true,
+    "diagnostics": false,
+    "disableSizeLimit": false,
+    "emitBOM": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "inlineSourceMap": false,
+    "inlineSources": false,
+    "isolatedModules": false,
+    "lib": [
+      "es6"
+    ],
+    "listEmittedFiles": false,
+    "listFiles": false,
+    "locale": "en-us",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "newLine": "lf",
+    "noFallthroughCasesInSwitch": false,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitUseStrict": false,
+    "noResolve": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "preserveConstEnums": true,
+    "pretty": true,
+    "removeComments": false,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": false,
+    "sourceMap": true,
+    "strictNullChecks": true,
+    "stripInternal": false,
+    "suppressExcessPropertyErrors": false,
+    "suppressImplicitAnyIndexErrors": false,
+    "target": "es2015",
+    "rootDir": "..",
+    "outDir": "../../build/example",
+    "typeRoots": [
+      "../custom-typings",
+      "../../typings/globals",
+      "../../typings/modules",
+      "../../node_modules/@types"
+    ]
+  },
+  "include": [
+    "**/*.ts",
+    "../lib/**/*.ts"
+  ],
+  "exclude": [
+    "../**/*.spec.ts"
+  ]
+}

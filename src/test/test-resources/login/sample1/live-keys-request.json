@@ -1,0 +1,7 @@
+{
+  "uri": "https://login.live.com/oauth/microsoft",
+  "queryString": {
+    "client_id": "578134",
+    "redirect_uri": "https://web.skype.com/"
+  }
+}

@@ -1,6 +1,6 @@
 import {sha256} from "js-sha256";
 import * as bigInt from "big-integer";
-import {zeroPad} from "../utils";
+import {Buffer} from "buffer";
 
 const HEX_CHARS = "0123456789abcdef";
 const MAX_INT32 = 0x7fffffff; // Math.pow(2, 31) - 1;
@@ -60,7 +60,7 @@ export function int32ToLittleEndianHexString(int32: number): string {
  */
 function checkSum64(challengeParts: Uint32Array, hashParts: Uint32Array): Uint32Array {
   if (challengeParts.length < 2 || challengeParts.length % 2 !== 0) {
-    return null;
+    throw new Error("Invalid parameters");
   }
   const MAGIC = 0x0e79a9c1; // A magic constant
   const HASH_0 = hashParts[0] & MAX_INT32; // Remove the sign bit

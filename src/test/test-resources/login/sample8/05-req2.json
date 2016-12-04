@@ -1,0 +1,94 @@
+{
+  "uri": "https://login.live.com/ppsecure/post.srf",
+  "queryString": {
+    "wa": "wsignin1.0",
+    "wp": "MBI_SSL",
+    "wreply": "https://lw.skype.com/login/oauth/proxy?client_id=578134&site_name=lw.skype.com&redirect_uri=https%3A%2F%2Fweb.skype.com%2F"
+  },
+  "jar": {
+    "_jar": {
+      "version": "tough-cookie@2.3.2",
+      "storeType": "MemoryCookieStore",
+      "rejectPublicSuffixes": true,
+      "cookies": [
+        {
+          "key": "SC",
+          "value": "CC=:CCY=:LC=en:LIM=:TM=1483832317:TS=1483832317:TZ=:VAT=:VER=",
+          "expires": "2018-01-07T23:38:37.000Z",
+          "maxAge": 31536000,
+          "domain": "skype.com",
+          "path": "/",
+          "hostOnly": false,
+          "creation": "2017-01-07T23:38:37.528Z",
+          "lastAccessed": "2017-01-07T23:38:37.528Z"
+        },
+        {
+          "key": "login-vi",
+          "value": "2bc3e3b04a013baf23b9d9f1c5335241",
+          "domain": "login.skype.com",
+          "path": "/",
+          "hostOnly": true,
+          "creation": "2017-01-07T23:38:37.529Z",
+          "lastAccessed": "2017-01-07T23:38:37.529Z"
+        },
+        {
+          "key": "uaid",
+          "value": "2bc3e3b04a013baf23b9d9f1c5335241",
+          "domain": "login.live.com",
+          "path": "/",
+          "secure": true,
+          "httpOnly": true,
+          "extensions": [
+            "version=1"
+          ],
+          "hostOnly": false,
+          "creation": "2017-01-07T23:38:38.659Z",
+          "lastAccessed": "2017-01-07T23:38:38.858Z"
+        },
+        {
+          "key": "MSPRequ",
+          "value": "lt=1483832318&co=1&id=293290",
+          "domain": "login.live.com",
+          "path": "/",
+          "secure": true,
+          "httpOnly": true,
+          "extensions": [
+            "version=1"
+          ],
+          "hostOnly": true,
+          "creation": "2017-01-07T23:38:38.660Z",
+          "lastAccessed": "2017-01-07T23:38:38.858Z"
+        },
+        {
+          "key": "MSPOK",
+          "value": "$uuid-bb36dcb9-4e46-4aec-b8d3-a81f2d547637",
+          "domain": "login.live.com",
+          "path": "/",
+          "secure": true,
+          "httpOnly": true,
+          "extensions": [
+            "version=1"
+          ],
+          "hostOnly": false,
+          "creation": "2017-01-07T23:38:38.660Z",
+          "lastAccessed": "2017-01-07T23:38:38.858Z"
+        },
+        {
+          "key": "CkTst",
+          "value": "1483832324975",
+          "domain": "login.live.com",
+          "path": "/",
+          "hostOnly": true,
+          "pathIsDefault": true,
+          "creation": "2017-01-07T23:38:44.975Z",
+          "lastAccessed": "2017-01-07T23:38:44.975Z"
+        }
+      ]
+    }
+  },
+  "form": {
+    "login": "SKYPE_USERNAME",
+    "passwd": "SKYPE_PASSWORD",
+    "PPFT": "DVy6pv8AW94hxFgxoLK*w0APQpMOKI58g6a!32rx3v2DN4F9fSZCVH8zBinDyVqxNOAvx9Rx!Le3QwY1SsZtbEY45j2Fd6Z*I2u94!Jzsc2h7vPNMYWS5K*4DuXti4Pkq8!8mr2yZz4*JtrYDIo5cIO8Qw2habPLTCBhWjfOXfYIqybo9aNyf!fE57aTF9*gHRPt52dHIvlZsMGvLpPznIRqGtajUA*tROkC0lAJHEOD8BX75T5188mGNEox6F8rdARwpWbjDXWEltiZj5yfF24$"
+  }
+}

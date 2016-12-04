@@ -5,7 +5,7 @@ import {Context} from "../interfaces/api/context";
 import * as io from "../interfaces/io";
 import * as apiUri from "../api-uri";
 
-export function acceptContactRequest (io: io.IO, apiContext: Context, contactUsername: string): Bluebird<any> {
+export function acceptContactRequest (io: io.HttpIo, apiContext: Context, contactUsername: string): Bluebird<any> {
   return Bluebird
     .try(() => {
       const requestOptions: io.GetOptions = {
