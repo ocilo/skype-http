@@ -1,12 +1,12 @@
-import {login, LoginOptions} from "./login";
 import testConfig from "../test/test-config";
-import {requestIo} from "./request-io";
 import {Context as ApiContext} from "./interfaces/api/context";
+import {login, LoginOptions} from "./login";
+import {requestIo} from "./request-io";
 
-describe.skip("login", function(this: Mocha.IContextDefinition) {
-  this.timeout(1000000); // 1000 seconds
+describe.skip("login", function() {
+  describe("login", async function(this: Mocha.IContextDefinition) {
+    this.timeout(10 * 60 * 1000); // 10 minutes
 
-  describe.only("login", async function() {
     it("Should log into the main test account", async function() {
       const options: LoginOptions = {
         credentials: testConfig.credentials,

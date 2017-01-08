@@ -1,5 +1,5 @@
-import {resolve as resolveUri} from "url";
 import {posix} from "path";
+import {resolve as resolveUri} from "url";
 
 function joinPath(parts: string[]): string {
   return posix.join.apply(null, parts);
@@ -15,55 +15,57 @@ function buildV1(): string[] {
 }
 
 // /contacts/v1/users
-function buildUsers (): string[] {
+function buildUsers(): string[] {
   return buildV1().concat("users");
 }
 
 // /contacts/v1/users/:user
-function buildUser (username: string): string[] {
+function buildUser(username: string): string[] {
   return buildUsers().concat(username);
 }
 
 // /contacts/v1/users/:user/contacts
-function buildContacts (username: string): string[] {
+function buildContacts(username: string): string[] {
   return buildUser(username).concat("contacts");
 }
 
 // /contacts/v1/users/:user/contacts/profiles
-function buildContactProfiles (username: string): string[] {
+function buildContactProfiles(username: string): string[] {
   return buildContacts(username).concat("profiles");
 }
 
 // /contacts/v1/users/:user/contacts/:contactType
-function buildContactsType (username: string, contactType: string): string[] {
+function buildContactsType(username: string, contactType: string): string[] {
   return buildContacts(username).concat(contactType);
 }
 
 // /contacts/v1/users/:user/contacts/:contactType/:contactId
-function buildContact (username: string, contactType: string, contactId: string): string[] {
+function buildContact(username: string, contactType: string, contactId: string): string[] {
   return buildContactsType(username, contactType).concat(contactId);
 }
 
 // /contacts/v1/users/:user/contacts/:contactType/:contactId/block
-function buildContactBlock (username: string, contactType: string, contactId: string): string[] {
+function buildContactBlock(username: string, contactType: string, contactId: string): string[] {
   return buildContact(username, contactType, contactId).concat("block");
 }
 
 // /contacts/v1/users/:user/contacts/:contactType/:contactId/unblock
-function buildContactUnlock (username: string, contactType: string, contactId: string): string[] {
+function buildContactUnlock(username: string, contactType: string, contactId: string): string[] {
   return buildContact(username, contactType, contactId).concat("unblock");
 }
 
 // /contacts/v1/users/:user/profile
-function buildProfile (username: string): string[] {
+function buildProfile(username: string): string[] {
   return buildUser(username).concat("profile");
 }
 
 // TODO (from skype-web-reversed):
+// tslint:disable:max-line-length
 // myContactsEndpoint: "contacts/${version}/users/${id}/contacts?$filter=type eq 'skype' or type eq 'msn' or type eq 'pstn' or type eq 'agent' or type eq 'lync'&reason=${reason}",
 // myDeltaContactsEndpoint: "contacts/${version}/users/${id}/contacts?delta&$filter=type eq 'skype' or type eq 'msn' or type eq 'pstn' or type eq 'agent' or type eq 'lync'&reason=${reason}",
+// tslint:enable
 
-function getOrigin (): string {
+function getOrigin(): string {
   return "https://" + CONTACTS_HOST;
 }
 
@@ -72,16 +74,18 @@ function get(path: string) {
 }
 
 // https://contacts.skype.com/contacts/v1/users/:username/contacts
-export function contacts (username: string): string {
+export function contacts(username: string): string {
   return get(joinPath(buildContacts(username)));
 }
 
 // https://contacts.skype.com/contacts/v1/users/:username/contacts/profiles
-export function contactProfiles (username: string): string {
+export function contactProfiles(username: string): string {
   return get(joinPath(buildContactProfiles(username)));
 }
 
 // https://contacts.skype.com/contacts/v1/users/:username/contacts/:contactType/:contactId
-export function contact (username: string, contactType: "skype" | "msn" | "pstn" | "agent" | "lync" | string, contact: string): string {
+export function contact(username: string,
+                        contactType: "skype" | "msn" | "pstn" | "agent" | "lync" | string,
+                        contact: string): string {
   return get(joinPath(buildContact(username, contactType, contact)));
 }

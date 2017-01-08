@@ -1,11 +1,18 @@
-import {Resource, EndpointPresenceResource, MessageResource, UserPresenceResource} from "./resources";
+import {
+  EndpointPresenceResource,
+  MessageResource,
+  Resource,
+  UserPresenceResource
+} from "./resources";
 
 export interface EventMessage {
   id: number;
   type: "EventMessage";
-  resourceType: "NewMessage" | "UserPresence" | "EndpointPresence" | string; // TODO: check the available types
+  // TODO: check the available types
+  resourceType: "NewMessage" | "UserPresence" | "EndpointPresence" | string;
   time: string;
-  resourceLink: string; // https://{host}/v1/users/ME/conversations/{conversation}/messages/{id}
+  // https://{host}/v1/users/ME/conversations/{conversation}/messages/{id}
+  resourceLink: string;
   resource: Resource;
 }
 

@@ -1,11 +1,12 @@
 import * as Bluebird from "bluebird";
-import * as _ from "lodash";
 import {Incident} from "incident";
-
-import * as io from "../interfaces/io";
-import {Conversation} from "../interfaces/api/conversation";
-import {Conversation as NativeConversation, Thread as NativeThread} from "../interfaces/native-api/conversation";
 import {Context} from "../interfaces/api/context";
+import {Conversation} from "../interfaces/api/conversation";
+import * as io from "../interfaces/io";
+import {
+  Conversation as NativeConversation,
+  Thread as NativeThread
+} from "../interfaces/native-api/conversation";
 import * as messagesUri from "../messages-uri";
 import {formatConversation, formatThread} from "../utils/formatters";
 
@@ -25,7 +26,7 @@ interface GetConversationQuery {
   targetType: string; // seen: Passport|Skype|Lync|Thread
 }
 
-export function getConversation (io: io.HttpIo, apiContext: Context, conversationId: string): Bluebird<Conversation> {
+export function getConversation(io: io.HttpIo, apiContext: Context, conversationId: string): Bluebird<Conversation> {
   return Bluebird
     .try(() => {
       const query: GetConversationQuery = {
@@ -46,7 +47,7 @@ export function getConversation (io: io.HttpIo, apiContext: Context, conversatio
         jar: apiContext.cookieJar,
         queryString: query,
         headers: {
-          "RegistrationToken": apiContext.registrationToken.raw
+          RegistrationToken: apiContext.registrationToken.raw
         }
       };
       return io.get(requestOptions);

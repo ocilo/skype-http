@@ -33,8 +33,10 @@ Microsoft accounts for now).
 ````shell
 git clone https://github.com/demurgos/skype-http
 cd skype-http
-npm install && typings install
-npm run demo
+# Ensure that you have the latest versions of the global dependencies
+sudo npm install -g npm typings gulp-cli
+npm install
+npm start
 ````
 
 This will perform a verbose connection (it should log the acquisition of various tokens), display the list of contacts,

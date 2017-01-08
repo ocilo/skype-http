@@ -1,13 +1,9 @@
 import * as _ from "lodash";
 import {Dictionary} from "./interfaces/utils";
 
-// TODO: get rid of this function
-export function throwError(message: any) {
-  console.error("Something went wrong!" + message); // FIXME
-}
-
 /**
- * Returns the current timestamp in seconds.
+ * Returns the number of seconds since epoch.
+ *
  * @returns {number}
  */
 export function getCurrentTime(): number {
@@ -43,48 +39,54 @@ export function padRight(str: any, len: number, char: string = " "): string {
 }
 
 export function stringFromChar(char: string, count: number): string {
+  // TODO: count+1 ?
   return new Array(count - 1).join(char);
 }
 
-export function getTimezone() {
+export function getTimezone(): string {
   let sign: string;
-  let timezone = new Date().getTimezoneOffset() * (-1);
+  const timezone: number = (new Date()).getTimezoneOffset() * (-1);
   if (timezone >= 0) {
     sign = "+";
   } else {
     sign = "-";
   }
 
-  timezone = Math.abs(timezone);
-  let minutes = timezone % 60;
-  let hours = (timezone - minutes) / 60;
+  const absTmezone: number = Math.abs(timezone);
+  const minutes: number = absTmezone % 60;
+  const hours: number = (absTmezone - minutes) / 60;
 
   return `${sign}${zeroPad(hours, 2)}|${zeroPad(minutes, 2)}`;
 }
 
-const HTTP_HEADER_SEPARATOR = ";";
-const HTTP_HEADER_OPERATOR = "=";
+const HTTP_HEADER_SEPARATOR: string = ";";
+const HTTP_HEADER_OPERATOR: string = "=";
 
 export function stringifyHeaderParams (params: Dictionary<string>) {
-  return _.map(params, (value, key) => {
-    if (key === undefined) {
-      throw new Error("Undefined key");
+  const headerPairs: string[] = _.map(params, (value: string, key: string) => {
+    if (value === undefined) {
+      throw new Error(`Undefined value for the header: ${key}`);
     }
     return `${key.replace(/%20/gm, "+")}=${value.replace(/%20/gm, "+")}`;
-  }).join(HTTP_HEADER_SEPARATOR + " "); // The space after the separator is important, otherwise Skype is unable to parse the header
+  });
+
+  // The space after the separator is important, otherwise Skype is unable to parse the header
+  return headerPairs.join(HTTP_HEADER_SEPARATOR + " ");
 }
 
 // TODO: check with skype-web-reversed
 export function parseHeaderParams (params: string): Dictionary<string> {
-  let result: Dictionary<string> = {};
+  const result: Dictionary<string> = {};
 
   params
     .split(HTTP_HEADER_SEPARATOR)
     .forEach((paramString) => {
       paramString = _.trim(paramString);
-      const operatorIdx = paramString.indexOf(HTTP_HEADER_OPERATOR);
-      let key: string, val: string;
-      if (operatorIdx >= 1 && operatorIdx + HTTP_HEADER_OPERATOR.length < paramString.length - 1) { // Ensure that the operator is in the middle of the string
+      const operatorIdx: number = paramString.indexOf(HTTP_HEADER_OPERATOR);
+      let key: string;
+      let val: string;
+      // Ensure that the operator is not at the start or end of the parameters string
+      if (1 <= operatorIdx && operatorIdx + HTTP_HEADER_OPERATOR.length < paramString.length - 1) {
         key = _.trim(paramString.substring(0, operatorIdx));
         val = _.trim(paramString.substring(operatorIdx + HTTP_HEADER_OPERATOR.length));
       } else {

@@ -1,11 +1,10 @@
 import * as Bluebird from "bluebird";
 import {Incident} from "incident";
-
 import * as api from "../interfaces/api/api";
 import {Context} from "../interfaces/api/context";
 import * as io from "../interfaces/io";
-import {getCurrentTime} from "../utils";
 import * as messagesUri from "../messages-uri";
+import {getCurrentTime} from "../utils";
 
 interface SendMessageResponse {
   OriginalArrivalTime: number;
@@ -18,21 +17,22 @@ interface SendMessageQuery {
   contenttype: string;
 }
 
-export function sendMessage(io: io.HttpIo, apiContext: Context, message: api.NewMessage, conversationId: string): Bluebird<api.SendMessageResult> {
+export function sendMessage(io: io.HttpIo, apiContext: Context, message: api.NewMessage,
+                            conversationId: string): Bluebird<api.SendMessageResult> {
   return Bluebird
     .try(() => {
-      let query: SendMessageQuery = {
+      const query: SendMessageQuery = {
         clientmessageid: String(getCurrentTime() + Math.floor(10000 * Math.random())),
         content: String(message.textContent),
         messagetype: "RichText",
         contenttype: "text"
       };
-      let requestOptions: io.PostOptions = {
+      const requestOptions: io.PostOptions = {
         uri: messagesUri.messages(apiContext.registrationToken.host, messagesUri.DEFAULT_USER, conversationId),
         jar: apiContext.cookieJar,
         body: JSON.stringify(query),
         headers: {
-          "RegistrationToken": apiContext.registrationToken.raw
+          RegistrationToken: apiContext.registrationToken.raw
         }
       };
       return io.post(requestOptions)
@@ -42,12 +42,11 @@ export function sendMessage(io: io.HttpIo, apiContext: Context, message: api.New
             return Bluebird.reject(new Incident("send-message", "Received wrong return code"));
           }
           const body: SendMessageResponse = JSON.parse(res.body);
-          let result: api.SendMessageResult = {
+          return {
             clientMessageId: query.clientmessageid,
             arrivalTime: body.OriginalArrivalTime,
             textContent: query.content
           };
-          return result;
         });
     });
 }

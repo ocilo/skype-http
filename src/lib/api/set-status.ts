@@ -13,15 +13,15 @@ interface RequestBody {
 export function setStatus (io: io.HttpIo, apiContext: Context, status: api.Status): Bluebird<any> {
   return Bluebird
     .try(() => {
-      let requestBody: RequestBody = {
+      const requestBody: RequestBody = {
         status: status
       };
-      let requestOptions: io.PostOptions = {
+      const requestOptions: io.PostOptions = {
         uri: messagesUri.userMessagingService(apiContext.registrationToken.host),
         jar: apiContext.cookieJar,
         body: JSON.stringify(requestBody),
         headers: {
-          "RegistrationToken": apiContext.registrationToken.raw
+          RegistrationToken: apiContext.registrationToken.raw
         }
       };
       return io.put(requestOptions);

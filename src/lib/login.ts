@@ -1,18 +1,16 @@
 import * as Bluebird from "bluebird";
-import * as cheerio from "cheerio";
 import {Incident} from "incident";
 import * as request from "request";
-import {parse as parseUri} from "url";
-import {Credentials} from "./interfaces/api/api";
-import {Dictionary} from "./interfaces/utils";
-import {Context as ApiContext, SkypeToken, RegistrationToken} from "./interfaces/api/context";
+import {parse as parseUri, Url} from "url";
 import * as Consts from "./consts";
+import {Credentials} from "./interfaces/api/api";
+import {Context as ApiContext, RegistrationToken, SkypeToken} from "./interfaces/api/context";
 import * as io from "./interfaces/io";
-import * as Utils from "./utils";
-import {stringifyHeaderParams, parseHeaderParams} from "./utils";
-import {hmacSha256} from "./utils/hmac-sha256";
+import {Dictionary} from "./interfaces/utils";
 import * as messagesUri from "./messages-uri";
 import * as microsoftAccount from "./providers/microsoft-account";
+import * as utils from "./utils";
+import {hmacSha256} from "./utils/hmac-sha256";
 
 export interface LoginOptions {
   io: io.HttpIo;
@@ -34,7 +32,7 @@ interface SkypeTokenRequest {
   js_time: number;
 }
 
-interface IOOptions {
+interface IoOptions {
   io: io.HttpIo;
   jar: request.CookieJar;
 }
@@ -53,8 +51,7 @@ interface IOOptions {
  */
 export async function login(options: LoginOptions): Promise<ApiContext> {
   const jar: request.CookieJar = request.jar();
-
-  let ioOptions = {io: options.io, jar: jar};
+  const ioOptions: IoOptions = {io: options.io, jar: jar};
 
   const getSkypeTokenOptions: microsoftAccount.GetSkypeTokenOptions = {
     credentials: {
@@ -62,7 +59,7 @@ export async function login(options: LoginOptions): Promise<ApiContext> {
       password: options.credentials.password
     },
     httpIo: options.io,
-    jar: jar
+    cookieJar: jar
   };
 
   const skypeToken: SkypeToken = await microsoftAccount.getSkypeToken(getSkypeTokenOptions);
@@ -70,7 +67,11 @@ export async function login(options: LoginOptions): Promise<ApiContext> {
     console.log("Acquired SkypeToken");
   }
 
-  const registrationToken: RegistrationToken = await getRegistrationToken(ioOptions, skypeToken, Consts.SKYPEWEB_DEFAULT_MESSAGES_HOST);
+  const registrationToken: RegistrationToken = await getRegistrationToken(
+    ioOptions,
+    skypeToken,
+    Consts.SKYPEWEB_DEFAULT_MESSAGES_HOST
+  );
   if (options.verbose) {
     console.log("Acquired RegistrationToken");
   }
@@ -101,18 +102,21 @@ function getLockAndKeyResponse(time: number): string {
 }
 
 // Get the token used to subscribe to resources
-function getRegistrationToken(options: IOOptions, skypeToken: SkypeToken, messagesHost: string, retry: number = 2): Bluebird<RegistrationToken> {
+function getRegistrationToken(options: IoOptions,
+                              skypeToken: SkypeToken,
+                              messagesHost: string,
+                              retry: number = 2): Bluebird<RegistrationToken> {
   return Bluebird
     .try(() => {
-      const startTime: number = Utils.getCurrentTime();
+      const startTime: number = utils.getCurrentTime();
       const lockAndKeyResponse: string = getLockAndKeyResponse(startTime);
       const headers: Dictionary<string> = {
-        LockAndKey: stringifyHeaderParams({
+        LockAndKey: utils.stringifyHeaderParams({
           appId: Consts.SKYPEWEB_LOCKANDKEY_APPID,
           time: String(startTime),
-          lockAndKeyResponse: lockAndKeyResponse,
+          lockAndKeyResponse: lockAndKeyResponse
         }),
-        ClientInfo: stringifyHeaderParams({
+        ClientInfo: utils.stringifyHeaderParams({
           os: "Windows",
           osVer: "10",
           proc: "Win64",
@@ -122,7 +126,7 @@ function getRegistrationToken(options: IOOptions, skypeToken: SkypeToken, messag
           clientName: Consts.SKYPEWEB_CLIENTINFO_NAME,
           clientVer: Consts.SKYPEWEB_CLIENTINFO_VERSION
         }),
-        Authentication: stringifyHeaderParams({
+        Authentication: utils.stringifyHeaderParams({
           skypetoken: skypeToken.value
         })
       };
@@ -141,9 +145,9 @@ function getRegistrationToken(options: IOOptions, skypeToken: SkypeToken, messag
           }
           // TODO: handle statusCode 201 & 301
 
-          let locationHeader = res.headers["location"];
+          const locationHeader: string = res.headers["location"];
 
-          let location = parseUri(locationHeader); // TODO: parse in messages-uri.ts
+          const location: Url = parseUri(locationHeader); // TODO: parse in messages-uri.ts
           if (location.host === undefined) {
             throw new Incident("parse-error", "Expected location to define host");
           }
@@ -157,14 +161,14 @@ function getRegistrationToken(options: IOOptions, skypeToken: SkypeToken, messag
           }
 
           // registrationTokenHeader is like "registrationToken=someString; expires=someNumber; endpointId={someString}"
-          let registrationTokenHeader = res.headers["set-registrationtoken"];
-          let parsedHeader = parseHeaderParams(registrationTokenHeader);
+          const registrationTokenHeader: string = res.headers["set-registrationtoken"];
+          const parsedHeader: Dictionary<string> = utils.parseHeaderParams(registrationTokenHeader);
 
           if (!parsedHeader["registrationToken"] || !parsedHeader["expires"] || !parsedHeader["endpointId"]) {
             return Bluebird.reject(new Incident("protocol", "Missing parameters for the registrationToken"));
           }
 
-          const expires = parseInt(parsedHeader["expires"], 10); // in seconds
+          const expires: number = parseInt(parsedHeader["expires"], 10); // in seconds
 
           const registrationToken: RegistrationToken = {
             value: parsedHeader["registrationToken"],
@@ -179,7 +183,9 @@ function getRegistrationToken(options: IOOptions, skypeToken: SkypeToken, messag
     });
 }
 
-function subscribeToResources(ioOptions: IOOptions, registrationToken: RegistrationToken): Bluebird<any> {
+function subscribeToResources(ioOptions: IoOptions, registrationToken: RegistrationToken): Bluebird<any> {
+  // TODO(demurgos): typedef
+  // tslint:disable-next-line:typedef
   const requestDocument = {
     interestedResources: [
       "/v1/threads/ALL",
@@ -191,7 +197,7 @@ function subscribeToResources(ioOptions: IOOptions, registrationToken: Registrat
     channelType: "httpLongPoll"// TODO: use websockets ?
   };
 
-  const requestOptions = {
+  const requestOptions: io.PostOptions = {
     uri: messagesUri.subscriptions(registrationToken.host),
     jar: ioOptions.jar,
     body: JSON.stringify(requestDocument),
@@ -227,14 +233,17 @@ function subscribeToResources(ioOptions: IOOptions, registrationToken: Registrat
     });
 }
 
-function createPresenceDocs(ioOptions: IOOptions, registrationToken: RegistrationToken): Bluebird<any> {
+function createPresenceDocs(ioOptions: IoOptions, registrationToken: RegistrationToken): Bluebird<any> {
   return Bluebird
     .try(() => {
       if (!registrationToken.endpointId) {
         return Bluebird.reject(new Incident("Missing endpoint id in registration token"));
       }
 
-      const requestBody = { // this is the exact json that is needed to register endpoint for setting of status.
+      // this is the exact json that is needed to register endpoint for setting of status.
+      // TODO: typedef
+      // tslint:disable-next-line:typedef
+      const requestBody = {
         id: "endpointMessagingService",
         type: "EndpointPresenceDoc",
         selfLink: "uri",
@@ -250,12 +259,18 @@ function createPresenceDocs(ioOptions: IOOptions, registrationToken: Registratio
         }
       };
 
-      const requestOptions = {
-        uri: messagesUri.endpointMessagingService(registrationToken.host, messagesUri.DEFAULT_USER, registrationToken.endpointId),
+      const uri: string = messagesUri.endpointMessagingService(
+        registrationToken.host,
+        messagesUri.DEFAULT_USER,
+        registrationToken.endpointId
+      );
+
+      const requestOptions: io.PutOptions = {
+        uri: uri,
         jar: ioOptions.jar,
         body: JSON.stringify(requestBody),
         headers: {
-          "RegistrationToken": registrationToken.raw
+          RegistrationToken: registrationToken.raw
         }
       };
 

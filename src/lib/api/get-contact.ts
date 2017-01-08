@@ -1,18 +1,17 @@
 import * as Bluebird from "bluebird";
 import {Incident} from "incident";
-
-import * as io from "../interfaces/io";
+import * as apiUri from "../api-uri";
 import {Contact} from "../interfaces/api/contact";
 import {Context} from "../interfaces/api/context";
-import * as apiUri from "../api-uri";
-import * as contactsUri from "../contacts-uri";
+import * as io from "../interfaces/io";
 
-export const virtualContacts: Set<string> = new Set(["concierge", "echo123"]);
+export const VIRTUAL_CONTACTS: Set<string> = new Set(["concierge", "echo123"]);
 
 export function getContact (io: io.HttpIo, apiContext: Context, contactId: string): Bluebird<Contact> {
   return Bluebird
     .try(() => {
-      if (virtualContacts.has(contactId)) {
+      if (VIRTUAL_CONTACTS.has(contactId)) {
+        // tslint:disable-next-line:max-line-length
         throw new Error(`${JSON.stringify(contactId)} is not a real contact, you cannot get data for ${JSON.stringify(contactId)}`);
       }
       // concierge

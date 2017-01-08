@@ -3,15 +3,14 @@ import request = require("request");
 import * as io from "./interfaces/io";
 
 /**
- * Converts implementation-independant HttpIo options to the concrete
- * options used by `request`.
+ * Converts implementation-independant IO options to the concrete
+ * options used by the `request` library.
  *
- * @param ioOptions Implementation independent HttpIo options
+ * @param ioOptions Implementation independent IO options
  * @returns {request.Options} Corresponding `request` options
  */
 function asRequestOptions (ioOptions: io.GetOptions | io.PostOptions | io.PutOptions): request.Options {
-  const result = {} as request.Options;
-  Object.assign(result, ioOptions);
+  const result: request.Options = Object.assign({}, ioOptions);
   if (ioOptions.queryString) {
     result.qs = ioOptions.queryString;
   }

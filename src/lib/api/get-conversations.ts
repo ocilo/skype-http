@@ -1,11 +1,10 @@
 import * as Bluebird from "bluebird";
-import * as _ from "lodash";
 import {Incident} from "incident";
-
-import * as io from "../interfaces/io";
-import {Conversation} from "../interfaces/api/conversation";
-import {Conversation as NativeConversation} from "../interfaces/native-api/conversation";
+import * as _ from "lodash";
 import {Context} from "../interfaces/api/context";
+import {Conversation} from "../interfaces/api/conversation";
+import * as io from "../interfaces/io";
+import {Conversation as NativeConversation} from "../interfaces/native-api/conversation";
 import * as messagesUri from "../messages-uri";
 import {formatConversation} from "../utils/formatters";
 
@@ -39,7 +38,7 @@ export function getConversations (io: io.HttpIo, apiContext: Context): Bluebird<
         jar: apiContext.cookieJar,
         queryString: query,
         headers: {
-          "RegistrationToken": apiContext.registrationToken.raw
+          RegistrationToken: apiContext.registrationToken.raw
         }
       };
       return io.get(requestOptions);
