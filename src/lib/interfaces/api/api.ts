@@ -7,7 +7,11 @@ export interface Credentials {
 
 export interface ParsedConversationId {
   raw: string; // "{prefix}:{username}"
-  prefix: number; // "8" for normal users, "4" for pstn (public switched telephone network), "28" for agents (bots), "guest" for guests, and something for msn and lync ?
+  // "8" for normal users,
+  // "4" for pstn (public switched telephone network),
+  // "28" for agents (bots),
+  // "guest" for guests, and something for msn and lync ?
+  prefix: number; // TODO: use string
   username: string;
 }
 

@@ -1,43 +1,76 @@
 export interface Resource {
   type: "Message" | "UserPresenceDoc" | "EndpointPresenceDoc" | string;
-  id: string; // If type is Message: a large integer, otherwise: "endpointMessagingService"
+  // If type is Message: a large integer, otherwise: "endpointMessagingService"
+  id: string;
 }
 
 export interface MessageResource extends Resource {
   type: "Message";
-  messagetype: "Control/LiveState" | "Control/ClearTyping" | "Control/Typing" | "Event/Call" | "RichText" | "RichText/UriObject" | "Text" | string; // TODO
+  messagetype: "Control/LiveState" | "Control/ClearTyping" | "Control/Typing" | "Event/Call"
+    | "RichText" | "RichText/UriObject" | "Text" | string; // TODO
   ackrequired: string;
-  originalarrivaltime: string; // JSON date
-  imdisplayname: string; // display name of the author
-  conversationLink: string; // https://{host}/v1/users/ME/conversations/{conversation}
-  composetime: string; // JSON date
+  // JSON date
+  originalarrivaltime: string;
+  /**
+   * Instant Messaging Display Name ?
+   *
+   * display name of the author
+   */
+  imdisplayname: string;
+  // https://{host}/v1/users/ME/conversations/{conversation}
+  conversationLink: string;
+  // JSON date
+  composetime: string;
   isactive: boolean;
-  from: string; // https://{host}/v1/users/ME/contacts/{contact}
-  version: string; // same as `id`
-  threadtopic?: string; // Title of the group conversation
+  // https://{host}/v1/users/ME/contacts/{contact}
+  from: string;
+  // same as `id`
+  version: string;
+  // Title of the group conversation
+  threadtopic?: string;
 }
 
 export interface UserPresenceResource extends Resource {
-  type: "UserPresenceDoc" | string; // TODO
-  selfLink: string; // https://{host}/v1/users/{user}/presenceDocs/endpointMessagingService" user is 8:username
-  availability: "Offline" | "Online" | string; // TODO
-  status: "Offline" | "Online" | "Idle" | string; // TODO
-  capabilities: string; // looks like capabilities.join(" | ") where capabilities is one of ["Seamless", "SmsUpgrade", "IsMobile"];
-  lastSeenAt?: string; // a JSON date
-  endpointPresenceDocLinks: string[]; // https://{host}/v1/users/{user}/endpoints/{endpoint}/presenceDocs/endpointMessagingService
+  // TODO
+  type: "UserPresenceDoc" | string;
+  // https://{host}/v1/users/{user}/presenceDocs/endpointMessagingService" user is 8:username
+  selfLink: string;
+  // TODO
+  availability: "Offline" | "Online" | string;
+  // TODO
+  status: "Offline" | "Online" | "Idle" | string;
+  // looks like capabilities.join(" | ") where capabilities is one of ["Seamless", "SmsUpgrade", "IsMobile"];
+  capabilities: string;
+  // a JSON date
+  lastSeenAt?: string;
+  // https://{host}/v1/users/{user}/endpoints/{endpoint}/presenceDocs/endpointMessagingService
+  endpointPresenceDocLinks: string[];
 }
 
 export interface EndpointPresenceResource extends Resource {
-  type: "EndpointPresenceDoc" | string; // TODO
-  selfLink: string; // https://{host}/v1/users/{user}/endpoints/{endpoint}/presenceDocs/endpointMessagingService
+  // TODO
+  type: "EndpointPresenceDoc" | string;
+  // https://{host}/v1/users/{user}/endpoints/{endpoint}/presenceDocs/endpointMessagingService
+  selfLink: string;
   publicInfo: {
-    capabilities: string; // looks like capabilities.join(" | ") where capabilities is one of ["Seamless", "SmsUpgrade"]; (no IsMobile apparently)
-    typ: string; // TODO: known: ["11", "12", "13", "14", "16", "17"]
+    // looks like capabilities.join(" | ") where capabilities is one of ["Seamless", "SmsUpgrade"];
+    // (no IsMobile apparently, as opposed to `UserPresenceResource`)
+    capabilities: string;
+    // TODO: known: ["11", "12", "13", "14", "16", "17"]
+    typ: string;
     skypeNameVersion: string;
-    nodeInfo: string; // pattern: /^x[0-9a-f]{58}/
-    version: string; // TODO: known: ["24"]
+    // pattern: /^x[0-9a-f]{58}/
+    nodeInfo: string;
+    // TODO: known: ["24"]
+    version: string;
   };
+
   privateInfo: {
-    epname: string; // Endpoint name (ie: computer name)
+    /**
+     * Endpoint name
+     *
+     * Usually the name of the computer (host for Linux ?)
+     */
+    epname: string;
   };
 }

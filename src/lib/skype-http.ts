@@ -1,9 +1,10 @@
-export {connect} from "./connect";
-
 import * as api from "./api";
+export {connect} from "./connect";
 import * as apiInterface from "./interfaces/api/api";
 import * as contact from "./interfaces/api/contact";
 import * as conversation from "./interfaces/api/conversation";
+
+/* tslint:disable:no-namespace */
 
 export type Api = api.Api;
 export namespace Api {

@@ -1,12 +1,11 @@
 import * as Bluebird from "bluebird";
-import * as _ from "lodash";
 import {Incident} from "incident";
-
-import * as io from "../interfaces/io";
-import {Contact} from "../interfaces/api/contact";
-import {Contact as NativeContact} from "../interfaces/native-api/contact";
-import {Context} from "../interfaces/api/context";
+import * as _ from "lodash";
 import * as contactsUri from "../contacts-uri";
+import {Contact} from "../interfaces/api/contact";
+import {Context} from "../interfaces/api/context";
+import * as io from "../interfaces/io";
+import {Contact as NativeContact} from "../interfaces/native-api/contact";
 import {formatContact} from "../utils/formatters";
 
 interface ContactsResponse {

@@ -1,24 +1,25 @@
-import * as Bluebird from "bluebird";
 import {EventEmitter} from "events";
 import {Incident} from "incident";
-
-import * as io from "../interfaces/io";
-import * as api from "../interfaces/api/api";
+import {ParsedConversationId} from "../interfaces/api/api";
 import {Context as ApiContext} from "../interfaces/api/context";
+import * as events from "../interfaces/api/events";
+import * as resources from "../interfaces/api/resources";
+import * as httpIo from "../interfaces/io";
+import * as nativeEvents from "../interfaces/native-api/events";
 import * as nativeMessageResources from "../interfaces/native-api/message-resources";
 import * as nativeResources from "../interfaces/native-api/resources";
-import * as nativeEvents from "../interfaces/native-api/events";
 import * as messagesUri from "../messages-uri";
-import {ParsedConversationId} from "../interfaces/api/api";
-import * as resources from "../interfaces/api/resources";
-import * as events from "../interfaces/api/events";
 
 // Perform one request every 1000 ms
-const POLLING_DELAY = 1000;
+const POLLING_DELAY: number = 1000;
 
-const CONTACT_ID_PATTERN = /^(\d+):(.+)$/;
+// Match a contact id:
+// TODO: handle the "guest" prefix
+const CONTACT_ID_PATTERN: RegExp = /^(\d+):(.+)$/;
+
+// TODO(demurgos): Looks like there is a problem with the return type
 export function parseContactId(contactId: string): ParsedConversationId {
-  const match = CONTACT_ID_PATTERN.exec(contactId);
+  const match: RegExpExecArray | null = CONTACT_ID_PATTERN.exec(contactId);
   if (match === null) {
     throw new Incident("parse-error", "Unable to parse userId");
   }
@@ -29,10 +30,11 @@ export function parseContactId(contactId: string): ParsedConversationId {
   };
 }
 
-export function formatRichTextResource (nativeResource: nativeMessageResources.RichText): resources.RichTextResource {
-  const parsedConversationUri = messagesUri.parseConversation(nativeResource.conversationLink);
-  const parsedContactUri = messagesUri.parseContact(nativeResource.from);
-  const parsedContactId = parseContactId(parsedContactUri.contact);
+export function formatRichTextResource(nativeResource: nativeMessageResources.RichText): resources.RichTextResource {
+  const parsedConversationUri: messagesUri.ConversationUri = messagesUri
+    .parseConversation(nativeResource.conversationLink);
+  const parsedContactUri: messagesUri.ContactUri = messagesUri.parseContact(nativeResource.from);
+  const parsedContactId: ParsedConversationId = parseContactId(parsedContactUri.contact);
   return {
     type: "RichText",
     id: nativeResource.id,
@@ -45,10 +47,11 @@ export function formatRichTextResource (nativeResource: nativeMessageResources.R
   };
 }
 
-export function formatTextResource (nativeResource: nativeMessageResources.Text): resources.TextResource {
-  const parsedConversationUri = messagesUri.parseConversation(nativeResource.conversationLink);
-  const parsedContactUri = messagesUri.parseContact(nativeResource.from);
-  const parsedContactId = parseContactId(parsedContactUri.contact);
+export function formatTextResource(nativeResource: nativeMessageResources.Text): resources.TextResource {
+  const parsedConversationUri: messagesUri.ConversationUri = messagesUri
+    .parseConversation(nativeResource.conversationLink);
+  const parsedContactUri: messagesUri.ContactUri = messagesUri.parseContact(nativeResource.from);
+  const parsedContactId: ParsedConversationId = parseContactId(parsedContactUri.contact);
   return {
     type: "Text",
     id: nativeResource.id,
@@ -61,10 +64,12 @@ export function formatTextResource (nativeResource: nativeMessageResources.Text)
   };
 }
 
-export function formatControlClearTypingResource (nativeResource: nativeMessageResources.ControlClearTyping): resources.ControlClearTypingResource {
-  const parsedConversationUri = messagesUri.parseConversation(nativeResource.conversationLink);
-  const parsedContactUri = messagesUri.parseContact(nativeResource.from);
-  const parsedContactId = parseContactId(parsedContactUri.contact);
+// tslint:disable-next-line:max-line-length
+export function formatControlClearTypingResource(nativeResource: nativeMessageResources.ControlClearTyping): resources.ControlClearTypingResource {
+  const parsedConversationUri: messagesUri.ConversationUri = messagesUri
+    .parseConversation(nativeResource.conversationLink);
+  const parsedContactUri: messagesUri.ContactUri = messagesUri.parseContact(nativeResource.from);
+  const parsedContactId: ParsedConversationId = parseContactId(parsedContactUri.contact);
   return {
     type: "Control/ClearTyping",
     id: nativeResource.id,
@@ -76,10 +81,12 @@ export function formatControlClearTypingResource (nativeResource: nativeMessageR
   };
 }
 
-export function formatControlTypingResource (nativeResource: nativeMessageResources.ControlTyping): resources.ControlTypingResource {
-  const parsedConversationUri = messagesUri.parseConversation(nativeResource.conversationLink);
-  const parsedContactUri = messagesUri.parseContact(nativeResource.from);
-  const parsedContactId = parseContactId(parsedContactUri.contact);
+// tslint:disable-next-line:max-line-length
+export function formatControlTypingResource(nativeResource: nativeMessageResources.ControlTyping): resources.ControlTypingResource {
+  const parsedConversationUri: messagesUri.ConversationUri = messagesUri
+    .parseConversation(nativeResource.conversationLink);
+  const parsedContactUri: messagesUri.ContactUri = messagesUri.parseContact(nativeResource.from);
+  const parsedContactId: ParsedConversationId = parseContactId(parsedContactUri.contact);
   return {
     type: "Control/Typing",
     id: nativeResource.id,
@@ -91,7 +98,7 @@ export function formatControlTypingResource (nativeResource: nativeMessageResour
   };
 }
 
-function formatMessageResource (nativeResource: nativeResources.MessageResource): resources.Resource {
+function formatMessageResource(nativeResource: nativeResources.MessageResource): resources.Resource {
   switch (nativeResource.messagetype) {
     case "RichText":
       return formatRichTextResource(<nativeMessageResources.RichText> nativeResource);
@@ -102,6 +109,7 @@ function formatMessageResource (nativeResource: nativeResources.MessageResource)
     case "Control/Typing":
       return formatControlTypingResource(<nativeMessageResources.ControlTyping> nativeResource);
     default:
+      // tslint:disable-next-line:max-line-length
       throw new Error(`Unknown ressource.messageType (${JSON.stringify(nativeResource.messagetype)}) for resource:\n${JSON.stringify(nativeResource)}`);
   }
 }
@@ -119,6 +127,7 @@ function formatEventMessage(native: nativeEvents.EventMessage): events.EventMess
       resource = formatMessageResource(<nativeResources.MessageResource> native.resource);
       break;
     default:
+      // tslint:disable-next-line:max-line-length
       throw new Error(`Unknown EventMessage.resourceType (${JSON.stringify(native.resourceType)}) for Event:\n${JSON.stringify(native)}`);
   }
 
@@ -133,11 +142,11 @@ function formatEventMessage(native: nativeEvents.EventMessage): events.EventMess
 }
 
 export class MessagesPoller extends EventEmitter {
-  io: io.HttpIo;
+  io: httpIo.HttpIo;
   apiContext: ApiContext;
   intervalId: number | NodeJS.Timer | null;
 
-  constructor (io: io.HttpIo, apiContext: ApiContext) {
+  constructor(io: httpIo.HttpIo, apiContext: ApiContext) {
     super();
 
     this.io = io;
@@ -145,11 +154,11 @@ export class MessagesPoller extends EventEmitter {
     this.intervalId = null;
   }
 
-  isActive (): boolean {
+  isActive(): boolean {
     return this.intervalId !== null;
   }
 
-  run (): this {
+  run(): this {
     if (this.isActive()) {
       return this;
     }
@@ -157,7 +166,7 @@ export class MessagesPoller extends EventEmitter {
     return this;
   }
 
-  stop (): this {
+  stop(): this {
     if (!this.isActive()) {
       return this;
     }
@@ -166,9 +175,9 @@ export class MessagesPoller extends EventEmitter {
     return this;
   }
 
-  protected async getMessages (): Promise<void> {
+  protected async getMessages(): Promise<void> {
     try {
-      const requestOptions = {
+      const requestOptions: httpIo.PostOptions = {
         // TODO: explicitly define user, endpoint and subscription
         uri: messagesUri.poll(this.apiContext.registrationToken.host),
         jar: this.apiContext.cookieJar,
@@ -176,7 +185,7 @@ export class MessagesPoller extends EventEmitter {
           RegistrationToken: this.apiContext.registrationToken.raw
         }
       };
-      const res: io.Response = await this.io.post(requestOptions);
+      const res: httpIo.Response = await this.io.post(requestOptions);
 
       if (res.statusCode !== 200) {
         return Promise.reject(new Incident("poll", "Unable to poll"));
@@ -185,18 +194,16 @@ export class MessagesPoller extends EventEmitter {
       const body: {eventMessages?: nativeEvents.EventMessage[]} = JSON.parse(res.body);
 
       if (body.eventMessages) {
-        for (let msg of body.eventMessages) {
+        for (const msg of body.eventMessages) {
           // console.log(JSON.stringify(msg, null, 2));
-          let formatted: events.EventMessage = formatEventMessage(msg);
+          const formatted: events.EventMessage = formatEventMessage(msg);
           if (formatted && formatted.resource) {
             this.emit("event-message", formatted);
           }
         }
       }
     } catch (err) {
-      console.error("Detecting an error");
       this.emit("error", err);
-      // this.stop();
     }
   }
 }

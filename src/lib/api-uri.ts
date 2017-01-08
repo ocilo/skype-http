@@ -1,5 +1,5 @@
-import {resolve as resolveUri} from "url";
 import {posix} from "path";
+import {resolve as resolveUri} from "url";
 import {SKYPEWEB_API_SKYPE_HOST} from "./consts";
 
 export const DEFAULT_USER: string = "self";

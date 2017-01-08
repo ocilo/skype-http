@@ -1,14 +1,12 @@
-import * as url from "url";
-import * as path from "path";
-import * as io from "../interfaces/io";
 import cheerio = require("cheerio");
-import {requestIo} from "../request-io";
-import {Dictionary} from "../interfaces/utils";
+import * as path from "path";
 import {CookieJar} from "request";
 import {Cookie} from "tough-cookie";
+import * as url from "url";
 import {SkypeToken} from "../interfaces/api/context";
+import * as io from "../interfaces/io";
+import {Dictionary} from "../interfaces/utils";
 
-export const apiLogin: string = "";
 export const skypeWebUri: string = "https://web.skype.com/";
 export const skypeLoginUri: string = "https://login.skype.com/login/";
 export const liveLoginUri: string = "https://login.live.com/";
@@ -41,7 +39,7 @@ export interface Credentials {
 export interface GetSkypeTokenOptions {
   credentials: Credentials;
   httpIo: io.HttpIo;
-  jar: CookieJar;
+  cookieJar: CookieJar;
 }
 
 export async function getSkypeToken(options: GetSkypeTokenOptions): Promise<SkypeToken> {
@@ -52,33 +50,39 @@ export async function getSkypeToken(options: GetSkypeTokenOptions): Promise<Skyp
     username: options.credentials.login,
     password: options.credentials.password,
     httpIo: options.httpIo,
-    jar: options.jar,
+    jar: options.cookieJar,
     liveKeys
   };
 
-  const liveToken = await getLiveToken(sendCredOpts);
+  const liveToken: string = await getLiveToken(sendCredOpts);
 
   const stOpt: GetSkypeTokenFromLiveTokenOptions = {
     liveToken,
-    jar: options.jar,
-    httpIo: options.httpIo,
+    jar: options.cookieJar,
+    httpIo: options.httpIo
   };
 
   const res: io.Response = await requestSkypeToken(stOpt);
 
   const scrapped: SkypeTokenResponse = scrapSkypeTokenResponse(res.body);
   // Expires in (seconds) (default: 1 day)
-  const expiresIn = typeof scrapped.expires_in === "number" ? scrapped.expires_in : 864000;
+  const expiresIn: number = typeof scrapped.expires_in === "number" ? scrapped.expires_in : 864000;
 
-  return {
+  const result: SkypeToken = {
     value: scrapped.skypetoken,
     expirationDate: new Date(startTime + expiresIn * 1000)
   };
+
+  if (typeof result.value !== "string") {
+    throw new Error("Expected value of Skype token to be a string");
+  }
+
+  return result;
 }
 
 export interface LoadLiveKeysOptions {
-  httpIo: io.HttpIo,
-  jar: CookieJar
+  httpIo: io.HttpIo;
+  cookieJar: CookieJar;
 }
 
 export interface LiveKeys {
@@ -113,7 +117,7 @@ export async function getLiveKeys(options: LoadLiveKeysOptions): Promise<LiveKey
   let mspOk: string | undefined;
 
   // Retrieve values for the cookies "MSPRequ" and "MSPOK"
-  const cookies: Cookie[] = options.jar.getCookies("https://login.live.com/");
+  const cookies: Cookie[] = options.cookieJar.getCookies("https://login.live.com/");
   for (const cookie of cookies) {
     switch (cookie.key) {
       case "MSPRequ":
@@ -143,7 +147,7 @@ export async function requestLiveKeys(options: LoadLiveKeysOptions): Promise<io.
     client_id: webClientLiveLoginId,
     redirect_uri: skypeWebUri
   };
-  const getOptions: io.GetOptions = {uri, queryString, jar: options.jar};
+  const getOptions: io.GetOptions = {uri, queryString, jar: options.cookieJar};
   // Also, now the Jar should contain:
   // MSPRequ
   // MSPOK
@@ -152,6 +156,7 @@ export async function requestLiveKeys(options: LoadLiveKeysOptions): Promise<io.
 
 // TODO: parse HTML, JS and traverse AST
 export function scrapLivePpftKey(html: string): string {
+  // tslint:disable-next-line:max-line-length
   const ppftRegExp: RegExp = /<input\s+type="hidden"\s+name="PPFT"\s+id="i0327"\s+value="([\!*0-9a-zA-Z]+\${1,2})"\s*\/>/;
   const regExpResult: RegExpExecArray | null = ppftRegExp.exec(html);
 
@@ -185,13 +190,18 @@ export async function requestLiveToken (options: SendCredentialsOptions): Promis
   const queryString: Dictionary<string> = {
     wa: "wsignin1.0",
     wp: "MBI_SSL",
+    // tslint:disable-next-line:max-line-length
     wreply: "https://lw.skype.com/login/oauth/proxy?client_id=578134&site_name=lw.skype.com&redirect_uri=https%3A%2F%2Fweb.skype.com%2F"
   };
   const jar: CookieJar = options.jar;
   // MSPRequ should already be set
   // MSPOK should already be set
   const millisecondsSinceEpoch: number = Date.now(); // Milliseconds since epoch
-  jar.setCookie(new (<any> Cookie)({key: "CkTst", value: millisecondsSinceEpoch.toString(10)}), "https://login.live.com/");
+  const ckTstCookie: Cookie = new (<any> Cookie)({
+    key: "CkTst",
+    value: millisecondsSinceEpoch.toString(10)
+  });
+  jar.setCookie(ckTstCookie, "https://login.live.com/");
 
   const formData: Dictionary<string> = {
     login: options.username,
@@ -236,7 +246,7 @@ export async function requestSkypeToken (options: GetSkypeTokenFromLiveTokenOpti
 
   const queryString: Dictionary<string> = {
     client_id: "578134",
-    redirect_uri: "https://web.skype.com",
+    redirect_uri: "https://web.skype.com"
   };
 
   const formData: Dictionary<string> = {
@@ -273,8 +283,8 @@ export function scrapSkypeTokenResponse(html: string): SkypeTokenResponse {
   // In seconds
   const expiresInNode: cheerio.Cheerio = $("input[name=expires_in]");
 
-  const skypetoken: string = skypeTokenNode.val();
-  const expires_in: number = parseInt(expiresInNode.val(), 10);
+  const skypeToken: string = skypeTokenNode.val();
+  const expiresIn: number = parseInt(expiresInNode.val(), 10);
 
   // if (!skypetoken || !expires_in) {
   //   const skypeErrorMessage = $(".message_error").text();
@@ -289,5 +299,8 @@ export function scrapSkypeTokenResponse(html: string): SkypeTokenResponse {
   // }
   // return result;
 
-  return {skypetoken, expires_in};
+  return {
+    skypetoken: skypeToken,
+    expires_in: expiresIn
+  };
 }

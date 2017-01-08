@@ -1,16 +1,15 @@
 import * as Bluebird from "bluebird";
-import {createInterface} from "readline";
-
-import {Credentials} from "../lib/interfaces/api/api";
-import * as events from "../lib/interfaces/api/events";
-import {Contact} from "../lib/interfaces/api/contact";
-import * as resources from "../lib/interfaces/api/resources";
-import * as skypeHttp from "../lib/connect";
+import * as readline from "readline";
 import {Api as SkypeApi} from "../lib/api";
-import {virtualContacts} from "../lib/api/get-contact";
+import {VIRTUAL_CONTACTS} from "../lib/api/get-contact";
+import * as skypeHttp from "../lib/connect";
+import {Credentials} from "../lib/interfaces/api/api";
+import {Contact} from "../lib/interfaces/api/contact";
+import * as events from "../lib/interfaces/api/events";
+import * as resources from "../lib/interfaces/api/resources";
 
 async function promptCredentials (): Promise<Credentials> {
-  let cliInterface = createInterface({
+  const cliInterface: readline.Interface = readline.createInterface({
     input: process.stdin,
     output: process.stdout
   });
@@ -30,7 +29,7 @@ async function promptCredentials (): Promise<Credentials> {
 
 async function run(): Promise<void> {
   const credentials: Credentials = await promptCredentials();
-  const options = {
+  const options: skypeHttp.ConnectOptions = {
     credentials: credentials,
     verbose: true
   };
@@ -47,7 +46,8 @@ async function run(): Promise<void> {
     console.error(err);
   });
 
-  let onMessage = (resource: resources.TextResource) => {
+  // tslint:disable-next-line:typedef
+  const onMessage = (resource: resources.TextResource): void => {
     if (resource.from.username === api.context.username) {
       return;
     }
@@ -57,22 +57,23 @@ async function run(): Promise<void> {
     const response: string = `Hi! You said "${resource.content}". skype-http works!`;
     console.log(`Responding to conversation ${resource.conversation}`);
     console.log(response);
-    return api.sendMessage({textContent: response}, resource.conversation);
+    api.sendMessage({textContent: response}, resource.conversation)
+      .catch(console.error);
   };
 
   api.on("Text", onMessage);
   api.on("RichText", onMessage);
 
-  const contacts = await api.getContacts();
+  const contacts: Contact[] = await api.getContacts();
   console.log("Your contacts:");
   console.log(JSON.stringify(contacts, null, 2));
 
   await Promise.all(contacts.map(async function (contact: Contact) {
     try {
-      if (virtualContacts.has(contact.id.id)) {
+      if (VIRTUAL_CONTACTS.has(contact.id.id)) {
         return;
       }
-      const fullContact = await api.getContact(contact.id.id);
+      const fullContact: Contact = await api.getContact(contact.id.id);
       console.log(JSON.stringify(fullContact, null, 2));
     } catch (err) {
       console.warn(err);

@@ -1,8 +1,5 @@
 import * as Bluebird from "bluebird";
 import {EventEmitter} from "events";
-import {CookieJar} from "request";
-import {Incident} from "incident";
-
 import acceptContactRequest from "./api/accept-contact-request";
 import declineContactRequest from "./api/decline-contact-request";
 import getContact from "./api/get-contact";
@@ -11,14 +8,13 @@ import getConversation from "./api/get-conversation";
 import getConversations from "./api/get-conversations";
 import sendMessage from "./api/send-message";
 import setStatus from "./api/set-status";
-import {HttpIo} from "./interfaces/io";
-import {MessagesPoller} from "./polling/messages-poller";
-
-import * as apiEvents from "./interfaces/api/events";
 import * as api from "./interfaces/api/api";
 import {Contact} from "./interfaces/api/contact";
 import {Context as ApiContext} from "./interfaces/api/context";
 import {Conversation} from "./interfaces/api/conversation";
+import * as apiEvents from "./interfaces/api/events";
+import {HttpIo} from "./interfaces/io";
+import {MessagesPoller} from "./polling/messages-poller";
 
 export class Api extends EventEmitter implements ApiEvents {
   io: HttpIo;
