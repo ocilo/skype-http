@@ -80,7 +80,7 @@
     "no-invalid-this": false,
     "no-magic-numbers": false,
     "no-mergeable-namespace": true,
-    "no-namespace": true,
+    "no-namespace": false,
     "no-null-keyword": false,
     "no-parameter-properties": true,
     "no-reference": true,

@@ -117,7 +117,8 @@ export async function getLiveKeys(options: LoadLiveKeysOptions): Promise<LiveKey
   let mspOk: string | undefined;
 
   // Retrieve values for the cookies "MSPRequ" and "MSPOK"
-  const cookies: Cookie[] = options.cookieJar.getCookies("https://login.live.com/");
+  // TODO(demurgos): Remove this <any>
+  const cookies: Cookie[] = <any> options.cookieJar.getCookies("https://login.live.com/");
   for (const cookie of cookies) {
     switch (cookie.key) {
       case "MSPRequ":
@@ -201,7 +202,8 @@ export async function requestLiveToken (options: SendCredentialsOptions): Promis
     key: "CkTst",
     value: millisecondsSinceEpoch.toString(10)
   });
-  jar.setCookie(ckTstCookie, "https://login.live.com/");
+  // TODO(demurgos): Remove this <any>
+  jar.setCookie(<any> ckTstCookie, "https://login.live.com/");
 
   const formData: Dictionary<string> = {
     login: options.username,

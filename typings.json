@@ -1,23 +1,12 @@
 {
-  "name": "hammerfest-api",
   "dependencies": {
     "big-integer": "registry:npm/big-integer#1.6.15+20160501004755",
-    "bluebird": "registry:npm/bluebird#3.4.1+20160909132857",
     "cheerio": "registry:npm/cheerio#0.20.0+20160422172414",
     "form-data": "registry:npm/form-data#1.0.0+20160211003958",
-    "incident": "npm:incident",
     "js-sha256": "registry:npm/js-sha256#0.3.0+20160427051917",
-    "lodash": "registry:npm/lodash#4.0.0+20161015015725",
-    "request": "registry:npm/request#2.69.0+20160428223725",
     "tough-cookie": "registry:npm/tough-cookie#2.2.0+20160723033700"
   },
-  "devDependencies": {
-    "chai": "registry:npm/chai#3.5.0+20160723033700"
-  },
-  "globalDependencies": {
-    "node": "registry:env/node#6.0.0+20170102175725"
-  },
-  "globalDevDependencies": {
-    "mocha": "registry:env/mocha#2.2.5+20160926180742"
-  }
+  "devDependencies": {},
+  "globalDependencies": {},
+  "globalDevDependencies": {}
 }

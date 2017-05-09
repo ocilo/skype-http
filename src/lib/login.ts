@@ -1,4 +1,3 @@
-import * as Bluebird from "bluebird";
 import {Incident} from "incident";
 import * as request from "request";
 import {parse as parseUri, Url} from "url";
@@ -102,88 +101,83 @@ function getLockAndKeyResponse(time: number): string {
 }
 
 // Get the token used to subscribe to resources
-function getRegistrationToken(options: IoOptions,
-                              skypeToken: SkypeToken,
-                              messagesHost: string,
-                              retry: number = 2): Bluebird<RegistrationToken> {
-  return Bluebird
-    .try(() => {
-      const startTime: number = utils.getCurrentTime();
-      const lockAndKeyResponse: string = getLockAndKeyResponse(startTime);
-      const headers: Dictionary<string> = {
-        LockAndKey: utils.stringifyHeaderParams({
-          appId: Consts.SKYPEWEB_LOCKANDKEY_APPID,
-          time: String(startTime),
-          lockAndKeyResponse: lockAndKeyResponse
-        }),
-        ClientInfo: utils.stringifyHeaderParams({
-          os: "Windows",
-          osVer: "10",
-          proc: "Win64",
-          lcid: "en-us",
-          deviceType: "1",
-          country: "n/a",
-          clientName: Consts.SKYPEWEB_CLIENTINFO_NAME,
-          clientVer: Consts.SKYPEWEB_CLIENTINFO_VERSION
-        }),
-        Authentication: utils.stringifyHeaderParams({
-          skypetoken: skypeToken.value
-        })
-      };
+async function getRegistrationToken(
+  options: IoOptions,
+  skypeToken: SkypeToken,
+  messagesHost: string,
+  retry: number = 2
+): Promise<RegistrationToken> {
+  const startTime: number = utils.getCurrentTime();
+  const lockAndKeyResponse: string = getLockAndKeyResponse(startTime);
+  const headers: Dictionary<string> = {
+    LockAndKey: utils.stringifyHeaderParams({
+      appId: Consts.SKYPEWEB_LOCKANDKEY_APPID,
+      time: String(startTime),
+      lockAndKeyResponse: lockAndKeyResponse
+    }),
+    ClientInfo: utils.stringifyHeaderParams({
+      os: "Windows",
+      osVer: "10",
+      proc: "Win64",
+      lcid: "en-us",
+      deviceType: "1",
+      country: "n/a",
+      clientName: Consts.SKYPEWEB_CLIENTINFO_NAME,
+      clientVer: Consts.SKYPEWEB_CLIENTINFO_VERSION
+    }),
+    Authentication: utils.stringifyHeaderParams({
+      skypetoken: skypeToken.value
+    })
+  };
 
-      const requestOptions: io.PostOptions = {
-        uri: messagesUri.endpoints(messagesHost),
-        headers: headers,
-        jar: options.jar,
-        body: "{}" // Skype requires you to send an empty object as a body
-      };
+  const requestOptions: io.PostOptions = {
+    uri: messagesUri.endpoints(messagesHost),
+    headers: headers,
+    jar: options.jar,
+    body: "{}" // Skype requires you to send an empty object as a body
+  };
 
-      return Bluebird.resolve(options.io.post(requestOptions))
-        .then((res: io.Response) => {
-          if (res.statusCode !== 201 && res.statusCode !== 301) {
-            return Bluebird.reject(new Incident("net", "Unable to register an endpoint"));
-          }
-          // TODO: handle statusCode 201 & 301
+  const res: io.Response = await options.io.post(requestOptions);
+  if (res.statusCode !== 201 && res.statusCode !== 301) {
+    return Promise.reject(new Incident("net", "Unable to register an endpoint"));
+  }
+  // TODO: handle statusCode 201 & 301
 
-          const locationHeader: string = res.headers["location"];
+  const locationHeader: string = res.headers["location"];
 
-          const location: Url = parseUri(locationHeader); // TODO: parse in messages-uri.ts
-          if (location.host === undefined) {
-            throw new Incident("parse-error", "Expected location to define host");
-          }
-          if (location.host !== messagesHost) { // mainly when 301, but sometimes when 201
-            messagesHost = location.host;
-            if (retry > 0) {
-              return getRegistrationToken(options, skypeToken, messagesHost, retry--);
-            } else {
-              return Bluebird.reject(new Incident("net", "Exceeded max tries"));
-            }
-          }
+  const location: Url = parseUri(locationHeader); // TODO: parse in messages-uri.ts
+  if (location.host === undefined) {
+    throw new Incident("parse-error", "Expected location to define host");
+  }
+  if (location.host !== messagesHost) { // mainly when 301, but sometimes when 201
+    messagesHost = location.host;
+    if (retry > 0) {
+      return getRegistrationToken(options, skypeToken, messagesHost, retry--);
+    } else {
+      return Promise.reject(new Incident("net", "Exceeded max tries"));
+    }
+  }
 
-          // registrationTokenHeader is like "registrationToken=someString; expires=someNumber; endpointId={someString}"
-          const registrationTokenHeader: string = res.headers["set-registrationtoken"];
-          const parsedHeader: Dictionary<string> = utils.parseHeaderParams(registrationTokenHeader);
+  // registrationTokenHeader is like "registrationToken=someString; expires=someNumber; endpointId={someString}"
+  const registrationTokenHeader: string = res.headers["set-registrationtoken"];
+  const parsedHeader: Dictionary<string> = utils.parseHeaderParams(registrationTokenHeader);
 
-          if (!parsedHeader["registrationToken"] || !parsedHeader["expires"] || !parsedHeader["endpointId"]) {
-            return Bluebird.reject(new Incident("protocol", "Missing parameters for the registrationToken"));
-          }
+  if (!parsedHeader["registrationToken"] || !parsedHeader["expires"] || !parsedHeader["endpointId"]) {
+    return Promise.reject(new Incident("protocol", "Missing parameters for the registrationToken"));
+  }
 
-          const expires: number = parseInt(parsedHeader["expires"], 10); // in seconds
+  const expires: number = parseInt(parsedHeader["expires"], 10); // in seconds
 
-          const registrationToken: RegistrationToken = {
-            value: parsedHeader["registrationToken"],
-            expirationDate: new Date(1000 * expires),
-            endpointId: parsedHeader["endpointId"],
-            raw: registrationTokenHeader,
-            host: messagesHost
-          };
-
-          return Bluebird.resolve(registrationToken);
-        });
-    });
+  return <RegistrationToken> {
+    value: parsedHeader["registrationToken"],
+    expirationDate: new Date(1000 * expires),
+    endpointId: parsedHeader["endpointId"],
+    raw: registrationTokenHeader,
+    host: messagesHost
+  };
 }
 
-function subscribeToResources(ioOptions: IoOptions, registrationToken: RegistrationToken): Bluebird<any> {
+async function subscribeToResources(ioOptions: IoOptions, registrationToken: RegistrationToken): Promise<void> {
   // TODO(demurgos): typedef
   // tslint:disable-next-line:typedef
   const requestDocument = {
@@ -206,82 +200,75 @@ function subscribeToResources(ioOptions: IoOptions, registrationToken: Registrat
     }
   };
 
-  return Bluebird.resolve(ioOptions.io.post(requestOptions))
-    .then((res: io.Response) => {
-      if (res.statusCode !== 201) {
-        return Bluebird.reject(new Incident("net", "Unable to subscribe to resources"));
-      }
+  const res: io.Response = await ioOptions.io.post(requestOptions);
+  if (res.statusCode !== 201) {
+    return Promise.reject(new Incident("net", "Unable to subscribe to resources"));
+  }
 
-      // Example response:
-      // {
-      //   "statusCode": 201,
-      //   "body": "{}",
-      //   "headers": {
-      //     "cache-control": "no-store, must-revalidate, no-cache",
-      //       "pragma": "no-cache",
-      //       "content-length": "2",
-      //       "content-type": "application/json; charset=utf-8",
-      //       "location": "https://db5-client-s.gateway.messenger.live.com/v1/users/ME/endpoints/SELF/subscriptions/0",
-      //       "x-content-type-options": "nosniff",
-      //       "contextid": "tcid=3434983151221922702,server=DB5SCH101121535",
-      //       "date": "Sat, 14 May 2016 16:41:17 GMT",
-      //       "connection": "close"
-      //   }
-      // }
+  // Example response:
+  // {
+  //   "statusCode": 201,
+  //   "body": "{}",
+  //   "headers": {
+  //     "cache-control": "no-store, must-revalidate, no-cache",
+  //       "pragma": "no-cache",
+  //       "content-length": "2",
+  //       "content-type": "application/json; charset=utf-8",
+  //       "location": "https://db5-client-s.gateway.messenger.live.com/v1/users/ME/endpoints/SELF/subscriptions/0",
+  //       "x-content-type-options": "nosniff",
+  //       "contextid": "tcid=3434983151221922702,server=DB5SCH101121535",
+  //       "date": "Sat, 14 May 2016 16:41:17 GMT",
+  //       "connection": "close"
+  //   }
+  // }
 
-      return Bluebird.resolve(null);
-    });
 }
 
-function createPresenceDocs(ioOptions: IoOptions, registrationToken: RegistrationToken): Bluebird<any> {
-  return Bluebird
-    .try(() => {
-      if (!registrationToken.endpointId) {
-        return Bluebird.reject(new Incident("Missing endpoint id in registration token"));
-      }
+async function createPresenceDocs(ioOptions: IoOptions, registrationToken: RegistrationToken): Promise<any> {
 
-      // this is the exact json that is needed to register endpoint for setting of status.
-      // TODO: typedef
-      // tslint:disable-next-line:typedef
-      const requestBody = {
-        id: "endpointMessagingService",
-        type: "EndpointPresenceDoc",
-        selfLink: "uri",
-        privateInfo: {
-          epname: "skype" // Name of the endpoint (normally the name of the host)
-        },
-        publicInfo: {
-          capabilities: "video|audio",
-          type: 1,
-          skypeNameVersion: Consts.SKYPEWEB_CLIENTINFO_NAME,
-          nodeInfo: "xx",
-          version: Consts.SKYPEWEB_CLIENTINFO_VERSION + "//" + Consts.SKYPEWEB_CLIENTINFO_NAME
-        }
-      };
+  if (!registrationToken.endpointId) {
+    return Promise.reject(new Incident("Missing endpoint id in registration token"));
+  }
 
-      const uri: string = messagesUri.endpointMessagingService(
-        registrationToken.host,
-        messagesUri.DEFAULT_USER,
-        registrationToken.endpointId
-      );
+  // this is the exact json that is needed to register endpoint for setting of status.
+  // TODO: typedef
+  // tslint:disable-next-line:typedef
+  const requestBody = {
+    id: "endpointMessagingService",
+    type: "EndpointPresenceDoc",
+    selfLink: "uri",
+    privateInfo: {
+      epname: "skype" // Name of the endpoint (normally the name of the host)
+    },
+    publicInfo: {
+      capabilities: "video|audio",
+      type: 1,
+      skypeNameVersion: Consts.SKYPEWEB_CLIENTINFO_NAME,
+      nodeInfo: "xx",
+      version: Consts.SKYPEWEB_CLIENTINFO_VERSION + "//" + Consts.SKYPEWEB_CLIENTINFO_NAME
+    }
+  };
 
-      const requestOptions: io.PutOptions = {
-        uri: uri,
-        jar: ioOptions.jar,
-        body: JSON.stringify(requestBody),
-        headers: {
-          RegistrationToken: registrationToken.raw
-        }
-      };
+  const uri: string = messagesUri.endpointMessagingService(
+    registrationToken.host,
+    messagesUri.DEFAULT_USER,
+    registrationToken.endpointId
+  );
 
-      return ioOptions.io.put(requestOptions);
-    })
-    .then((res: io.Response) => {
-      if (res.statusCode !== 200) {
-        return Bluebird.reject(new Incident("net", "Unable to create presence endpoint"));
-      }
-      return Bluebird.resolve(null);
-    });
+  const requestOptions: io.PutOptions = {
+    uri: uri,
+    jar: ioOptions.jar,
+    body: JSON.stringify(requestBody),
+    headers: {
+      RegistrationToken: registrationToken.raw
+    }
+  };
+
+  const res: io.Response = await ioOptions.io.put(requestOptions);
+
+  if (res.statusCode !== 200) {
+    return Promise.reject(new Incident("net", "Unable to create presence endpoint"));
+  }
 }
 
 export default login;

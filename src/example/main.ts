@@ -1,5 +1,4 @@
-import * as Bluebird from "bluebird";
-import * as readline from "readline";
+import {createInterface, ReadLine} from "readline";
 import {Api as SkypeApi} from "../lib/api";
 import {VIRTUAL_CONTACTS} from "../lib/api/get-contact";
 import * as skypeHttp from "../lib/connect";
@@ -8,23 +7,40 @@ import {Contact} from "../lib/interfaces/api/contact";
 import * as events from "../lib/interfaces/api/events";
 import * as resources from "../lib/interfaces/api/resources";
 
-async function promptCredentials (): Promise<Credentials> {
-  const cliInterface: readline.Interface = readline.createInterface({
+/**
+ * Command line interface prompt for the user credentials
+ */
+async function promptCredentials(): Promise<Credentials> {
+  const cliInterface: ReadLine = createInterface({
     input: process.stdin,
     output: process.stdout
   });
 
-  const username: string = await Bluebird
-    .fromCallback((cb) => {
-      cliInterface.question("Username? ", (res) => cb(null, res));
-    });
+  const username: string = await new Promise<string>(
+    (resolve: (res: string) => void, reject: (err: any) => void): void => {
+      cliInterface.question("Username? ", resolve);
+    }
+  );
 
-  const password: string = await Bluebird
-    .fromCallback((cb) => {
-      cliInterface.question("Password? ", (res) => cb(null, res));
-    });
+  const password: string = await new Promise<string>(
+    (resolve: (res: string) => void, reject: (err: any) => void): void => {
+      cliInterface.question("Password? ", resolve);
+    }
+  );
 
-  return {username, password};
+  const result: Promise<Credentials> = new Promise(
+    (resolve: (res: Credentials) => void, reject: (err: Error) => void): void => {
+      cliInterface.once("error", (err: Error): void => {
+        reject(err);
+      });
+      cliInterface.once("close", (): void => {
+        resolve({username, password});
+      });
+    }
+  );
+
+  cliInterface.close();
+  return result;
 }
 
 async function run(): Promise<void> {
@@ -86,4 +102,8 @@ async function run(): Promise<void> {
   console.log("Ready");
 }
 
-run().then(console.log, console.error);
+run()
+  .catch((err: Error): never => {
+    console.error(err.stack);
+    return process.exit(1) as never;
+  });

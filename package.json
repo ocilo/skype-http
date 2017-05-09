@@ -26,24 +26,28 @@
     "Skype-HTTP"
   ],
   "dependencies": {
+    "@types/lodash": "^4.14.64",
+    "@types/request": "0.0.43",
     "big-integer": "^1.5.6",
     "bluebird": "^3.3.5",
     "cheerio": "^0.19.0",
-    "incident": "^1.0.5",
     "js-sha256": "^0.3.0",
     "lodash": "^4.12.0",
     "request": "2.61",
     "tough-cookie": "^2.0.0"
   },
   "devDependencies": {
+    "@types/chai": "^3.5.2",
+    "@types/mocha": "^2.2.41",
+    "@types/node": "^7.0.18",
     "chai": "^3.5.0",
     "del": "^2.2.0",
-    "demurgos-web-build-tools": "0.13.0-beta.5",
+    "demurgos-web-build-tools": "^0.13.1",
     "fs-extra": "^0.30.0",
     "glob": "^7.0.3",
     "gulp": "github:gulpjs/gulp#4.0",
     "mocha": "^2.4.5",
     "pre-commit": "^1.2.2",
-    "typescript": "^2.1.4"
+    "typescript": "^2.3.2"
   }
 }
