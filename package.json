@@ -3,7 +3,9 @@
   "description": "Unofficial Skype API for Node.js via HTTP",
   "version": "0.0.10",
   "license": "MIT",
-  "main": "./dist/skype-http.js",
+  "main": "dist/lib-es2015/lib/skype-http.js",
+  "browser": "dist/lib-es5/lib/skype-http.js",
+  "types": "dist/lib-es2015/lib/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git://github.com/ocilo/skype-http.git"
