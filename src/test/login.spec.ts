@@ -1,7 +1,7 @@
-import testConfig from "../test/test-config";
-import {Context as ApiContext} from "./interfaces/api/context";
-import {login, LoginOptions} from "./login";
-import {requestIo} from "./request-io";
+import testConfig from "./test-config";
+import {Context as ApiContext} from "../lib/interfaces/api/context";
+import {login, LoginOptions} from "../lib/login";
+import {requestIo} from "../lib/request-io";
 
 describe.skip("login", function() {
   describe("login", async function(this: Mocha.ISuiteCallbackContext) {

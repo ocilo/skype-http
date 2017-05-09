@@ -1,6 +1,6 @@
 import {assert} from "chai";
-import {Dictionary} from "./interfaces/utils";
-import {parseHeaderParams} from "./utils";
+import {Dictionary} from "../lib/interfaces/utils";
+import {parseHeaderParams} from "../lib/utils";
 
 describe("parseHeaderParams", function () {
   interface Item {

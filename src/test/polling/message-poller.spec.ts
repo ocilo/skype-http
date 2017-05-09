@@ -1,12 +1,12 @@
 import {assert} from "chai";
-import * as resources from "../interfaces/api/resources";
-import * as nativeMessageResources from "../interfaces/native-api/message-resources";
-import * as messagesUri from "../messages-uri";
+import * as resources from "../../lib/interfaces/api/resources";
+import * as nativeMessageResources from "../../lib/interfaces/native-api/message-resources";
+import * as messagesUri from "../../lib/messages-uri";
 import {
   formatControlClearTypingResource,
   formatControlTypingResource,
   parseContactId
-} from "./messages-poller";
+} from "../../lib/polling/messages-poller";
 
 describe("formatControlClearTypingResource", function () {
   interface Item {
