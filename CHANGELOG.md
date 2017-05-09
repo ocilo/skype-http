@@ -1,6 +1,7 @@
 # Next
 
 - **[Patch]** Drop dependency on `typings`. Solves some installation issues.
+- **[Patch]** Fix missing dependency on `incident` in `package.json`.
 
 # 0.0.11 (2017-05-09)
 
