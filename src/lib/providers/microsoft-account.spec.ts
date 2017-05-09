@@ -13,8 +13,8 @@ import {
   SkypeTokenResponse
 } from "./microsoft-account";
 
-describe("Microsoft Account provider", function (this: Mocha.IContextDefinition) {
-  describe.skip("getSkypeToken", async function (this: Mocha.IContextDefinition) {
+describe("Microsoft Account provider", function (this: Mocha.ISuiteCallbackContext) {
+  describe.skip("getSkypeToken", async function (this: Mocha.ISuiteCallbackContext) {
     this.timeout(10 * 60 * 1000); // 10 minutes
 
     it("Should get a skype token for the main test account", async function () {

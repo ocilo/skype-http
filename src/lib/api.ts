@@ -1,4 +1,3 @@
-import * as Bluebird from "bluebird";
 import {EventEmitter} from "events";
 import acceptContactRequest from "./api/accept-contact-request";
 import declineContactRequest from "./api/decline-contact-request";
@@ -30,52 +29,54 @@ export class Api extends EventEmitter implements ApiEvents {
     this.messagesPoller.on("event-message", (ev: apiEvents.EventMessage) => this.handlePollingEvent(ev));
   }
 
-  acceptContactRequest(contactUsername: string): Bluebird<this> {
-    return acceptContactRequest(this.io, this.context, contactUsername).thenReturn(this);
+  async acceptContactRequest(contactUsername: string): Promise<this> {
+    await acceptContactRequest(this.io, this.context, contactUsername);
+    return this;
   }
 
-  declineContactRequest (contactUsername: string): Bluebird<this> {
-    return declineContactRequest(this.io, this.context, contactUsername).thenReturn(this);
+  async declineContactRequest (contactUsername: string): Promise<this> {
+    await declineContactRequest(this.io, this.context, contactUsername);
+    return this;
   }
 
-  getContact (contactId: string): Bluebird<Contact> {
+  getContact (contactId: string): Promise<Contact> {
     return getContact(this.io, this.context, contactId);
   }
 
-  getContacts (): Bluebird<Contact[]> {
+  getContacts (): Promise<Contact[]> {
     return getContacts(this.io, this.context);
   }
 
-  getConversation (conversationId: string): Bluebird<Conversation> {
+  getConversation (conversationId: string): Promise<Conversation> {
     return getConversation(this.io, this.context, conversationId);
   }
 
-  getConversations (): Bluebird<Conversation[]> {
+  getConversations (): Promise<Conversation[]> {
     return getConversations(this.io, this.context);
   }
 
-  sendMessage (message: api.NewMessage, conversationId: string): Bluebird<api.SendMessageResult> {
+  sendMessage (message: api.NewMessage, conversationId: string): Promise<api.SendMessageResult> {
     return sendMessage(this.io, this.context, message, conversationId);
   }
 
-  setStatus (status: api.Status): Bluebird<any> {
+  setStatus (status: api.Status): Promise<any> {
     return setStatus(this.io, this.context, status);
   }
 
   /**
    * Start polling and emitting events
    */
-  listen (): Bluebird<this> {
+  listen (): Promise<this> {
     this.messagesPoller.run();
-    return Bluebird.resolve(this);
+    return Promise.resolve(this);
   }
 
   /**
    * Stop polling and emitting events
    */
-  stopListening (): Bluebird<this> {
+  stopListening (): Promise<this> {
     this.messagesPoller.stop();
-    return Bluebird.resolve(this);
+    return Promise.resolve(this);
   }
 
   protected handlePollingEvent(ev: apiEvents.EventMessage): void {
@@ -85,7 +86,7 @@ export class Api extends EventEmitter implements ApiEvents {
       return;
     }
 
-    // Prevent echo
+    // Prevent infinite-loop (echo itself)
     if (ev.resource.from.username === this.context.username) {
       return;
     }

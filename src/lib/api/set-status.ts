@@ -1,6 +1,4 @@
-import * as Bluebird from "bluebird";
 import {Incident} from "incident";
-
 import * as api from "../interfaces/api/api";
 import {Context} from "../interfaces/api/context";
 import * as io from "../interfaces/io";
@@ -10,28 +8,23 @@ interface RequestBody {
   status: string;
 }
 
-export function setStatus (io: io.HttpIo, apiContext: Context, status: api.Status): Bluebird<any> {
-  return Bluebird
-    .try(() => {
-      const requestBody: RequestBody = {
-        status: status
-      };
-      const requestOptions: io.PostOptions = {
-        uri: messagesUri.userMessagingService(apiContext.registrationToken.host),
-        jar: apiContext.cookieJar,
-        body: JSON.stringify(requestBody),
-        headers: {
-          RegistrationToken: apiContext.registrationToken.raw
-        }
-      };
-      return io.put(requestOptions);
-    })
-    .then((res: io.Response) => {
-      if (res.statusCode !== 200) {
-        return Bluebird.reject(new Incident("send-message", "Received wrong return code"));
-      }
-      return;
-    });
+export async function setStatus(io: io.HttpIo, apiContext: Context, status: api.Status): Promise<void> {
+  const requestBody: RequestBody = {
+    status: status
+  };
+  const requestOptions: io.PostOptions = {
+    uri: messagesUri.userMessagingService(apiContext.registrationToken.host),
+    jar: apiContext.cookieJar,
+    body: JSON.stringify(requestBody),
+    headers: {
+      RegistrationToken: apiContext.registrationToken.raw
+    }
+  };
+  const res: io.Response = await io.put(requestOptions);
+
+  if (res.statusCode !== 200) {
+    return Promise.reject(new Incident("send-message", "Received wrong return code"));
+  }
 }
 
 export default setStatus;

@@ -1,4 +1,3 @@
-import Bluebird = require("bluebird");
 import request = require("request");
 import * as io from "./interfaces/io";
 
@@ -23,14 +22,14 @@ function asRequestOptions (ioOptions: io.GetOptions | io.PostOptions | io.PutOpt
  * @param options
  * @returns {Bluebird<any>}
  */
-export function get (options: io.GetOptions): Bluebird<io.Response> {
-  return Bluebird.fromCallback((cb) => {
+export function get (options: io.GetOptions): Promise<io.Response> {
+  return new Promise((resolve, reject) => {
     request.get(asRequestOptions(options), (error, response, body) => {
       if (error) {
-        return cb(error);
+        return reject(error);
       }
       if (response.statusCode === undefined) {
-        return cb(new Error("Missing status code"));
+        return reject(new Error("Missing status code"));
       }
 
       const ioResponse: io.Response = {
@@ -39,7 +38,7 @@ export function get (options: io.GetOptions): Bluebird<io.Response> {
         headers: response.headers
       };
 
-      cb(null, ioResponse);
+      resolve(ioResponse);
     });
   });
 }
@@ -50,14 +49,14 @@ export function get (options: io.GetOptions): Bluebird<io.Response> {
  * @param options
  * @returns {Bluebird<any>}
  */
-export function post (options: io.PostOptions): Bluebird<io.Response> {
-  return Bluebird.fromCallback((cb) => {
+export function post (options: io.PostOptions): Promise<io.Response> {
+  return new Promise((resolve, reject) => {
     request.post(asRequestOptions(options), (error, response, body) => {
       if (error) {
-        return cb(error);
+        return reject(error);
       }
       if (response.statusCode === undefined) {
-        return cb(new Error("Missing status code"));
+        return reject(new Error("Missing status code"));
       }
 
       const ioResponse: io.Response = {
@@ -66,7 +65,7 @@ export function post (options: io.PostOptions): Bluebird<io.Response> {
         headers: response.headers
       };
 
-      cb(null, ioResponse);
+      resolve(ioResponse);
     });
   });
 }
@@ -77,14 +76,14 @@ export function post (options: io.PostOptions): Bluebird<io.Response> {
  * @param options
  * @returns {Bluebird<any>}
  */
-export function put (options: io.PutOptions): Bluebird<io.Response> {
-  return Bluebird.fromCallback((cb) => {
+export function put (options: io.PutOptions): Promise<io.Response> {
+  return new Promise((resolve, reject) => {
     request.put(asRequestOptions(options), (error, response, body) => {
       if (error) {
-        return cb(error);
+        return reject(error);
       }
       if (response.statusCode === undefined) {
-        return cb(new Error("Missing status code"));
+        return reject(new Error("Missing status code"));
       }
 
       const ioResponse: io.Response = {
@@ -93,7 +92,7 @@ export function put (options: io.PutOptions): Bluebird<io.Response> {
         headers: response.headers
       };
 
-      cb(null, ioResponse);
+      resolve(ioResponse);
     });
   });
 }
