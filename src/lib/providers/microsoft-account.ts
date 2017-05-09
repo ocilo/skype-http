@@ -1,4 +1,4 @@
-import cheerio = require("cheerio");
+import * as cheerio from "cheerio";
 import * as path from "path";
 import {CookieJar} from "request";
 import {Cookie} from "tough-cookie";
@@ -227,8 +227,8 @@ export async function requestLiveToken (options: SendCredentialsOptions): Promis
  * @returns {string}
  */
 export function scrapLiveToken(html: string): string {
-  const $: cheerio.Static = cheerio.load(html);
-  const tokenNode: cheerio.Cheerio = $("#t");
+  const $: CheerioStatic = cheerio.load(html);
+  const tokenNode: Cheerio = $("#t");
   const tokenValue: string = tokenNode.val();
   if (tokenValue === "") {
     throw new Error("Unable to scrap token");
@@ -280,10 +280,10 @@ export interface SkypeTokenResponse {
  * @returns {string}
  */
 export function scrapSkypeTokenResponse(html: string): SkypeTokenResponse {
-  const $: cheerio.Static = cheerio.load(html);
-  const skypeTokenNode: cheerio.Cheerio = $("input[name=skypetoken]");
+  const $: CheerioStatic = cheerio.load(html);
+  const skypeTokenNode: Cheerio = $("input[name=skypetoken]");
   // In seconds
-  const expiresInNode: cheerio.Cheerio = $("input[name=expires_in]");
+  const expiresInNode: Cheerio = $("input[name=expires_in]");
 
   const skypeToken: string = skypeTokenNode.val();
   const expiresIn: number = parseInt(expiresInNode.val(), 10);

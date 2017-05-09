@@ -70,9 +70,9 @@ function checkSum64(challengeParts: Uint32Array, hashParts: Uint32Array): Uint32
   const HASH_2: number = hashParts[2] & MAX_INT32;
   const HASH_3: number = hashParts[3] & MAX_INT32;
 
-  let low: bigInt.BigInt = bigInt.zero; // 0-31 bits of the result
-  let high: bigInt.BigInt = bigInt.zero; // 32-63 bits of the result
-  let temp: bigInt.BigInt;
+  let low: BigInteger = bigInt.zero; // 0-31 bits of the result
+  let high: BigInteger = bigInt.zero; // 32-63 bits of the result
+  let temp: BigInteger;
 
   const len: number = challengeParts.length;
   for (let i: number = 0; i < len; i += 2) {

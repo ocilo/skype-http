@@ -34,7 +34,7 @@ Microsoft accounts for now).
 git clone https://github.com/demurgos/skype-http
 cd skype-http
 # Ensure that you have the latest versions of the global dependencies
-sudo npm install -g npm typings gulp-cli
+sudo npm install -g gulp-cli
 npm install
 npm start
 ````

@@ -1,3 +1,7 @@
+# Next
+
+- **[Patch]** Drop dependency on `typings`. Solves some installation issues.
+
 # 0.0.11 (2017-05-09)
 
 - **[Patch]** Use Microsoft accounts for connection
