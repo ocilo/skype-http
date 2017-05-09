@@ -11,7 +11,7 @@
     "url": "git://github.com/ocilo/skype-http.git"
   },
   "scripts": {
-    "prepare": "typings install && gulp all:tsconfig.json && gulp :tslint.json && gulp all:dist",
+    "prepare": "gulp all:tsconfig.json && gulp :tslint.json && gulp all:dist",
     "test": "gulp :lint && gulp lib-test",
     "test-online": "OCILO_TEST_ONLINE=true npm test",
     "prestart": "gulp example:build",
@@ -28,6 +28,9 @@
     "Skype-HTTP"
   ],
   "dependencies": {
+    "@types/big-integer": "0.0.30",
+    "@types/cheerio": "^0.22.1",
+    "@types/form-data": "0.0.33",
     "@types/lodash": "^4.14.64",
     "@types/request": "0.0.43",
     "big-integer": "^1.5.6",
