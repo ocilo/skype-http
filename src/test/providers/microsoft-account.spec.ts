@@ -1,9 +1,9 @@
 import {assert} from "chai";
 import * as request from "request";
-import testConfig from "../../test/test-config";
-import {readTextTestResource} from "../../test/test-resources";
-import {SkypeToken} from "../interfaces/api/context";
-import {requestIo} from "../request-io";
+import testConfig from "../test-config";
+import {readTextTestResource} from "../test-resources";
+import {SkypeToken} from "../../lib/interfaces/api/context";
+import {requestIo} from "../../lib/request-io";
 import {
   getSkypeToken,
   GetSkypeTokenOptions,
@@ -11,7 +11,7 @@ import {
   scrapLiveToken,
   scrapSkypeTokenResponse,
   SkypeTokenResponse
-} from "./microsoft-account";
+} from "../../lib/providers/microsoft-account";
 
 describe("Microsoft Account provider", function (this: Mocha.ISuiteCallbackContext) {
   describe.skip("getSkypeToken", async function (this: Mocha.ISuiteCallbackContext) {
