@@ -1,5 +1,6 @@
 # Next
 
+- **[Breaking]** Require ES2015 (ES6) objects. If you use it an a browser, include a shim
 - **[Feature]** Strongly typed login errors. You can now receive a
   `errors.microsoftAccount.MicrosoftLoginError` when trying to login. This error contains a cause
   that explains the issue (take a look at the `src/errors` directory). Some of the
