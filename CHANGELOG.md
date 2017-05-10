@@ -1,4 +1,4 @@
-# Next
+# 0.0.12 (2017-05-10)
 
 - **[Breaking]** Require ES2015 (ES6) objects. If you use it an a browser, include a shim
 - **[Feature]** Strongly typed login errors. You can now receive a
