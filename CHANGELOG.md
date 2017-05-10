@@ -1,5 +1,9 @@
 # Next
 
+- **[Feature]** Strongly typed login errors. You can now receive a
+  `errors.microsoftAccount.MicrosoftLoginError` when trying to login. This error contains a cause
+  that explains the issue (take a look at the `src/errors` directory). Some of the
+  errors that are detected include invalid credentials and login limits.
 - **[Patch]** Drop dependency on `typings`. Solves some installation issues.
 - **[Patch]** Fix missing dependency on `incident` in `package.json`.
 - **[Internal]** Update `tslint` to version 8 (enforce trailing comma for multiline objects).
