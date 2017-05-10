@@ -9,6 +9,7 @@ import * as getLiveTokenErrors from "../errors/microsoft-account/get-live-token"
 import * as getSkypeTokenErrors from "../errors/microsoft-account/get-skype-token";
 import {MicrosoftAccountLoginError} from "../errors/microsoft-account/login";
 import {WrongCredentialsError} from "../errors/wrong-credentials";
+import {WrongCredentialsLimitError} from "../errors/wrong-credentials-limit";
 import {SkypeToken} from "../interfaces/api/context";
 import * as io from "../interfaces/http-io";
 import {Dictionary} from "../interfaces/utils";
@@ -74,6 +75,7 @@ export async function login(options: LoginOptions): Promise<SkypeToken> {
       case getLiveTokenErrors.GetLiveTokenError.name:
       case getSkypeTokenErrors.GetSkypeTokenError.name:
       case WrongCredentialsError.name:
+      case WrongCredentialsLimitError.name:
         throw MicrosoftAccountLoginError.create(err);
       default:
         throw _err;
@@ -202,7 +204,7 @@ export async function getLiveToken(options: GetLiveTokenOptions): Promise<string
     const response: io.Response = await requestLiveToken(options);
     return scrapLiveToken(response.body);
   } catch (_err) {
-    const err: getLiveTokenErrors.GetLiveTokenError.Cause | WrongCredentialsError = _err;
+    const err: getLiveTokenErrors.GetLiveTokenError.Cause | WrongCredentialsError | WrongCredentialsLimitError = _err;
     switch (err.name) {
       case httpErrors.RequestError.name:
       case getLiveTokenErrors.LiveTokenNotFoundError.name:
@@ -213,6 +215,7 @@ export async function getLiveToken(options: GetLiveTokenOptions): Promise<string
         } else {
           throw err;
         }
+      case WrongCredentialsLimitError.name:
       default:
         throw _err;
     }
@@ -272,6 +275,9 @@ export function scrapLiveToken(html: string): string {
   if (tokenValue === undefined || tokenValue === "") {
     if (html.indexOf("sErrTxt:'Your account or password is incorrect.") >= 0) {
       throw WrongCredentialsError.create();
+      /* tslint:disable-next-line:max-line-length */
+    } else if (html.indexOf("sErrTxt:\"You\\'ve tried to sign in too many times with an incorrect account or password.\"") >= 0) {
+      throw WrongCredentialsLimitError.create();
     } else {
       // TODO(demurgos): Check if there is a PPFT token (redirected to the getLiveKeys response)
       throw getLiveTokenErrors.LiveTokenNotFoundError.create(html);
