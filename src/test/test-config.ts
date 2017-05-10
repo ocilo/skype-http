@@ -18,7 +18,7 @@ const verbose: boolean = process.env["OCILO_TEST_VERBOSE"] === "true";
 // TODO: Use environment (currently you have to edit this manually and remember to revert it before commiting :s)
 const credentials: Credentials = {
   username: "SKYPE_USERNAME",
-  password: "SKYPE_PASSWORD"
+  password: "SKYPE_PASSWORD",
 };
 
 const secondaryAccounts: Credentials[] = [
@@ -27,8 +27,8 @@ const secondaryAccounts: Credentials[] = [
     username: "SKYPE_USERNAME",
 
     // replace by your password
-    password: "SKYPE_PASSWORD"
-  }
+    password: "SKYPE_PASSWORD",
+  },
 ];
 
 export const testConfig: TestConfig = {online, credentials, secondaryAccounts, verbose};

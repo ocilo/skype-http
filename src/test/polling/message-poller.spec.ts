@@ -5,7 +5,7 @@ import * as messagesUri from "../../lib/messages-uri";
 import {
   formatControlClearTypingResource,
   formatControlTypingResource,
-  parseContactId
+  parseContactId,
 } from "../../lib/polling/messages-poller";
 
 describe("formatControlClearTypingResource", function () {
@@ -29,7 +29,7 @@ describe("formatControlClearTypingResource", function () {
         from: "https://db5-client-s.gateway.messenger.live.com/v1/users/ME/contacts/8:bob",
         type: "Message",
         counterpartymessageid: "1483879804624",
-        version: "1483879804631"
+        version: "1483879804631",
       },
       expectedFormattedResource: {
         type: "Control/ClearTyping",
@@ -52,10 +52,10 @@ describe("formatControlClearTypingResource", function () {
           from: "https://db5-client-s.gateway.messenger.live.com/v1/users/ME/contacts/8:bob",
           type: "Message",
           counterpartymessageid: "1483879804624",
-          version: "1483879804631"
-        }
-      }
-    }
+          version: "1483879804631",
+        },
+      },
+    },
   ];
 
   for (const item of items) {
@@ -94,7 +94,7 @@ describe("formatControlTypingResource", function () {
         from: "https://db5-client-s.gateway.messenger.live.com/v1/users/ME/contacts/8:bob",
         type: "Message",
         counterpartymessageid: "1483885996189",
-        version: "1483885996187"
+        version: "1483885996187",
       },
       expectedFormattedResource: {
         type: "Control/Typing",
@@ -118,10 +118,10 @@ describe("formatControlTypingResource", function () {
           from: "https://db5-client-s.gateway.messenger.live.com/v1/users/ME/contacts/8:bob",
           type: "Message",
           counterpartymessageid: "1483885996189",
-          version: "1483885996187"
-        }
-      }
-    }
+          version: "1483885996187",
+        },
+      },
+    },
   ];
 
   for (const item of items) {
@@ -157,6 +157,6 @@ describe.skip("TODO: Event/Call", function () {
     ackrequired: "https://db5-client-s.gateway.messenger.live.com/v1/users/ME/conversations/ALL/messages/1483886960408/ack",
     // tslint:disable-next-line:max-line-length
     content: "<partlist type=\"started\" alt=\"\">\n  <part identity=\"bob\">\n    <name>Bob</name>\n  </part>\n</partlist>",
-    skypeguid: "2ff47f4b-5b79-4076-a1ae-d34d6d89b135"
+    skypeguid: "2ff47f4b-5b79-4076-a1ae-d34d6d89b135",
   };
 });

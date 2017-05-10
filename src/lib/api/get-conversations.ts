@@ -27,7 +27,7 @@ export async function getConversations(io: io.HttpIo, apiContext: Context): Prom
   const query: GetConversationsQuery = {
     startTime: 0,
     view: "msnp24Equivalent",
-    targetType: "Passport|Skype|Lync|Thread"
+    targetType: "Passport|Skype|Lync|Thread",
   };
 
   const requestOptions: io.GetOptions = {
@@ -35,8 +35,8 @@ export async function getConversations(io: io.HttpIo, apiContext: Context): Prom
     jar: apiContext.cookieJar,
     queryString: query,
     headers: {
-      RegistrationToken: apiContext.registrationToken.raw
-    }
+      RegistrationToken: apiContext.registrationToken.raw,
+    },
   };
   const res: io.Response = await io.get(requestOptions);
 

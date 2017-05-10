@@ -52,9 +52,12 @@
       120
     ],
     "member-access": false,
-    "member-ordering": {
-      "order": "fields-first"
-    },
+    "member-ordering": [
+      true,
+      {
+        "order": "fields-first"
+      }
+    ],
     "new-parens": false,
     "no-angle-bracket-type-assertion": false,
     "no-any": false,
@@ -79,7 +82,7 @@
     "no-internal-module": true,
     "no-invalid-this": false,
     "no-magic-numbers": false,
-    "no-mergeable-namespace": true,
+    "no-mergeable-namespace": false,
     "no-namespace": false,
     "no-null-keyword": false,
     "no-parameter-properties": true,
@@ -92,8 +95,6 @@
     "no-trailing-whitespace": true,
     "no-unsafe-finally": true,
     "no-unused-expression": true,
-    "no-unused-new": true,
-    "no-use-before-declare": true,
     "no-var-keyword": true,
     "no-var-requires": true,
     "object-literal-key-quotes": [
@@ -132,7 +133,7 @@
     "trailing-comma": [
       true,
       {
-        "multiline": "never",
+        "multiline": "always",
         "singleline": "never"
       }
     ],

@@ -20,7 +20,9 @@
     ":lint": "gulp :lint"
   },
   "pre-commit": {
-    "run": []
+    "run": [
+      "test"
+    ]
   },
   "keywords": [
     "Skype",
@@ -48,7 +50,7 @@
     "@types/node": "^7.0.18",
     "chai": "^3.5.0",
     "del": "^2.2.0",
-    "demurgos-web-build-tools": "^0.13.1",
+    "demurgos-web-build-tools": "^0.14.0",
     "fs-extra": "^0.30.0",
     "glob": "^7.0.3",
     "gulp": "github:gulpjs/gulp#4.0",

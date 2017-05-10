@@ -195,7 +195,7 @@ export function parseContact(uri: string): ContactUri {
   return {
     host: parsed.host,
     user: match[1],
-    contact: match[2]
+    contact: match[2],
   };
 }
 
@@ -217,6 +217,6 @@ export function parseConversation(uri: string): ConversationUri {
   return {
     host: parsed.host,
     user: match[1],
-    conversation: match[2]
+    conversation: match[2],
   };
 }

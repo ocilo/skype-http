@@ -17,8 +17,8 @@ export async function getContact(io: io.HttpIo, apiContext: Context, contactId: 
     uri: apiUri.userProfile(contactId),
     jar: apiContext.cookieJar,
     headers: {
-      "X-Skypetoken": apiContext.skypeToken.value
-    }
+      "X-Skypetoken": apiContext.skypeToken.value,
+    },
   };
   const res: io.Response = await io.get(requestOptions);
 

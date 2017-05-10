@@ -51,7 +51,7 @@ export async function getSkypeToken(options: GetSkypeTokenOptions): Promise<Skyp
     password: options.credentials.password,
     httpIo: options.httpIo,
     jar: options.cookieJar,
-    liveKeys
+    liveKeys,
   };
 
   const liveToken: string = await getLiveToken(sendCredOpts);
@@ -59,7 +59,7 @@ export async function getSkypeToken(options: GetSkypeTokenOptions): Promise<Skyp
   const stOpt: GetSkypeTokenFromLiveTokenOptions = {
     liveToken,
     jar: options.cookieJar,
-    httpIo: options.httpIo
+    httpIo: options.httpIo,
   };
 
   const res: io.Response = await requestSkypeToken(stOpt);
@@ -70,7 +70,7 @@ export async function getSkypeToken(options: GetSkypeTokenOptions): Promise<Skyp
 
   const result: SkypeToken = {
     value: scrapped.skypetoken,
-    expirationDate: new Date(startTime + expiresIn * 1000)
+    expirationDate: new Date(startTime + expiresIn * 1000),
   };
 
   if (typeof result.value !== "string") {
@@ -138,7 +138,7 @@ export async function getLiveKeys(options: LoadLiveKeysOptions): Promise<LiveKey
   return {
     MSPRequ: mspRequ,
     MSPOK: mspOk,
-    PPFT: ppftKey
+    PPFT: ppftKey,
   };
 }
 
@@ -146,7 +146,7 @@ export async function requestLiveKeys(options: LoadLiveKeysOptions): Promise<io.
   const uri: string = url.resolve(skypeLoginUri, path.posix.join("oauth", "microsoft"));
   const queryString: Dictionary<string> = {
     client_id: webClientLiveLoginId,
-    redirect_uri: skypeWebUri
+    redirect_uri: skypeWebUri,
   };
   const getOptions: io.GetOptions = {uri, queryString, jar: options.cookieJar};
   // Also, now the Jar should contain:
@@ -192,7 +192,7 @@ export async function requestLiveToken (options: SendCredentialsOptions): Promis
     wa: "wsignin1.0",
     wp: "MBI_SSL",
     // tslint:disable-next-line:max-line-length
-    wreply: "https://lw.skype.com/login/oauth/proxy?client_id=578134&site_name=lw.skype.com&redirect_uri=https%3A%2F%2Fweb.skype.com%2F"
+    wreply: "https://lw.skype.com/login/oauth/proxy?client_id=578134&site_name=lw.skype.com&redirect_uri=https%3A%2F%2Fweb.skype.com%2F",
   };
   const jar: CookieJar = options.jar;
   // MSPRequ should already be set
@@ -200,7 +200,7 @@ export async function requestLiveToken (options: SendCredentialsOptions): Promis
   const millisecondsSinceEpoch: number = Date.now(); // Milliseconds since epoch
   const ckTstCookie: Cookie = new (<any> Cookie)({
     key: "CkTst",
-    value: millisecondsSinceEpoch.toString(10)
+    value: millisecondsSinceEpoch.toString(10),
   });
   // TODO(demurgos): Remove this <any>
   jar.setCookie(<any> ckTstCookie, "https://login.live.com/");
@@ -208,14 +208,14 @@ export async function requestLiveToken (options: SendCredentialsOptions): Promis
   const formData: Dictionary<string> = {
     login: options.username,
     passwd: options.password,
-    PPFT: options.liveKeys.PPFT
+    PPFT: options.liveKeys.PPFT,
   };
 
   const postOptions: io.PostOptions = {
     uri,
     queryString,
     jar,
-    form: formData
+    form: formData,
   };
 
   return options.httpIo.post(postOptions);
@@ -248,7 +248,7 @@ export async function requestSkypeToken (options: GetSkypeTokenFromLiveTokenOpti
 
   const queryString: Dictionary<string> = {
     client_id: "578134",
-    redirect_uri: "https://web.skype.com"
+    redirect_uri: "https://web.skype.com",
   };
 
   const formData: Dictionary<string> = {
@@ -256,13 +256,13 @@ export async function requestSkypeToken (options: GetSkypeTokenFromLiveTokenOpti
     client_id: "578134",
     oauthPartner: "999",
     site_name: "lw.skype.com",
-    redirect_uri: "https://web.skype.com"
+    redirect_uri: "https://web.skype.com",
   };
 
   const postOptions: io.PostOptions = {
     uri,
     queryString,
-    form: formData
+    form: formData,
   };
 
   return options.httpIo.post(postOptions);
@@ -303,6 +303,6 @@ export function scrapSkypeTokenResponse(html: string): SkypeTokenResponse {
 
   return {
     skypetoken: skypeToken,
-    expires_in: expiresIn
+    expires_in: expiresIn,
   };
 }

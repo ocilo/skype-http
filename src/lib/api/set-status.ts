@@ -10,15 +10,15 @@ interface RequestBody {
 
 export async function setStatus(io: io.HttpIo, apiContext: Context, status: api.Status): Promise<void> {
   const requestBody: RequestBody = {
-    status: status
+    status: status,
   };
   const requestOptions: io.PostOptions = {
     uri: messagesUri.userMessagingService(apiContext.registrationToken.host),
     jar: apiContext.cookieJar,
     body: JSON.stringify(requestBody),
     headers: {
-      RegistrationToken: apiContext.registrationToken.raw
-    }
+      RegistrationToken: apiContext.registrationToken.raw,
+    },
   };
   const res: io.Response = await io.put(requestOptions);
 

@@ -24,14 +24,14 @@ export async function connect(options: ConnectOptions): Promise<api.Api> {
   const apiContext: Context = await login({
     io: requestIO,
     credentials: options.credentials,
-    verbose: options.verbose
+    verbose: options.verbose,
   });
   if (options.verbose) {
     console.log("Obtained context trough authentication:");
     console.log({
       username: apiContext.username,
       skypeToken: apiContext.skypeToken,
-      registrationToken: apiContext.registrationToken
+      registrationToken: apiContext.registrationToken,
     });
   }
   return new api.Api(apiContext, requestIO);

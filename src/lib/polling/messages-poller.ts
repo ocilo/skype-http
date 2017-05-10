@@ -26,7 +26,7 @@ export function parseContactId(contactId: string): ParsedConversationId {
   return {
     raw: contactId,
     prefix: parseInt(match[1], 10),
-    username: match[2]
+    username: match[2],
   };
 }
 
@@ -43,7 +43,7 @@ export function formatRichTextResource(nativeResource: nativeMessageResources.Ri
     arrivalTime: new Date(nativeResource.originalarrivaltime),
     from: parsedContactId,
     conversation: parsedConversationUri.conversation,
-    content: nativeResource.content
+    content: nativeResource.content,
   };
 }
 
@@ -60,7 +60,7 @@ export function formatTextResource(nativeResource: nativeMessageResources.Text):
     arrivalTime: new Date(nativeResource.originalarrivaltime),
     from: parsedContactId,
     conversation: parsedConversationUri.conversation,
-    content: nativeResource.content
+    content: nativeResource.content,
   };
 }
 
@@ -77,7 +77,7 @@ export function formatControlClearTypingResource(nativeResource: nativeMessageRe
     arrivalTime: new Date(nativeResource.originalarrivaltime),
     from: parsedContactId,
     conversation: parsedConversationUri.conversation,
-    native: nativeResource
+    native: nativeResource,
   };
 }
 
@@ -94,7 +94,7 @@ export function formatControlTypingResource(nativeResource: nativeMessageResourc
     arrivalTime: new Date(nativeResource.originalarrivaltime),
     from: parsedContactId,
     conversation: parsedConversationUri.conversation,
-    native: nativeResource
+    native: nativeResource,
   };
 }
 
@@ -137,7 +137,7 @@ function formatEventMessage(native: nativeEvents.EventMessage): events.EventMess
     resourceType: native.resourceType,
     time: new Date(native.time),
     resourceLink: native.resourceLink,
-    resource: resource
+    resource: resource,
   };
 }
 
@@ -182,8 +182,8 @@ export class MessagesPoller extends EventEmitter {
         uri: messagesUri.poll(this.apiContext.registrationToken.host),
         jar: this.apiContext.cookieJar,
         headers: {
-          RegistrationToken: this.apiContext.registrationToken.raw
-        }
+          RegistrationToken: this.apiContext.registrationToken.raw,
+        },
       };
       const res: httpIo.Response = await this.io.post(requestOptions);
 

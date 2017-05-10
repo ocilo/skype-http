@@ -18,8 +18,8 @@ export async function getContacts(io: io.HttpIo, apiContext: Context): Promise<C
     uri: contactsUri.contacts(apiContext.username),
     jar: apiContext.cookieJar,
     headers: {
-      "X-Skypetoken": apiContext.skypeToken.value
-    }
+      "X-Skypetoken": apiContext.skypeToken.value,
+    },
   };
   const res: io.Response = await io.get(requestOptions);
 

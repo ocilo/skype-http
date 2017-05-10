@@ -8,8 +8,8 @@ export async function acceptContactRequest(io: io.HttpIo, apiContext: Context, c
     uri: apiUri.authRequestAccept(apiContext.username, contactUsername),
     jar: apiContext.cookieJar,
     headers: {
-      "X-Skypetoken": apiContext.skypeToken.value
-    }
+      "X-Skypetoken": apiContext.skypeToken.value,
+    },
   };
   const res: io.Response = await io.put(requestOptions);
   if (res.statusCode !== 201) {
