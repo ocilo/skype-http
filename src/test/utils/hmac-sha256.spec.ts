@@ -13,7 +13,7 @@ describe("int32ToLittleEndianHexString", function () {
     {int32: 0x10, expected: "10000000"},
     {int32: 0x100, expected: "00010000"},
     {int32: 0x1000, expected: "00100000"},
-    {int32: 0x12345678, expected: "78563412"}
+    {int32: 0x12345678, expected: "78563412"},
   ];
 
   for (const item of items) {
@@ -37,8 +37,8 @@ describe("hmacSha256", function () {
       input: "1462570297",
       id: "msmsgs@msnmsgr.com",
       key: "Q1P7W2E4J9R8U3S5",
-      expected: "5ac181edee7f30db176aaef9a043bf8a"
-    }
+      expected: "5ac181edee7f30db176aaef9a043bf8a",
+    },
   ];
 
   for (const item of items) {

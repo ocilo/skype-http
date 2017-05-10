@@ -2,6 +2,9 @@
 
 - **[Patch]** Drop dependency on `typings`. Solves some installation issues.
 - **[Patch]** Fix missing dependency on `incident` in `package.json`.
+- **[Internal]** Update `tslint` to version 8 (enforce trailing comma for multiline objects).
+- **[Internal]** Require successful `gulp :lint` to commit.
+- **[Internal]** Rename the main module to `index` in `src/lib`.
 
 # 0.0.11 (2017-05-09)
 

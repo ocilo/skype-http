@@ -13,19 +13,19 @@ import * as resources from "../lib/interfaces/api/resources";
 async function promptCredentials(): Promise<Credentials> {
   const cliInterface: ReadLine = createInterface({
     input: process.stdin,
-    output: process.stdout
+    output: process.stdout,
   });
 
   const username: string = await new Promise<string>(
     (resolve: (res: string) => void, reject: (err: any) => void): void => {
       cliInterface.question("Username? ", resolve);
-    }
+    },
   );
 
   const password: string = await new Promise<string>(
     (resolve: (res: string) => void, reject: (err: any) => void): void => {
       cliInterface.question("Password? ", resolve);
-    }
+    },
   );
 
   const result: Promise<Credentials> = new Promise(
@@ -36,7 +36,7 @@ async function promptCredentials(): Promise<Credentials> {
       cliInterface.once("close", (): void => {
         resolve({username, password});
       });
-    }
+    },
   );
 
   cliInterface.close();
@@ -47,7 +47,7 @@ async function run(): Promise<void> {
   const credentials: Credentials = await promptCredentials();
   const options: skypeHttp.ConnectOptions = {
     credentials: credentials,
-    verbose: true
+    verbose: true,
   };
   const api: SkypeApi = await skypeHttp.connect(options);
 

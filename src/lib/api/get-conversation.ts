@@ -4,7 +4,7 @@ import {Conversation} from "../interfaces/api/conversation";
 import * as io from "../interfaces/io";
 import {
   Conversation as NativeConversation,
-  Thread as NativeThread
+  Thread as NativeThread,
 } from "../interfaces/native-api/conversation";
 import * as messagesUri from "../messages-uri";
 import {formatConversation, formatThread} from "../utils/formatters";
@@ -28,12 +28,12 @@ interface GetConversationQuery {
 export async function getConversation(
   io: io.HttpIo,
   apiContext: Context,
-  conversationId: string
+  conversationId: string,
 ): Promise<Conversation> {
   const query: GetConversationQuery = {
     startTime: 0,
     view: "msnp24Equivalent",
-    targetType: "Passport|Skype|Lync|Thread"
+    targetType: "Passport|Skype|Lync|Thread",
   };
 
   let uri: string;
@@ -48,8 +48,8 @@ export async function getConversation(
     jar: apiContext.cookieJar,
     queryString: query,
     headers: {
-      RegistrationToken: apiContext.registrationToken.raw
-    }
+      RegistrationToken: apiContext.registrationToken.raw,
+    },
   };
   const res: io.Response = await io.get(requestOptions);
 

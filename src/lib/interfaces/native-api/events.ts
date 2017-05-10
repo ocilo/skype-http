@@ -2,7 +2,7 @@ import {
   EndpointPresenceResource,
   MessageResource,
   Resource,
-  UserPresenceResource
+  UserPresenceResource,
 } from "./resources";
 
 export interface EventMessage {

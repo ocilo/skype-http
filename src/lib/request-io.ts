@@ -20,7 +20,6 @@ function asRequestOptions (ioOptions: io.GetOptions | io.PostOptions | io.PutOpt
  * Send a GET request
  *
  * @param options
- * @returns {Bluebird<any>}
  */
 export function get (options: io.GetOptions): Promise<io.Response> {
   return new Promise((resolve, reject) => {
@@ -35,7 +34,7 @@ export function get (options: io.GetOptions): Promise<io.Response> {
       const ioResponse: io.Response = {
         statusCode: response.statusCode,
         body: body,
-        headers: response.headers
+        headers: response.headers,
       };
 
       resolve(ioResponse);
@@ -47,7 +46,6 @@ export function get (options: io.GetOptions): Promise<io.Response> {
  * Send a POST request
  *
  * @param options
- * @returns {Bluebird<any>}
  */
 export function post (options: io.PostOptions): Promise<io.Response> {
   return new Promise((resolve, reject) => {
@@ -62,7 +60,7 @@ export function post (options: io.PostOptions): Promise<io.Response> {
       const ioResponse: io.Response = {
         statusCode: response.statusCode,
         body: body,
-        headers: response.headers
+        headers: response.headers,
       };
 
       resolve(ioResponse);
@@ -74,7 +72,6 @@ export function post (options: io.PostOptions): Promise<io.Response> {
  * Send a PUT request
  *
  * @param options
- * @returns {Bluebird<any>}
  */
 export function put (options: io.PutOptions): Promise<io.Response> {
   return new Promise((resolve, reject) => {
@@ -89,7 +86,7 @@ export function put (options: io.PutOptions): Promise<io.Response> {
       const ioResponse: io.Response = {
         statusCode: response.statusCode,
         body: body,
-        headers: response.headers
+        headers: response.headers,
       };
 
       resolve(ioResponse);
@@ -100,7 +97,7 @@ export function put (options: io.PutOptions): Promise<io.Response> {
 export const requestIo: io.HttpIo = {
   get: get,
   post: post,
-  put: put
+  put: put,
 };
 
 export default requestIo;

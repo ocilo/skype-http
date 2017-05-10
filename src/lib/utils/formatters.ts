@@ -5,7 +5,7 @@ import {Conversation, ThreadProperties} from "../interfaces/api/conversation";
 import {Contact as NativeContact} from "../interfaces/native-api/contact";
 import {
   Conversation as NativeConversation, Thread as NativeThread,
-  ThreadMember as NativeThreadMember
+  ThreadMember as NativeThreadMember,
 } from "../interfaces/native-api/conversation";
 import {sanitizeXml} from "./user-data-processor";
 
@@ -42,7 +42,7 @@ export function formatThread (native: NativeThread): Conversation {
     id: native.id,
     type: native.type,
     version: native.version,
-    members: memberIds
+    members: memberIds,
   };
 }
 
@@ -76,7 +76,7 @@ function contactToPerson (native: NativeContact): Contact {
     PENDING_OUTGOING: "PENDING_OUTGOING",
     PENDING_INCOMING: "PENDING_INCOMING",
     AUTHORIZED: "AUTHORIZED",
-    SUGGESTED: "SUGGESTED"
+    SUGGESTED: "SUGGESTED",
   };
 
   // TODO(demurgos): typedef
@@ -84,7 +84,7 @@ function contactToPerson (native: NativeContact): Contact {
   const showStrategies = {
     ALL: "ALL",
     AVAILABLE_ONLY: "AVAILABLE_ONLY",
-    AGENTS_ONLY: "AGENTS_ONLY"
+    AGENTS_ONLY: "AGENTS_ONLY",
   };
 
   let activityMessage: string | null;
@@ -137,17 +137,17 @@ function contactToPerson (native: NativeContact): Contact {
       id: native.id,
       typeKey: typeKey,
       typeName: native.type,
-      raw: `${typeKey}:${native.id}`
+      raw: `${typeKey}:${native.id}`,
     },
     avatarUrl: avatarUrl,
     phones: phoneNumbers,
     name: {
       first: firstName,
       surname: "",
-      nickname: native.id
+      nickname: native.id,
     },
     activityMessage: activityMessage,
-    locations: locations
+    locations: locations,
   };
   return result;
 }
@@ -163,7 +163,7 @@ function contactTypeNameToContactTypeKey (typeName: string) {
     default: throw new Incident (
       "unknown-contact-type-name",
       {typeName: typeName},
-      `Unknwon contact type name ${typeName}`
+      `Unknwon contact type name ${typeName}`,
     );
   }
 }
@@ -179,7 +179,7 @@ function contactTypeKeyToContactTypeName (typeKey: string) {
     default: throw new Incident (
       "unknown-contact-type-key",
       {typeCode: typeKey},
-      `Unknwon contact type key ${typeKey}`
+      `Unknwon contact type key ${typeKey}`,
     );
   }
 }
@@ -194,7 +194,7 @@ function phoneTypeNameToPhoneTypeKey (typeName: string) {
     default: throw new Incident (
       "unknown-phone-type-name",
       {typeName: typeName},
-      `Unknwon phone type name ${typeName}`
+      `Unknwon phone type name ${typeName}`,
     );
   }
 }
@@ -209,7 +209,7 @@ function phoneTypeKeyToPhoneTypeName (typeKey: string) {
     default: throw new Incident (
       "unknown-phone-type-key",
       {typeCode: typeKey},
-      `Unknwon phone type key ${typeKey}`
+      `Unknwon phone type key ${typeKey}`,
     );
   }
 }

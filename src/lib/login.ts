@@ -55,10 +55,10 @@ export async function login(options: LoginOptions): Promise<ApiContext> {
   const getSkypeTokenOptions: microsoftAccount.GetSkypeTokenOptions = {
     credentials: {
       login: options.credentials.username,
-      password: options.credentials.password
+      password: options.credentials.password,
     },
     httpIo: options.io,
-    cookieJar: jar
+    cookieJar: jar,
   };
 
   const skypeToken: SkypeToken = await microsoftAccount.getSkypeToken(getSkypeTokenOptions);
@@ -69,7 +69,7 @@ export async function login(options: LoginOptions): Promise<ApiContext> {
   const registrationToken: RegistrationToken = await getRegistrationToken(
     ioOptions,
     skypeToken,
-    Consts.SKYPEWEB_DEFAULT_MESSAGES_HOST
+    Consts.SKYPEWEB_DEFAULT_MESSAGES_HOST,
   );
   if (options.verbose) {
     console.log("Acquired RegistrationToken");
@@ -89,7 +89,7 @@ export async function login(options: LoginOptions): Promise<ApiContext> {
     username: options.credentials.username,
     skypeToken: skypeToken,
     cookieJar: jar,
-    registrationToken: registrationToken
+    registrationToken: registrationToken,
   };
 }
 
@@ -105,7 +105,7 @@ async function getRegistrationToken(
   options: IoOptions,
   skypeToken: SkypeToken,
   messagesHost: string,
-  retry: number = 2
+  retry: number = 2,
 ): Promise<RegistrationToken> {
   const startTime: number = utils.getCurrentTime();
   const lockAndKeyResponse: string = getLockAndKeyResponse(startTime);
@@ -113,7 +113,7 @@ async function getRegistrationToken(
     LockAndKey: utils.stringifyHeaderParams({
       appId: Consts.SKYPEWEB_LOCKANDKEY_APPID,
       time: String(startTime),
-      lockAndKeyResponse: lockAndKeyResponse
+      lockAndKeyResponse: lockAndKeyResponse,
     }),
     ClientInfo: utils.stringifyHeaderParams({
       os: "Windows",
@@ -123,18 +123,18 @@ async function getRegistrationToken(
       deviceType: "1",
       country: "n/a",
       clientName: Consts.SKYPEWEB_CLIENTINFO_NAME,
-      clientVer: Consts.SKYPEWEB_CLIENTINFO_VERSION
+      clientVer: Consts.SKYPEWEB_CLIENTINFO_VERSION,
     }),
     Authentication: utils.stringifyHeaderParams({
-      skypetoken: skypeToken.value
-    })
+      skypetoken: skypeToken.value,
+    }),
   };
 
   const requestOptions: io.PostOptions = {
     uri: messagesUri.endpoints(messagesHost),
     headers: headers,
     jar: options.jar,
-    body: "{}" // Skype requires you to send an empty object as a body
+    body: "{}", // Skype requires you to send an empty object as a body
   };
 
   const res: io.Response = await options.io.post(requestOptions);
@@ -173,7 +173,7 @@ async function getRegistrationToken(
     expirationDate: new Date(1000 * expires),
     endpointId: parsedHeader["endpointId"],
     raw: registrationTokenHeader,
-    host: messagesHost
+    host: messagesHost,
   };
 }
 
@@ -185,10 +185,10 @@ async function subscribeToResources(ioOptions: IoOptions, registrationToken: Reg
       "/v1/threads/ALL",
       "/v1/users/ME/contacts/ALL",
       "/v1/users/ME/conversations/ALL/messages",
-      "/v1/users/ME/conversations/ALL/properties"
+      "/v1/users/ME/conversations/ALL/properties",
     ],
     template: "raw",
-    channelType: "httpLongPoll"// TODO: use websockets ?
+    channelType: "httpLongPoll", // TODO: use websockets ?
   };
 
   const requestOptions: io.PostOptions = {
@@ -196,8 +196,8 @@ async function subscribeToResources(ioOptions: IoOptions, registrationToken: Reg
     jar: ioOptions.jar,
     body: JSON.stringify(requestDocument),
     headers: {
-      RegistrationToken: registrationToken.raw
-    }
+      RegistrationToken: registrationToken.raw,
+    },
   };
 
   const res: io.Response = await ioOptions.io.post(requestOptions);
@@ -238,21 +238,21 @@ async function createPresenceDocs(ioOptions: IoOptions, registrationToken: Regis
     type: "EndpointPresenceDoc",
     selfLink: "uri",
     privateInfo: {
-      epname: "skype" // Name of the endpoint (normally the name of the host)
+      epname: "skype", // Name of the endpoint (normally the name of the host)
     },
     publicInfo: {
       capabilities: "video|audio",
       type: 1,
       skypeNameVersion: Consts.SKYPEWEB_CLIENTINFO_NAME,
       nodeInfo: "xx",
-      version: Consts.SKYPEWEB_CLIENTINFO_VERSION + "//" + Consts.SKYPEWEB_CLIENTINFO_NAME
-    }
+      version: Consts.SKYPEWEB_CLIENTINFO_VERSION + "//" + Consts.SKYPEWEB_CLIENTINFO_NAME,
+    },
   };
 
   const uri: string = messagesUri.endpointMessagingService(
     registrationToken.host,
     messagesUri.DEFAULT_USER,
-    registrationToken.endpointId
+    registrationToken.endpointId,
   );
 
   const requestOptions: io.PutOptions = {
@@ -260,8 +260,8 @@ async function createPresenceDocs(ioOptions: IoOptions, registrationToken: Regis
     jar: ioOptions.jar,
     body: JSON.stringify(requestBody),
     headers: {
-      RegistrationToken: registrationToken.raw
-    }
+      RegistrationToken: registrationToken.raw,
+    },
   };
 
   const res: io.Response = await ioOptions.io.put(requestOptions);
