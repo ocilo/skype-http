@@ -2,7 +2,7 @@ import {Incident} from "incident";
 import * as _ from "lodash";
 import {Context} from "../interfaces/api/context";
 import {Conversation} from "../interfaces/api/conversation";
-import * as io from "../interfaces/io";
+import * as io from "../interfaces/http-io";
 import {Conversation as NativeConversation} from "../interfaces/native-api/conversation";
 import * as messagesUri from "../messages-uri";
 import {formatConversation} from "../utils/formatters";

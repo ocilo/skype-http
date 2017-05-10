@@ -3,8 +3,14 @@ import * as path from "path";
 import {CookieJar} from "request";
 import {Cookie} from "tough-cookie";
 import * as url from "url";
+import * as httpErrors from "../errors/http";
+import * as getLiveKeysErrors from "../errors/microsoft-account/get-live-keys";
+import * as getLiveTokenErrors from "../errors/microsoft-account/get-live-token";
+import * as getSkypeTokenErrors from "../errors/microsoft-account/get-skype-token";
+import {MicrosoftAccountLoginError} from "../errors/microsoft-account/login";
+import {WrongCredentialsError} from "../errors/wrong-credentials";
 import {SkypeToken} from "../interfaces/api/context";
-import * as io from "../interfaces/io";
+import * as io from "../interfaces/http-io";
 import {Dictionary} from "../interfaces/utils";
 
 export const skypeWebUri: string = "https://web.skype.com/";
@@ -31,53 +37,48 @@ export const webClientLiveLoginId: string = "578134";
 // }
 
 export interface Credentials {
-  // Skype username or email address
+  /**
+   * Skype username or email address
+   */
   login: string;
   password: string;
 }
 
-export interface GetSkypeTokenOptions {
+export interface LoginOptions {
   credentials: Credentials;
   httpIo: io.HttpIo;
   cookieJar: CookieJar;
 }
 
-export async function getSkypeToken(options: GetSkypeTokenOptions): Promise<SkypeToken> {
-  const startTime: number = Date.now();
+export async function login(options: LoginOptions): Promise<SkypeToken> {
+  try {
+    const liveKeys: LiveKeys = await getLiveKeys(options);
 
-  const liveKeys: LiveKeys = await getLiveKeys(options);
-  const sendCredOpts: SendCredentialsOptions = {
-    username: options.credentials.login,
-    password: options.credentials.password,
-    httpIo: options.httpIo,
-    jar: options.cookieJar,
-    liveKeys,
-  };
+    const liveToken: string = await getLiveToken({
+      username: options.credentials.login,
+      password: options.credentials.password,
+      httpIo: options.httpIo,
+      jar: options.cookieJar,
+      liveKeys,
+    });
 
-  const liveToken: string = await getLiveToken(sendCredOpts);
-
-  const stOpt: GetSkypeTokenFromLiveTokenOptions = {
-    liveToken,
-    jar: options.cookieJar,
-    httpIo: options.httpIo,
-  };
-
-  const res: io.Response = await requestSkypeToken(stOpt);
-
-  const scrapped: SkypeTokenResponse = scrapSkypeTokenResponse(res.body);
-  // Expires in (seconds) (default: 1 day)
-  const expiresIn: number = typeof scrapped.expires_in === "number" ? scrapped.expires_in : 864000;
-
-  const result: SkypeToken = {
-    value: scrapped.skypetoken,
-    expirationDate: new Date(startTime + expiresIn * 1000),
-  };
-
-  if (typeof result.value !== "string") {
-    throw new Error("Expected value of Skype token to be a string");
+    return getSkypeToken({
+      liveToken,
+      jar: options.cookieJar,
+      httpIo: options.httpIo,
+    });
+  } catch (_err) {
+    const err: MicrosoftAccountLoginError.Cause = _err;
+    switch (err.name) {
+      case getLiveKeysErrors.GetLiveKeysError.name:
+      case getLiveTokenErrors.GetLiveTokenError.name:
+      case getSkypeTokenErrors.GetSkypeTokenError.name:
+      case WrongCredentialsError.name:
+        throw MicrosoftAccountLoginError.create(err);
+      default:
+        throw _err;
+    }
   }
-
-  return result;
 }
 
 export interface LoadLiveKeysOptions {
@@ -111,68 +112,84 @@ export interface LiveKeys {
 }
 
 export async function getLiveKeys(options: LoadLiveKeysOptions): Promise<LiveKeys> {
-  const response: io.Response = await requestLiveKeys(options);
+  try {
+    const uri: string = url.resolve(skypeLoginUri, path.posix.join("oauth", "microsoft"));
+    const queryString: Dictionary<string> = {
+      client_id: webClientLiveLoginId,
+      redirect_uri: skypeWebUri,
+    };
+    const getOptions: io.GetOptions = {uri, queryString, jar: options.cookieJar};
 
-  let mspRequ: string | undefined;
-  let mspOk: string | undefined;
+    let response: io.Response;
+    try {
+      response = await options.httpIo.get(getOptions);
+    } catch (err) {
+      throw httpErrors.RequestError.create(err, getOptions);
+    }
 
-  // Retrieve values for the cookies "MSPRequ" and "MSPOK"
-  // TODO(demurgos): Remove this <any>
-  const cookies: Cookie[] = <any> options.cookieJar.getCookies("https://login.live.com/");
-  for (const cookie of cookies) {
-    switch (cookie.key) {
-      case "MSPRequ":
-        mspRequ = cookie.value;
-        break;
-      case "MSPOK":
-        mspOk = cookie.value;
-        break;
+    let mspRequ: string | undefined;
+    let mspOk: string | undefined;
+
+    // Retrieve values for the cookies "MSPRequ" and "MSPOK"
+    // TODO(demurgos): Remove <any>
+    const cookies: Cookie[] = <any> options.cookieJar.getCookies("https://login.live.com/");
+    for (const cookie of cookies) {
+      switch (cookie.key) {
+        case "MSPRequ":
+          mspRequ = cookie.value;
+          break;
+        case "MSPOK":
+          mspOk = cookie.value;
+          break;
+      }
+    }
+
+    if (typeof mspOk !== "string") {
+      throw getLiveKeysErrors.MspokCookieNotFoundError.create(getOptions, response);
+    }
+    if (typeof mspRequ !== "string") {
+      throw getLiveKeysErrors.MsprequCookieNotFoundError.create(getOptions, response);
+    }
+
+    const ppftKey: string = scrapLivePpftKey(response.body);
+    return {
+      MSPRequ: mspRequ,
+      MSPOK: mspOk,
+      PPFT: ppftKey,
+    };
+  } catch (_err) {
+    const err: getLiveKeysErrors.GetLiveKeysError.Cause = _err;
+    switch (err.name) {
+      case httpErrors.RequestError.name:
+      case getLiveKeysErrors.MspokCookieNotFoundError.name:
+      case getLiveKeysErrors.MsprequCookieNotFoundError.name:
+      case getLiveKeysErrors.PpftKeyNotFoundError.name:
+        throw getLiveKeysErrors.GetLiveKeysError.create(err);
+      default:
+        throw _err;
     }
   }
-
-  if (mspOk === undefined || mspRequ === undefined) {
-    throw new Error("Unable to find cookie MSPRequ or MSPOK");
-  }
-
-  const ppftKey: string = scrapLivePpftKey(response.body);
-  return {
-    MSPRequ: mspRequ,
-    MSPOK: mspOk,
-    PPFT: ppftKey,
-  };
 }
 
-export async function requestLiveKeys(options: LoadLiveKeysOptions): Promise<io.Response> {
-  const uri: string = url.resolve(skypeLoginUri, path.posix.join("oauth", "microsoft"));
-  const queryString: Dictionary<string> = {
-    client_id: webClientLiveLoginId,
-    redirect_uri: skypeWebUri,
-  };
-  const getOptions: io.GetOptions = {uri, queryString, jar: options.cookieJar};
-  // Also, now the Jar should contain:
-  // MSPRequ
-  // MSPOK
-  return options.httpIo.get(getOptions);
-}
-
-// TODO: parse HTML, JS and traverse AST
+/**
+ * Retrieves the PPFT key from the HTML response from login.live.com to get the Live keys.
+ *
+ * @param html The html body to scrap
+ * @returns The PPFT key
+ */
 export function scrapLivePpftKey(html: string): string {
-  // tslint:disable-next-line:max-line-length
-  const ppftRegExp: RegExp = /<input\s+type="hidden"\s+name="PPFT"\s+id="i0327"\s+value="([\!*0-9a-zA-Z]+\${1,2})"\s*\/>/;
+  /* tslint:disable-next-line:max-line-length */
+  const ppftRegExp: RegExp = /<input\s+type="hidden"\s+name="PPFT"\s+id="i0327"\s+value="([*!0-9a-zA-Z]+\${1,2})"\s*\/>/;
   const regExpResult: RegExpExecArray | null = ppftRegExp.exec(html);
 
   if (regExpResult === null) {
-    throw new Error("Unable to scrap PPFT key");
-  }
-
-  if (regExpResult.length !== 2) {
-    throw new Error("Expected regExpResult length to be exactly 2");
+    throw getLiveKeysErrors.PpftKeyNotFoundError.create(html);
   }
 
   return regExpResult[1];
 }
 
-export interface SendCredentialsOptions {
+export interface GetLiveTokenOptions {
   username: string;
   password: string;
   liveKeys: LiveKeys;
@@ -180,13 +197,30 @@ export interface SendCredentialsOptions {
   jar: CookieJar;
 }
 
-export async function getLiveToken(options: SendCredentialsOptions): Promise<string> {
-  const response: io.Response = await requestLiveToken(options);
-  return scrapLiveToken(response.body);
+export async function getLiveToken(options: GetLiveTokenOptions): Promise<string> {
+  try {
+    const response: io.Response = await requestLiveToken(options);
+    return scrapLiveToken(response.body);
+  } catch (_err) {
+    const err: getLiveTokenErrors.GetLiveTokenError.Cause | WrongCredentialsError = _err;
+    switch (err.name) {
+      case httpErrors.RequestError.name:
+      case getLiveTokenErrors.LiveTokenNotFoundError.name:
+        throw getLiveTokenErrors.GetLiveTokenError.create(err);
+      case WrongCredentialsError.name:
+        if (typeof err.data.username !== "string") {
+          throw WrongCredentialsError.create(options.username);
+        } else {
+          throw err;
+        }
+      default:
+        throw _err;
+    }
+  }
 }
 
 // Get live token from live keys and credentials
-export async function requestLiveToken (options: SendCredentialsOptions): Promise<io.Response> {
+export async function requestLiveToken(options: GetLiveTokenOptions): Promise<io.Response> {
   const uri: string = url.resolve(liveLoginUri, path.posix.join("ppsecure", "post.srf"));
   const queryString: Dictionary<string> = {
     wa: "wsignin1.0",
@@ -205,7 +239,7 @@ export async function requestLiveToken (options: SendCredentialsOptions): Promis
   // TODO(demurgos): Remove this <any>
   jar.setCookie(<any> ckTstCookie, "https://login.live.com/");
 
-  const formData: Dictionary<string> = {
+  const formData: any = {
     login: options.username,
     passwd: options.password,
     PPFT: options.liveKeys.PPFT,
@@ -218,32 +252,69 @@ export async function requestLiveToken (options: SendCredentialsOptions): Promis
     form: formData,
   };
 
-  return options.httpIo.post(postOptions);
+  try {
+    return options.httpIo.post(postOptions);
+  } catch (err) {
+    throw httpErrors.RequestError.create(err, postOptions);
+  }
 }
 
 /**
- * Scrap the result of a sendCredentials requests to retrieve the value of the `t` paramater
+ * Scrap the result of a sendCredentials requests to retrieve the value of the `t` parameter
  * @param html
- * @returns {string}
+ * @returns The token provided by Live for Skype
  */
 export function scrapLiveToken(html: string): string {
+  // TODO(demurgos): Handle the possible failure of .load (invalid HTML)
   const $: CheerioStatic = cheerio.load(html);
   const tokenNode: Cheerio = $("#t");
-  const tokenValue: string = tokenNode.val();
-  if (tokenValue === "") {
-    throw new Error("Unable to scrap token");
+  const tokenValue: string | undefined = tokenNode.val();
+  if (tokenValue === undefined || tokenValue === "") {
+    if (html.indexOf("sErrTxt:'Your account or password is incorrect.") >= 0) {
+      throw WrongCredentialsError.create();
+    } else {
+      // TODO(demurgos): Check if there is a PPFT token (redirected to the getLiveKeys response)
+      throw getLiveTokenErrors.LiveTokenNotFoundError.create(html);
+    }
   }
   return tokenValue;
 }
 
-export interface GetSkypeTokenFromLiveTokenOptions {
+export interface GetSkypeTokenOptions {
   liveToken: string;
   httpIo: io.HttpIo;
   jar: CookieJar;
 }
 
-// Get Skype token from Live token
-export async function requestSkypeToken (options: GetSkypeTokenFromLiveTokenOptions): Promise<io.Response> {
+/**
+ * Complete the OAuth workflow and get the Skype token
+ *
+ * @param options
+ */
+export async function getSkypeToken(options: GetSkypeTokenOptions): Promise<SkypeToken> {
+  try {
+    const startTime: number = Date.now();
+    const res: io.Response = await requestSkypeToken(options);
+    const scrapped: SkypeTokenResponse = scrapSkypeTokenResponse(res.body);
+    // Expires in (seconds) (default: 1 day)
+    const expiresIn: number = typeof scrapped.expires_in === "number" ? scrapped.expires_in : 864000;
+    return {
+      value: scrapped.skypetoken,
+      expirationDate: new Date(startTime + expiresIn * 1000),
+    };
+  } catch (_err) {
+    const err: getSkypeTokenErrors.GetSkypeTokenError.Cause = _err;
+    switch (err.name) {
+      case httpErrors.RequestError.name:
+      case getSkypeTokenErrors.SkypeTokenNotFoundError.name:
+        throw getSkypeTokenErrors.GetSkypeTokenError.create(err);
+      default:
+        throw _err;
+    }
+  }
+}
+
+export async function requestSkypeToken(options: GetSkypeTokenOptions): Promise<io.Response> {
   const uri: string = url.resolve(skypeLoginUri, "microsoft");
 
   const queryString: Dictionary<string> = {
@@ -265,28 +336,37 @@ export async function requestSkypeToken (options: GetSkypeTokenFromLiveTokenOpti
     form: formData,
   };
 
-  return options.httpIo.post(postOptions);
+  try {
+    return options.httpIo.post(postOptions);
+  } catch (err) {
+    throw httpErrors.RequestError.create(err, postOptions);
+  }
 }
 
 export interface SkypeTokenResponse {
   skypetoken: string;
-  expires_in: number;
+  expires_in: number | undefined;
 }
 
 /**
- * Scrap to get the Skype token
+ * Scrap to get the Skype OAuth token
  *
  * @param html
  * @returns {string}
  */
 export function scrapSkypeTokenResponse(html: string): SkypeTokenResponse {
+  // TODO(demurgos): Handle .load errors (invalid HTML)
   const $: CheerioStatic = cheerio.load(html);
   const skypeTokenNode: Cheerio = $("input[name=skypetoken]");
   // In seconds
   const expiresInNode: Cheerio = $("input[name=expires_in]");
 
-  const skypeToken: string = skypeTokenNode.val();
-  const expiresIn: number = parseInt(expiresInNode.val(), 10);
+  const skypeToken: string | undefined = skypeTokenNode.val();
+  const expiresIn: number | undefined = parseInt(expiresInNode.val(), 10);
+
+  if (typeof skypeToken !== "string") {
+    getSkypeTokenErrors.SkypeTokenNotFoundError.create(html);
+  }
 
   // if (!skypetoken || !expires_in) {
   //   const skypeErrorMessage = $(".message_error").text();

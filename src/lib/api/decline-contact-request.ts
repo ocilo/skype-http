@@ -1,7 +1,7 @@
 import {Incident} from "incident";
 import * as apiUri from "../api-uri";
 import {Context} from "../interfaces/api/context";
-import * as io from "../interfaces/io";
+import * as io from "../interfaces/http-io";
 
 export async function declineContactRequest(
   io: io.HttpIo,
