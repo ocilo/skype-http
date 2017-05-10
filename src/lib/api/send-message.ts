@@ -1,7 +1,7 @@
 import {Incident} from "incident";
 import * as api from "../interfaces/api/api";
 import {Context} from "../interfaces/api/context";
-import * as io from "../interfaces/io";
+import * as io from "../interfaces/http-io";
 import * as messagesUri from "../messages-uri";
 import {getCurrentTime} from "../utils";
 

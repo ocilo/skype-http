@@ -4,7 +4,7 @@ import {ParsedConversationId} from "../interfaces/api/api";
 import {Context as ApiContext} from "../interfaces/api/context";
 import * as events from "../interfaces/api/events";
 import * as resources from "../interfaces/api/resources";
-import * as httpIo from "../interfaces/io";
+import * as httpIo from "../interfaces/http-io";
 import * as nativeEvents from "../interfaces/native-api/events";
 import * as nativeMessageResources from "../interfaces/native-api/message-resources";
 import * as nativeResources from "../interfaces/native-api/resources";

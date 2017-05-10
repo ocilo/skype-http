@@ -12,7 +12,7 @@ import {Contact} from "./interfaces/api/contact";
 import {Context as ApiContext} from "./interfaces/api/context";
 import {Conversation} from "./interfaces/api/conversation";
 import * as apiEvents from "./interfaces/api/events";
-import {HttpIo} from "./interfaces/io";
+import {HttpIo} from "./interfaces/http-io";
 import {MessagesPoller} from "./polling/messages-poller";
 
 export class Api extends EventEmitter implements ApiEvents {

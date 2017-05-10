@@ -4,7 +4,7 @@ import {parse as parseUri, Url} from "url";
 import * as Consts from "./consts";
 import {Credentials} from "./interfaces/api/api";
 import {Context as ApiContext, RegistrationToken, SkypeToken} from "./interfaces/api/context";
-import * as io from "./interfaces/io";
+import * as io from "./interfaces/http-io";
 import {Dictionary} from "./interfaces/utils";
 import * as messagesUri from "./messages-uri";
 import * as microsoftAccount from "./providers/microsoft-account";
@@ -15,20 +15,6 @@ export interface LoginOptions {
   io: io.HttpIo;
   credentials: Credentials;
   verbose?: boolean;
-}
-
-interface LoginKeys {
-  pie: string;
-  etm: string;
-}
-
-interface SkypeTokenRequest {
-  username: string;
-  password: string;
-  pie: string;
-  etm: string;
-  timezone_field: string;
-  js_time: number;
 }
 
 interface IoOptions {
@@ -46,13 +32,13 @@ interface IoOptions {
  * POST <subscription> to gain access to resources with the RegistrationToken
  *
  * @param options
- * @returns {Bluebird<ApiContext>}
+ * @returns A new API context with the tokens for the provided user
  */
 export async function login(options: LoginOptions): Promise<ApiContext> {
   const jar: request.CookieJar = request.jar();
   const ioOptions: IoOptions = {io: options.io, jar: jar};
 
-  const getSkypeTokenOptions: microsoftAccount.GetSkypeTokenOptions = {
+  const getSkypeTokenOptions: microsoftAccount.LoginOptions = {
     credentials: {
       login: options.credentials.username,
       password: options.credentials.password,
@@ -61,7 +47,7 @@ export async function login(options: LoginOptions): Promise<ApiContext> {
     cookieJar: jar,
   };
 
-  const skypeToken: SkypeToken = await microsoftAccount.getSkypeToken(getSkypeTokenOptions);
+  const skypeToken: SkypeToken = await microsoftAccount.login(getSkypeTokenOptions);
   if (options.verbose) {
     console.log("Acquired SkypeToken");
   }

@@ -1,7 +1,7 @@
 import {Incident} from "incident";
 import {Context} from "../interfaces/api/context";
 import {Conversation} from "../interfaces/api/conversation";
-import * as io from "../interfaces/io";
+import * as io from "../interfaces/http-io";
 import {
   Conversation as NativeConversation,
   Thread as NativeThread,

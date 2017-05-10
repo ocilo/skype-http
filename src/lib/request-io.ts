@@ -1,5 +1,5 @@
 import request = require("request");
-import * as io from "./interfaces/io";
+import * as io from "./interfaces/http-io";
 
 /**
  * Converts implementation-independant IO options to the concrete

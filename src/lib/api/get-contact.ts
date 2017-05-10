@@ -2,7 +2,7 @@ import {Incident} from "incident";
 import * as apiUri from "../api-uri";
 import {Contact} from "../interfaces/api/contact";
 import {Context} from "../interfaces/api/context";
-import * as io from "../interfaces/io";
+import * as io from "../interfaces/http-io";
 
 export const VIRTUAL_CONTACTS: Set<string> = new Set(["concierge", "echo123"]);
 
