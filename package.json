@@ -4,7 +4,7 @@
   "version": "0.0.11",
   "license": "MIT",
   "main": "dist/lib-es2015/lib/index.js",
-  "browser": "dist/lib-es5/lib/index.js",
+  "browser": "dist/lib-es2015/lib/index.js",
   "types": "dist/lib-es2015/lib/index.d.ts",
   "repository": {
     "type": "git",
