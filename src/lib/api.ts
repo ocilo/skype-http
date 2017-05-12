@@ -1,4 +1,5 @@
-import {EventEmitter} from "events";
+﻿ import {EventEmitter} from "events";
+import { CookieJar as CookieJar2 } from "tough-cookie";
 import acceptContactRequest from "./api/accept-contact-request";
 import declineContactRequest from "./api/decline-contact-request";
 import getContact from "./api/get-contact";
@@ -7,9 +8,10 @@ import getConversation from "./api/get-conversation";
 import getConversations from "./api/get-conversations";
 import sendMessage from "./api/send-message";
 import setStatus from "./api/set-status";
+import { StateObj } from "./connect";
 import * as api from "./interfaces/api/api";
 import {Contact} from "./interfaces/api/contact";
-import {Context as ApiContext} from "./interfaces/api/context";
+import { Context as ApiContext } from "./interfaces/api/context";
 import {Conversation} from "./interfaces/api/conversation";
 import * as apiEvents from "./interfaces/api/events";
 import {HttpIo} from "./interfaces/http-io";
@@ -59,6 +61,15 @@ export class Api extends EventEmitter implements ApiEvents {
     return sendMessage(this.io, this.context, message, conversationId);
   }
 
+  getState(): Promise<StateObj> {
+    const jar: CookieJar2 = new CookieJar2(this.context.cookieStore);
+    const obj: StateObj = {
+        cookieJar: JSON.stringify(jar.toJSON()), username: this.context.username,
+        registrationToken: JSON.stringify(this.context.registrationToken),
+        skypeToken: JSON.stringify(this.context.skypeToken),
+    };
+    return Promise.resolve(obj);
+  }
   setStatus (status: api.Status): Promise<any> {
     return setStatus(this.io, this.context, status);
   }

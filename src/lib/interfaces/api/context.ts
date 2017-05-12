@@ -1,8 +1,9 @@
-import {CookieJar} from "request";
+﻿import { CookieJar } from "request";
 
 export interface Context {
   username: string;
   cookieJar: CookieJar;
+  cookieStore: any;
   skypeToken: SkypeToken;
   registrationToken: RegistrationToken;
 }

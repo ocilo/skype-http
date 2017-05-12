@@ -1,5 +1,6 @@
-import {Incident} from "incident";
+﻿ import {Incident} from "incident";
 import * as request from "request";
+import { MemoryCookieStore } from "tough-cookie";
 import {parse as parseUri, Url} from "url";
 import * as Consts from "./consts";
 import {Credentials} from "./interfaces/api/api";
@@ -16,7 +17,15 @@ export interface LoginOptions {
   credentials: Credentials;
   verbose?: boolean;
 }
-
+export interface LoginResumeOptions {
+  io: io.HttpIo;
+  registrationToken: RegistrationToken|null;
+  verbose?: boolean;
+  cookieJar: request.CookieJar;
+  cookieStore: any;
+  skypeToken: SkypeToken;
+  username: string;
+}
 interface IoOptions {
   io: io.HttpIo;
   jar: request.CookieJar;
@@ -35,7 +44,8 @@ interface IoOptions {
  * @returns A new API context with the tokens for the provided user
  */
 export async function login(options: LoginOptions): Promise<ApiContext> {
-  const jar: request.CookieJar = request.jar();
+  const store: MemoryCookieStore = new MemoryCookieStore();
+  const jar: request.CookieJar = request.jar(store);
   const ioOptions: IoOptions = {io: options.io, jar: jar};
 
   const getSkypeTokenOptions: microsoftAccount.LoginOptions = {
@@ -61,24 +71,38 @@ export async function login(options: LoginOptions): Promise<ApiContext> {
     console.log("Acquired RegistrationToken");
   }
 
-  await subscribeToResources(ioOptions, registrationToken);
+  return await loginResume({
+    username: options.credentials.username, skypeToken: skypeToken, cookieJar: jar,
+    cookieStore: store, io: options.io, verbose: options.verbose, registrationToken: registrationToken,
+  });
+}
+export async function loginResume(options: LoginResumeOptions): Promise<ApiContext> {
+  const ioOptions: IoOptions = { io: options.io, jar: options.cookieJar };
+  if (!options.registrationToken) {
+    const registrationToken: RegistrationToken = await getRegistrationToken(
+      ioOptions,
+      options.skypeToken,
+      Consts.SKYPEWEB_DEFAULT_MESSAGES_HOST,
+    );
+    options.registrationToken = registrationToken;
+  }
+  await subscribeToResources(ioOptions, options.registrationToken);
   if (options.verbose) {
     console.log("Subscribed to resources");
   }
 
-  await createPresenceDocs(ioOptions, registrationToken);
+  await createPresenceDocs(ioOptions, options.registrationToken);
   if (options.verbose) {
     console.log("Created presence docs");
   }
-
   return {
-    username: options.credentials.username,
-    skypeToken: skypeToken,
-    cookieJar: jar,
-    registrationToken: registrationToken,
+    username: options.username,
+    skypeToken: options.skypeToken,
+    cookieJar: options.cookieJar,
+    registrationToken: options.registrationToken,
+    cookieStore: options.cookieStore,
   };
 }
-
 function getLockAndKeyResponse(time: number): string {
   const inputBuffer: Buffer = Buffer.from(String(time), "utf8");
   const appIdBuffer: Buffer = Buffer.from(Consts.SKYPEWEB_LOCKANDKEY_APPID, "utf8");
@@ -188,7 +212,8 @@ async function subscribeToResources(ioOptions: IoOptions, registrationToken: Reg
 
   const res: io.Response = await ioOptions.io.post(requestOptions);
   if (res.statusCode !== 201) {
-    return Promise.reject(new Incident("net", "Unable to subscribe to resources"));
+    return Promise.reject(new Incident("net",
+      `Unable to subscribe to resources: statusCode: ${res.statusCode} body: ${res.body}`));
   }
 
   // Example response:
