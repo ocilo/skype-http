@@ -11,8 +11,6 @@ This relies on the Skype Web Application and requires the credentials of the acc
 ````shell
 npm install --save skype-http
 
-# If you use Typescript, install the definitions with:
-typings install --save npm:skype-http
 ````
 
 Import for Typescript or Javascript ES6:
@@ -66,7 +64,7 @@ Checks the source files with `tslint`
 
 ### `prepare`
 
-Installs `typings` definitions.
+prepares the dist files
 
 ### `prepublishOnly`
 
@@ -90,9 +88,13 @@ You can find the decompiled source code of the Skype Web Application on [the `sk
 ## What's not working and probably never will.
 * [Old P2P group chats](https://github.com/ShyykoSerhiy/skyweb/issues/6). According to  [Skype community site ](http://community.skype.com/t5/Skype-for-Web-Beta/Group-chats-missing-on-skype-web/td-p/3884218) only new, Cloud based group chats are shown in SkypeWeb Beta(therefore works in this API). The old P2P group chats are not.  
 
+
+## Project Background
+This project started as a fork of the https://github.com/ShyykoSerhiy/skyweb after slow progress from 3rd party patches. The goal is to provide stronger guarantees about the objects returned by the API (through checks and normalization) and better error management, because scrapping/unofficial API calls are unreliable so the library should be resilient.
+
 ## Disclaimer 
 This project relies on SkypeWeb Skype implementation. If Microsoft Corporation decides to remove Skype
-implementation (or change it in any) skyweb might not be in working state. Therefore it's not recommended to use it 
+implementation (or change it in any) skype-http might not be in working state. Therefore it's not recommended to use it 
 in any critical part of production code. In fact it's not recommended to use it in production at all.
 
 [MIT License](https://github.com/demurgos/skype-http/blob/master/LICENSE.md).
