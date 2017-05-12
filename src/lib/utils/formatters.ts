@@ -1,4 +1,4 @@
-import {Incident} from "incident";
+﻿import {Incident} from "incident";
 import * as _ from "lodash";
 import {Contact} from "../interfaces/api/contact";
 import {Conversation, ThreadProperties} from "../interfaces/api/conversation";
@@ -125,8 +125,10 @@ function contactToPerson (native: NativeContact): Contact {
   }
 
   const displayName: string = sanitizeXml(native.display_name);
-  const firstName: string = sanitizeXml(native.name.first);
-  const lastName: string | null = native.name.surname === undefined ? null : sanitizeXml(native.name.surname);
+  const firstName: string | null =
+    (native.name && native.name.first !== undefined) ? sanitizeXml(native.name.first) : null;
+  const lastName: string | null =
+    (!native.name || native.name.surname === undefined) ? null : sanitizeXml(native.name.surname);
 
   const phoneNumbers: any[] = [];
   const locations: any[] = [];
@@ -143,8 +145,9 @@ function contactToPerson (native: NativeContact): Contact {
     phones: phoneNumbers,
     name: {
       first: firstName,
-      surname: "",
-      nickname: native.id,
+    surname: lastName,
+    nickname: native.id,
+      displayName: displayName,
     },
     activityMessage: activityMessage,
     locations: locations,

@@ -1,4 +1,4 @@
-import {Incident} from "incident";
+﻿import {Incident} from "incident";
 import * as _ from "lodash";
 import * as contactsUri from "../contacts-uri";
 import {Contact} from "../interfaces/api/contact";
@@ -6,7 +6,6 @@ import {Context} from "../interfaces/api/context";
 import * as io from "../interfaces/http-io";
 import {Contact as NativeContact} from "../interfaces/native-api/contact";
 import {formatContact} from "../utils/formatters";
-
 interface ContactsResponse {
   contacts: NativeContact[];
   count: number; // contacts.length
