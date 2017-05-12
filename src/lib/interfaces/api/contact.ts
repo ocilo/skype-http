@@ -1,4 +1,4 @@
-﻿import {Nullable} from "../utils";
+﻿ import {Nullable} from "../utils";
 import {FullId} from "./api";
 
 export interface Location {
@@ -15,6 +15,7 @@ export interface Contact {
   id: FullId;
   avatarUrl: string | null;
   phones: Phone[];
+  emails?: String[];
   name: {
     first: string | null;
     surname: string | null;

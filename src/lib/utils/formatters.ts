@@ -1,10 +1,9 @@
-﻿import {Incident} from "incident";
+﻿ import {Incident} from "incident";
 import * as _ from "lodash";
 import {Contact} from "../interfaces/api/contact";
 import {Conversation, ThreadProperties} from "../interfaces/api/conversation";
-import {Contact as NativeContact} from "../interfaces/native-api/contact";
-import {
-  Conversation as NativeConversation, Thread as NativeThread,
+import { Contact as NativeContact, SearchContact as NativeSearchContact} from "../interfaces/native-api/contact";
+import {  Conversation as NativeConversation, Thread as NativeThread,
   ThreadMember as NativeThreadMember,
 } from "../interfaces/native-api/conversation";
 import {sanitizeXml} from "./user-data-processor";
@@ -45,7 +44,9 @@ export function formatThread (native: NativeThread): Conversation {
     members: memberIds,
   };
 }
-
+export function formatSearchContact(native: NativeSearchContact): Contact {
+  return searchContactToPerson(native);
+}
 export function formatContact (native: NativeContact): Contact {
   return contactToPerson(native);
 }
@@ -64,6 +65,45 @@ function define (...args: any[]) {
   return null;
 }
 
+function searchContactToPerson(native: NativeSearchContact): Contact {
+  let avatarUrl: string | null;
+
+  if (native.avatarUrl) {
+    avatarUrl = ensureHttps(native.avatarUrl);
+    // TODO: ensure that the "cacheHeaders=1" queryString is there
+  } else {
+    avatarUrl = null;
+  }
+  const displayName: string = sanitizeXml(native.displayname);
+  const firstName: string | null = (native.firstname !== undefined) ? sanitizeXml(native.firstname) : null;
+  const lastName: string | null =  (!native.lastname !== undefined) ? sanitizeXml(native.lastname) : null;
+
+  const phoneNumbers: any[] = [];
+  const locations: any[] = [];
+  const type: string = "skype";
+  const typeKey: string = contactTypeNameToContactTypeKey(type);
+  let result: Contact;
+  result = {
+    id: {
+      id: native.username,
+      typeKey: typeKey,
+      typeName: type,
+      raw: `${typeKey}:${native.username}`,
+    },
+        emails: native.emails,
+    avatarUrl: avatarUrl,
+    phones: phoneNumbers,
+    name: {
+      first: firstName,
+      surname: lastName,
+      nickname: native.username,
+      displayName: displayName,
+    },
+    activityMessage: native.mood,
+    locations: locations,
+  };
+  return result;
+}
 // github:demurgos/skype-web-reversed -> jSkype/modelHelpers/contacts/dataMappers/contactToPerson.js
 function contactToPerson (native: NativeContact): Contact {
   const SUGGESTED_CONTACT_ACTIVITY_MESSAGE: string = "Skype";

@@ -1,4 +1,4 @@
-export interface Location {
+﻿ export interface Location {
   country: string; // almost certainly an enum...
   city?: string;
 }
@@ -7,7 +7,18 @@ export interface Phone {
   number: string; // pattern: /^+\getAuthorizationState+$/  (with country code)
   type: number; // enum, seen: 2
 }
-
+export interface SearchContact {
+  firstname: string;
+  lastname: string;
+  country: string;
+  city: string;
+  avatarUrl: string;
+  displayname: string;
+  username: string;
+  mood: string;
+  emails: string[];
+  gender: string; // its numeric it seems
+}
 export interface Contact {
   id: string; // username
   person_id: string; // [0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}
