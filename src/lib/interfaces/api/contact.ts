@@ -1,4 +1,4 @@
-import {Nullable} from "../utils";
+﻿import {Nullable} from "../utils";
 import {FullId} from "./api";
 
 export interface Location {
@@ -16,9 +16,10 @@ export interface Contact {
   avatarUrl: string | null;
   phones: Phone[];
   name: {
-    first: string;
-    surname: string;
-    nickname: string;
+    first: string | null;
+    surname: string | null;
+  nickname: string;
+  displayName: string;
   };
   activityMessage: string | null;
   locations: Location[];
