@@ -44,44 +44,60 @@ set the status to `"Online"` and start to respond to messages.
 
 [See the documentation](./doc/api/package.md)
 
-## Contributing - npm scripts
+## Contributing
 
-### `build`
+Here are the main commands available for the project.
+The project requires `gulp-cli` and `npm` 4.
+The project has three targets:
+- `lib-es2015`: Build the core library. This is what is published to npm.
+  - Sources: `src/lib`
+- `lib-test`: Build the library with the _mocha_ unit-tests.
+  - Sources: `src/lib` and `src/test`
+- `example`: Build the example command-line application.
+  - Sources: `src/lib` and `src/example`
 
-Compiles the core files to `build/local`.
+### `npm prepare`
 
-### `clean`
+Generate the configuration files (`tslint.json`, `tsconfig.json`) and build all
+the targets.
+These files are not used by the build process (they are read-only) but allow
+to use the `tsc` and `tslint` command line programs and help the editors detect
+the configuration.
 
-Removes the `build` and `dist` directories
+**Note**: This command is executed automatically as part of `npm install`.
 
-### `demo`
+### `gulp <target>:build`
 
-Compiles the demo to `build/demo` and runs the main demo file.
+Build the specified target. Example: `gulp lib-es2015:build`.
+The output directory is `build/<target>` (example: `build/lib-es2015`).
 
-### `lint`
+### `gulp <target>:watch`
 
-Checks the source files with `tslint`
+Watch the sources and rebuild on change.
 
-### `prepare`
+**Note**: You may have to restart it if you create _new_ files.
 
-prepares the dist files
+### `npm start`
 
-### `prepublishOnly`
+Build `example` and run it.
 
-Clean the directories, run linter and tests and if everything is fine, compile the core files and moves them to the `dist` directory to be published on `npm`.
+### `gulp :lint`
 
-### `publishOnly`
+Static analysis with `tslint`.
 
-Runs `prepublishOnly` and then `npm publish`. This is a temporary fix until [this npm issue](https://github.com/npm/npm/issues/10074) is solved.
+### `gulp lib-test`
 
-### `test`
+Build the `lib-test` target and run the unit tests. Prints the report to
+the terminal.
 
-Lint the source files and runs the specs.
-This is executed during Travis CI builds.
+### `npm test`
+
+Run both `gulp :lint` and `gulp lib-test`.
+This is executed on each commit and during Travis CI builds.
 
 ## Resources
 
-If you just want to create a bot, take a look at https://github.com/Microsoft/BotBuilder first.
+If you just want to create a bot, take a look at <https://github.com/Microsoft/BotBuilder> first.
 
 You can find the decompiled source code of the Skype Web Application on [the `skype-web-reversed` repository](https://github.com/demurgos/skype-web-reversed).
 
