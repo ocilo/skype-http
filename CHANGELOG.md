@@ -1,3 +1,9 @@
+# Next
+
+- **[Breaking]** Allow `Contact.name.first` and `Contact.surname.first` to be null. This matches the Skype
+  API.
+- **[Internal]** Add background information about the project and update the commands available to contributors.
+
 # 0.0.12 (2017-05-10)
 
 - **[Breaking]** Require ES2015 (ES6) objects. If you use it an a browser, include a shim
