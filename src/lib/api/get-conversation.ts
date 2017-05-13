@@ -45,7 +45,7 @@ export async function getConversation(
 
   const requestOptions: io.GetOptions = {
     uri: uri,
-    jar: apiContext.cookieJar,
+    cookies: apiContext.cookies,
     queryString: query,
     headers: {
       RegistrationToken: apiContext.registrationToken.raw,

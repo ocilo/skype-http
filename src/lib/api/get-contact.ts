@@ -14,7 +14,7 @@ export async function getContact(io: io.HttpIo, apiContext: Context, contactId: 
   }
   const requestOptions: io.PostOptions = {
     uri: apiUri.userProfiles(),
-    jar: apiContext.cookieJar,
+    cookies: apiContext.cookies,
     form: { usernames: [contactId] },
     headers: {
       "X-Skypetoken": apiContext.skypeToken.value,

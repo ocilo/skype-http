@@ -1,5 +1,5 @@
 import {assert} from "chai";
-import * as request from "request";
+import {MemoryCookieStore} from "tough-cookie";
 import {SkypeToken} from "../../lib/interfaces/api/context";
 import {
   login,
@@ -24,7 +24,7 @@ describe("Microsoft Account provider", function (this: Mocha.ISuiteCallbackConte
           password: testConfig.credentials.password,
         },
         httpIo: requestIo,
-        cookieJar: request.jar(),
+        cookies: new MemoryCookieStore(),
       };
       const skypeToken: SkypeToken = await login(options);
       assert.property(skypeToken, "value");

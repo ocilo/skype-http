@@ -1,9 +1,9 @@
-import {CookieJar} from "request";
+import {Store as CookieStore} from "tough-cookie";
 import {Dictionary} from "./utils";
 
 export interface BaseOptions {
   uri: string;
-  jar?: CookieJar;
+  cookies?: CookieStore;
   headers?: Dictionary<any>;
   queryString?: Dictionary<any>;
 }

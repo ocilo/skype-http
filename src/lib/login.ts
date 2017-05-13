@@ -1,6 +1,5 @@
-﻿ import {Incident} from "incident";
-import * as request from "request";
-import { MemoryCookieStore } from "tough-cookie";
+﻿import {Incident} from "incident";
+import {MemoryCookieStore, Store as CookieStore} from "tough-cookie";
 import {parse as parseUri, Url} from "url";
 import * as Consts from "./consts";
 import {Credentials} from "./interfaces/api/api";
@@ -12,23 +11,15 @@ import * as microsoftAccount from "./providers/microsoft-account";
 import * as utils from "./utils";
 import {hmacSha256} from "./utils/hmac-sha256";
 
+interface IoOptions {
+  io: io.HttpIo;
+  cookies: CookieStore;
+}
+
 export interface LoginOptions {
   io: io.HttpIo;
   credentials: Credentials;
   verbose?: boolean;
-}
-export interface LoginResumeOptions {
-  io: io.HttpIo;
-  registrationToken: RegistrationToken|null;
-  verbose?: boolean;
-  cookieJar: request.CookieJar;
-  cookieStore: any;
-  skypeToken: SkypeToken;
-  username: string;
-}
-interface IoOptions {
-  io: io.HttpIo;
-  jar: request.CookieJar;
 }
 
 /**
@@ -44,20 +35,17 @@ interface IoOptions {
  * @returns A new API context with the tokens for the provided user
  */
 export async function login(options: LoginOptions): Promise<ApiContext> {
-  const store: MemoryCookieStore = new MemoryCookieStore();
-  const jar: request.CookieJar = request.jar(store);
-  const ioOptions: IoOptions = {io: options.io, jar: jar};
+  const cookies: MemoryCookieStore = new MemoryCookieStore();
+  const ioOptions: IoOptions = {io: options.io, cookies};
 
-  const getSkypeTokenOptions: microsoftAccount.LoginOptions = {
+  const skypeToken: SkypeToken = await microsoftAccount.login({
     credentials: {
       login: options.credentials.username,
       password: options.credentials.password,
     },
     httpIo: options.io,
-    cookieJar: jar,
-  };
-
-  const skypeToken: SkypeToken = await microsoftAccount.login(getSkypeTokenOptions);
+    cookies,
+  });
   if (options.verbose) {
     console.log("Acquired SkypeToken");
   }
@@ -71,38 +59,24 @@ export async function login(options: LoginOptions): Promise<ApiContext> {
     console.log("Acquired RegistrationToken");
   }
 
-  return await loginResume({
-    username: options.credentials.username, skypeToken: skypeToken, cookieJar: jar,
-    cookieStore: store, io: options.io, verbose: options.verbose, registrationToken: registrationToken,
-  });
-}
-export async function loginResume(options: LoginResumeOptions): Promise<ApiContext> {
-  const ioOptions: IoOptions = { io: options.io, jar: options.cookieJar };
-  if (!options.registrationToken) {
-    const registrationToken: RegistrationToken = await getRegistrationToken(
-      ioOptions,
-      options.skypeToken,
-      Consts.SKYPEWEB_DEFAULT_MESSAGES_HOST,
-    );
-    options.registrationToken = registrationToken;
-  }
-  await subscribeToResources(ioOptions, options.registrationToken);
+  await subscribeToResources(ioOptions, registrationToken);
   if (options.verbose) {
     console.log("Subscribed to resources");
   }
 
-  await createPresenceDocs(ioOptions, options.registrationToken);
+  await createPresenceDocs(ioOptions, registrationToken);
   if (options.verbose) {
     console.log("Created presence docs");
   }
+
   return {
-    username: options.username,
-    skypeToken: options.skypeToken,
-    cookieJar: options.cookieJar,
-    registrationToken: options.registrationToken,
-    cookieStore: options.cookieStore,
+    username: options.credentials.username,
+    skypeToken,
+    cookies,
+    registrationToken,
   };
 }
+
 function getLockAndKeyResponse(time: number): string {
   const inputBuffer: Buffer = Buffer.from(String(time), "utf8");
   const appIdBuffer: Buffer = Buffer.from(Consts.SKYPEWEB_LOCKANDKEY_APPID, "utf8");
@@ -143,7 +117,7 @@ async function getRegistrationToken(
   const requestOptions: io.PostOptions = {
     uri: messagesUri.endpoints(messagesHost),
     headers: headers,
-    jar: options.jar,
+    cookies: options.cookies,
     body: "{}", // Skype requires you to send an empty object as a body
   };
 
@@ -203,7 +177,7 @@ async function subscribeToResources(ioOptions: IoOptions, registrationToken: Reg
 
   const requestOptions: io.PostOptions = {
     uri: messagesUri.subscriptions(registrationToken.host),
-    jar: ioOptions.jar,
+    cookies: ioOptions.cookies,
     body: JSON.stringify(requestDocument),
     headers: {
       RegistrationToken: registrationToken.raw,
@@ -268,7 +242,7 @@ async function createPresenceDocs(ioOptions: IoOptions, registrationToken: Regis
 
   const requestOptions: io.PutOptions = {
     uri: uri,
-    jar: ioOptions.jar,
+    cookies: ioOptions.cookies,
     body: JSON.stringify(requestBody),
     headers: {
       RegistrationToken: registrationToken.raw,

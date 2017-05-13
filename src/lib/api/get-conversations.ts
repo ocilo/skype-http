@@ -32,7 +32,7 @@ export async function getConversations(io: io.HttpIo, apiContext: Context): Prom
 
   const requestOptions: io.GetOptions = {
     uri: messagesUri.conversations(apiContext.registrationToken.host, messagesUri.DEFAULT_USER),
-    jar: apiContext.cookieJar,
+    cookies: apiContext.cookies,
     queryString: query,
     headers: {
       RegistrationToken: apiContext.registrationToken.raw,
