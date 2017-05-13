@@ -1,9 +1,12 @@
+import * as fs from "fs";
+import * as sysPath from "path";
 import {createInterface, ReadLine} from "readline";
 import {Api as SkypeApi} from "../lib/api";
 import {VIRTUAL_CONTACTS} from "../lib/api/get-contact";
 import * as skypeHttp from "../lib/connect";
 import {Credentials} from "../lib/interfaces/api/api";
 import {Contact} from "../lib/interfaces/api/contact";
+import {Context} from "../lib/interfaces/api/context";
 import * as events from "../lib/interfaces/api/events";
 import * as resources from "../lib/interfaces/api/resources";
 
@@ -44,12 +47,23 @@ async function promptCredentials(): Promise<Credentials> {
 }
 
 async function run(): Promise<void> {
-  const credentials: Credentials = await promptCredentials();
-  const options: skypeHttp.ConnectOptions = {
-    credentials: credentials,
-    verbose: true,
-  };
-  const api: SkypeApi = await skypeHttp.connect(options);
+  const statePath: string = sysPath.resolve(__dirname, "api-state.json");
+  let api: SkypeApi;
+  try {
+    const stateContent: string = fs.readFileSync(statePath).toString("utf8");
+    const apiContext: Context.Json = JSON.parse(stateContent);
+    api = await skypeHttp.connect({state: apiContext, verbose: true});
+    await api.getContacts(); // Try a request, to check that the state is correctly restored.
+    console.log(`Restored state from ${statePath}`);
+  } catch (err) {
+    console.log("Unable to restore the state from file, performing login with credentials");
+    const credentials: Credentials = await promptCredentials();
+    api = await skypeHttp.connect({credentials: credentials, verbose: true});
+  }
+
+  const apiState: Context.Json = api.getState();
+  fs.writeFileSync(statePath, JSON.stringify(apiState), "utf8");
+  console.log(`Saved state in the file: ${statePath}`);
 
   // Log every event
   api.on("event", (ev: events.EventMessage) => {
