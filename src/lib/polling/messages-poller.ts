@@ -1,5 +1,6 @@
 import {EventEmitter} from "events";
 import {Incident} from "incident";
+import {UnexpectedHttpStatusError} from "../errors/http";
 import {ParsedConversationId} from "../interfaces/api/api";
 import {Context as ApiContext} from "../interfaces/api/context";
 import * as events from "../interfaces/api/events";
@@ -175,6 +176,12 @@ export class MessagesPoller extends EventEmitter {
     return this;
   }
 
+  /**
+   * Get the new messages / events from the server.
+   * This function always returns a successful promise once the messages are retrieved or an error happens.
+   *
+   * If any error happens, the message-poller will emit an `error` event with the error.
+   */
   protected async getMessages(): Promise<void> {
     try {
       const requestOptions: httpIo.PostOptions = {
@@ -188,14 +195,15 @@ export class MessagesPoller extends EventEmitter {
       const res: httpIo.Response = await this.io.post(requestOptions);
 
       if (res.statusCode !== 200) {
-        return Promise.reject(new Incident("poll", "Unable to poll"));
+        const cause: UnexpectedHttpStatusError = UnexpectedHttpStatusError.create(res, new Set([200]), requestOptions);
+        this.emit("error", Incident(cause, "poll", "Unable to poll the messages"));
+        return;
       }
 
       const body: {eventMessages?: nativeEvents.EventMessage[]} = JSON.parse(res.body);
 
       if (body.eventMessages) {
         for (const msg of body.eventMessages) {
-          // console.log(JSON.stringify(msg, null, 2));
           const formatted: events.EventMessage = formatEventMessage(msg);
           if (formatted && formatted.resource) {
             this.emit("event-message", formatted);
@@ -203,7 +211,7 @@ export class MessagesPoller extends EventEmitter {
         }
       }
     } catch (err) {
-      this.emit("error", err);
+      this.emit("error", Incident(err, "poll", "An error happened while processing the polled messages"));
     }
   }
 }
