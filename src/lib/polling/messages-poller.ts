@@ -1,4 +1,4 @@
-import {EventEmitter} from "events";
+﻿import {EventEmitter} from "events";
 import {Incident} from "incident";
 import {ParsedConversationId} from "../interfaces/api/api";
 import {Context as ApiContext} from "../interfaces/api/context";
@@ -188,7 +188,7 @@ export class MessagesPoller extends EventEmitter {
       const res: httpIo.Response = await this.io.post(requestOptions);
 
       if (res.statusCode !== 200) {
-        return Promise.reject(new Incident("poll", "Unable to poll"));
+        throw new Incident("poll", "Unable to poll");
       }
 
       const body: {eventMessages?: nativeEvents.EventMessage[]} = JSON.parse(res.body);
