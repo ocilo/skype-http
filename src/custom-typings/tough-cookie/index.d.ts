@@ -110,10 +110,83 @@ export function permutePath (path: string): string[];
 
 /**
  * Base class for CookieJar stores. Available as tough.Store.
+ *
+ * @see https://github.com/SalesforceEng/tough-cookie#store
  */
 export class Store {
-  // TODO(blakeembrey): Finish this.
-  // https://github.com/SalesforceEng/tough-cookie#store
+  get synchronous(): this is StoreSync;
+
+  /**
+   * Retrieve a cookie with the given domain, path and key (a.k.a. name).
+   */
+  findCookie(domain: string, path: string, key: string, cb: (err: Error | null, cookie: Cookie) => void);
+
+  /**
+   * Locates cookies matching the given domain and path.
+   */
+  findCookies(domain: string, path: string, key: string, cb: (err: Error | null, cookies: Cookie[]) => void);
+
+  /**
+   * Adds a new cookie to the store.
+   */
+  putCookie(cookie: Cookie, cb: (err: Error | null) => void);
+
+  /**
+   * Update an existing cookie.
+   */
+  updateCookie(oldCookie: Cookie, newCookie: Cookie, cb: (err: Error | null) => void);
+
+  /**
+   * Remove a cookie from the store.
+   */
+  removeCookie(domain: string, path: string, key: string, cb: (err: Error | null) => void);
+
+  /**
+   * Removes matching cookies from the store.
+   */
+  removeCookies(domain: string, path: string, cb: (err: Error | null) => void);
+
+  /**
+   * Produces an `Array` of all cookies during `jar.serialize()`.
+   */
+  getAllCookies(cb: (err: Error | null, cookies: Cookie[]) => void);
+}
+
+export interface StoreSync extends Store {
+  /**
+   * Retrieve a cookie with the given domain, path and key (a.k.a. name).
+   */
+  findCookieSync(domain: string, path: string, key: string): Cookie;
+
+  /**
+   * Locates cookies matching the given domain and path.
+   */
+  findCookiesSync(domain: string, path: string, key: string): Cookie[];
+
+  /**
+   * Adds a new cookie to the store.
+   */
+  putCookieSync(cookie: Cookie): void;
+
+  /**
+   * Update an existing cookie.
+   */
+  updateCookieSync(oldCookie: Cookie, newCookie: Cookie): void;
+
+  /**
+   * Remove a cookie from the store.
+   */
+  removeCookieSync(domain: string, path: string, key: string): void;
+
+  /**
+   * Removes matching cookies from the store.
+   */
+  removeCookiesSync(domain: string, path: string): void;
+
+  /**
+   * Produces an `Array` of all cookies during `jar.serialize()`.
+   */
+  getAllCookiesSync(): Cookie[];
 }
 
 /**
@@ -475,7 +548,7 @@ export class CookieJar {
    * Sync version of .deserialize. Note that the store must be synchronous
    * for this to work.
    */
-  static deserializeSync (serialized: string | Object, store: Store): Object;
+  static deserializeSync (serialized: string | Object, store: Store): CookieJar;
 
   /**
    * Alias of .deserializeSync to provide consistency with Cookie.fromJSON().

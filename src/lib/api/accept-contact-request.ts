@@ -6,7 +6,7 @@ import * as io from "../interfaces/http-io";
 export async function acceptContactRequest(io: io.HttpIo, apiContext: Context, contactUsername: string): Promise<void> {
   const requestOptions: io.GetOptions = {
     uri: apiUri.authRequestAccept(apiContext.username, contactUsername),
-    jar: apiContext.cookieJar,
+    cookies: apiContext.cookies,
     headers: {
       "X-Skypetoken": apiContext.skypeToken.value,
     },

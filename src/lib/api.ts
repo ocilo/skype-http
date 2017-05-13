@@ -1,5 +1,4 @@
-﻿ import {EventEmitter} from "events";
-import { CookieJar as CookieJar2 } from "tough-cookie";
+﻿import {EventEmitter} from "events";
 import acceptContactRequest from "./api/accept-contact-request";
 import declineContactRequest from "./api/decline-contact-request";
 import getContact from "./api/get-contact";
@@ -8,10 +7,9 @@ import getConversation from "./api/get-conversation";
 import getConversations from "./api/get-conversations";
 import sendMessage from "./api/send-message";
 import setStatus from "./api/set-status";
-import { StateObj } from "./connect";
 import * as api from "./interfaces/api/api";
 import {Contact} from "./interfaces/api/contact";
-import { Context as ApiContext } from "./interfaces/api/context";
+import {Context as ApiContext} from "./interfaces/api/context";
 import {Conversation} from "./interfaces/api/conversation";
 import * as apiEvents from "./interfaces/api/events";
 import {HttpIo} from "./interfaces/http-io";
@@ -22,7 +20,7 @@ export class Api extends EventEmitter implements ApiEvents {
   context: ApiContext;
   messagesPoller: MessagesPoller;
 
-  constructor (context: ApiContext, io: HttpIo) {
+  constructor(context: ApiContext, io: HttpIo) {
     super();
     this.context = context;
     this.io = io;
@@ -36,48 +34,43 @@ export class Api extends EventEmitter implements ApiEvents {
     return this;
   }
 
-  async declineContactRequest (contactUsername: string): Promise<this> {
+  async declineContactRequest(contactUsername: string): Promise<this> {
     await declineContactRequest(this.io, this.context, contactUsername);
     return this;
   }
 
-  getContact (contactId: string): Promise<Contact> {
+  getContact(contactId: string): Promise<Contact> {
     return getContact(this.io, this.context, contactId);
   }
 
-  getContacts (): Promise<Contact[]> {
+  getContacts(): Promise<Contact[]> {
     return getContacts(this.io, this.context);
   }
 
-  getConversation (conversationId: string): Promise<Conversation> {
+  getConversation(conversationId: string): Promise<Conversation> {
     return getConversation(this.io, this.context, conversationId);
   }
 
-  getConversations (): Promise<Conversation[]> {
+  getConversations(): Promise<Conversation[]> {
     return getConversations(this.io, this.context);
   }
 
-  sendMessage (message: api.NewMessage, conversationId: string): Promise<api.SendMessageResult> {
+  sendMessage(message: api.NewMessage, conversationId: string): Promise<api.SendMessageResult> {
     return sendMessage(this.io, this.context, message, conversationId);
   }
 
-  getState(): Promise<StateObj> {
-    const jar: CookieJar2 = new CookieJar2(this.context.cookieStore);
-    const obj: StateObj = {
-        cookieJar: JSON.stringify(jar.toJSON()), username: this.context.username,
-        registrationToken: JSON.stringify(this.context.registrationToken),
-        skypeToken: JSON.stringify(this.context.skypeToken),
-    };
-    return Promise.resolve(obj);
+  getState(): ApiContext.Json {
+    return ApiContext.toJson(this.context);
   }
-  setStatus (status: api.Status): Promise<any> {
+
+  setStatus(status: api.Status): Promise<any> {
     return setStatus(this.io, this.context, status);
   }
 
   /**
    * Start polling and emitting events
    */
-  listen (): Promise<this> {
+  listen(): Promise<this> {
     this.messagesPoller.run();
     return Promise.resolve(this);
   }
@@ -85,7 +78,7 @@ export class Api extends EventEmitter implements ApiEvents {
   /**
    * Stop polling and emitting events
    */
-  stopListening (): Promise<this> {
+  stopListening(): Promise<this> {
     this.messagesPoller.stop();
     return Promise.resolve(this);
   }

@@ -180,7 +180,7 @@ export class MessagesPoller extends EventEmitter {
       const requestOptions: httpIo.PostOptions = {
         // TODO: explicitly define user, endpoint and subscription
         uri: messagesUri.poll(this.apiContext.registrationToken.host),
-        jar: this.apiContext.cookieJar,
+        cookies: this.apiContext.cookies,
         headers: {
           RegistrationToken: this.apiContext.registrationToken.raw,
         },

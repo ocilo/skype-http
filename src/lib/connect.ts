@@ -1,11 +1,8 @@
-﻿ import {Incident} from "incident";
-import { CookieJar } from "request";
-import * as request from "request";
-import { CookieJar as CookieJar2, MemoryCookieStore } from "tough-cookie";
+﻿import {Incident} from "incident";
 import * as api from "./api";
 import {Credentials} from "./interfaces/api/api";
 import {Context} from "./interfaces/api/context";
-import {login, loginResume} from "./login";
+import {login} from "./login";
 import requestIO from "./request-io";
 
 export interface StateContainer {
@@ -14,16 +11,10 @@ export interface StateContainer {
 
 export interface ConnectOptions {
   credentials?: Credentials;
-  state?: StateObj;
+  state?: Context.Json;
   verbose?: boolean;
 }
 
-export interface StateObj {
-  skypeToken: string;
-  registrationToken: string;
-  username: string;
-  cookieJar: string;
-}
 /**
  * Authenticate the user and create a new API.
  *
@@ -34,19 +25,8 @@ export interface StateObj {
 export async function connect(options: ConnectOptions): Promise<api.Api> {
   let apiContext: Context;
   if (options.state !== undefined) {
-    const store: MemoryCookieStore = new MemoryCookieStore();
-    CookieJar2.deserializeSync(options.state.cookieJar, store);
-    request.defaults({ jar: request.jar(store) });
-    apiContext = await loginResume({  //  registrationToken: JSON.parse(options.state.registrationToken)
-      io: requestIO, cookieStore: store, cookieJar: request.jar(store),
-      skypeToken: JSON.parse(options.state.skypeToken),
-      registrationToken: null, verbose: options.verbose, username: options.state.username});
-    console.log({
-      username: apiContext.username,
-      skypeToken: apiContext.skypeToken,
-      registrationToken: apiContext.registrationToken,
-    });
-  } else if (options.credentials) {
+    apiContext = Context.fromJson(options.state);
+  } else if (options.credentials !== undefined) {
     apiContext = await login({
       io: requestIO,
       credentials: options.credentials,
@@ -60,7 +40,6 @@ export async function connect(options: ConnectOptions): Promise<api.Api> {
         registrationToken: apiContext.registrationToken,
       });
     }
-
   } else {
     return Promise.reject(new Incident("todo", "Connect must define `credentials`"));
   }

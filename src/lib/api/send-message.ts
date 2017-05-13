@@ -30,7 +30,7 @@ export async function sendMessage(
   };
   const requestOptions: io.PostOptions = {
     uri: messagesUri.messages(apiContext.registrationToken.host, messagesUri.DEFAULT_USER, conversationId),
-    jar: apiContext.cookieJar,
+    cookies: apiContext.cookies,
     body: JSON.stringify(query),
     headers: {
       RegistrationToken: apiContext.registrationToken.raw,

@@ -1,7 +1,6 @@
 import * as cheerio from "cheerio";
 import * as path from "path";
-import {CookieJar} from "request";
-import {Cookie} from "tough-cookie";
+import {Cookie, CookieJar, Store as CookieStore} from "tough-cookie";
 import * as url from "url";
 import * as httpErrors from "../errors/http";
 import * as getLiveKeysErrors from "../errors/microsoft-account/get-live-keys";
@@ -48,7 +47,7 @@ export interface Credentials {
 export interface LoginOptions {
   credentials: Credentials;
   httpIo: io.HttpIo;
-  cookieJar: CookieJar;
+  cookies: CookieStore;
 }
 
 export async function login(options: LoginOptions): Promise<SkypeToken> {
@@ -59,13 +58,13 @@ export async function login(options: LoginOptions): Promise<SkypeToken> {
       username: options.credentials.login,
       password: options.credentials.password,
       httpIo: options.httpIo,
-      jar: options.cookieJar,
+      cookies: options.cookies,
       liveKeys,
     });
 
     return getSkypeToken({
       liveToken,
-      jar: options.cookieJar,
+      cookies: options.cookies,
       httpIo: options.httpIo,
     });
   } catch (_err) {
@@ -85,7 +84,7 @@ export async function login(options: LoginOptions): Promise<SkypeToken> {
 
 export interface LoadLiveKeysOptions {
   httpIo: io.HttpIo;
-  cookieJar: CookieJar;
+  cookies: CookieStore;
 }
 
 export interface LiveKeys {
@@ -120,7 +119,7 @@ export async function getLiveKeys(options: LoadLiveKeysOptions): Promise<LiveKey
       client_id: webClientLiveLoginId,
       redirect_uri: skypeWebUri,
     };
-    const getOptions: io.GetOptions = {uri, queryString, jar: options.cookieJar};
+    const getOptions: io.GetOptions = {uri, queryString, cookies: options.cookies};
 
     let response: io.Response;
     try {
@@ -133,8 +132,7 @@ export async function getLiveKeys(options: LoadLiveKeysOptions): Promise<LiveKey
     let mspOk: string | undefined;
 
     // Retrieve values for the cookies "MSPRequ" and "MSPOK"
-    // TODO(demurgos): Remove <any>
-    const cookies: Cookie[] = <any> options.cookieJar.getCookies("https://login.live.com/");
+    const cookies: Cookie[] = new CookieJar(options.cookies).getCookiesSync("https://login.live.com/");
     for (const cookie of cookies) {
       switch (cookie.key) {
         case "MSPRequ":
@@ -196,7 +194,7 @@ export interface GetLiveTokenOptions {
   password: string;
   liveKeys: LiveKeys;
   httpIo: io.HttpIo;
-  jar: CookieJar;
+  cookies: CookieStore;
 }
 
 export async function getLiveToken(options: GetLiveTokenOptions): Promise<string> {
@@ -231,7 +229,6 @@ export async function requestLiveToken(options: GetLiveTokenOptions): Promise<io
     // tslint:disable-next-line:max-line-length
     wreply: "https://lw.skype.com/login/oauth/proxy?client_id=578134&site_name=lw.skype.com&redirect_uri=https%3A%2F%2Fweb.skype.com%2F",
   };
-  const jar: CookieJar = options.jar;
   // MSPRequ should already be set
   // MSPOK should already be set
   const millisecondsSinceEpoch: number = Date.now(); // Milliseconds since epoch
@@ -239,8 +236,8 @@ export async function requestLiveToken(options: GetLiveTokenOptions): Promise<io
     key: "CkTst",
     value: millisecondsSinceEpoch.toString(10),
   });
-  // TODO(demurgos): Remove this <any>
-  jar.setCookie(<any> ckTstCookie, "https://login.live.com/");
+
+  new CookieJar(options.cookies).setCookieSync(ckTstCookie, "https://login.live.com/");
 
   const formData: any = {
     login: options.username,
@@ -251,7 +248,7 @@ export async function requestLiveToken(options: GetLiveTokenOptions): Promise<io
   const postOptions: io.PostOptions = {
     uri,
     queryString,
-    jar,
+    cookies: options.cookies,
     form: formData,
   };
 
@@ -289,7 +286,7 @@ export function scrapLiveToken(html: string): string {
 export interface GetSkypeTokenOptions {
   liveToken: string;
   httpIo: io.HttpIo;
-  jar: CookieJar;
+  cookies: CookieStore;
 }
 
 /**

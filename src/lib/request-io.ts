@@ -9,9 +9,12 @@ import * as io from "./interfaces/http-io";
  * @returns {request.Options} Corresponding `request` options
  */
 function asRequestOptions (ioOptions: io.GetOptions | io.PostOptions | io.PutOptions): request.Options {
-  const result: request.Options = Object.assign({}, ioOptions);
-  if (ioOptions.queryString) {
+  const result: request.Options = {...ioOptions};
+  if (ioOptions.queryString !== undefined) {
     result.qs = ioOptions.queryString;
+  }
+  if (ioOptions.cookies !== undefined) {
+    result.jar = request.jar(ioOptions.cookies);
   }
   return result;
 }

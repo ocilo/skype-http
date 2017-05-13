@@ -15,7 +15,7 @@ interface ContactsResponse {
 export async function getContacts(io: io.HttpIo, apiContext: Context): Promise<Contact[]> {
   const requestOptions: io.GetOptions = {
     uri: contactsUri.contacts(apiContext.username),
-    jar: apiContext.cookieJar,
+    cookies: apiContext.cookies,
     headers: {
       "X-Skypetoken": apiContext.skypeToken.value,
     },
