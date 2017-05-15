@@ -11,12 +11,14 @@
     "url": "git://github.com/ocilo/skype-http.git"
   },
   "scripts": {
+    "gh-pages": "rm -rf build/gh-pages/ && typedoc --includeDeclarations --out build/gh-pages/ --module commonjs --target es2015 --exclude '**/*.spec.ts' --mode modules --name Skype-Http --readme README.md src/lib/ && touch build/gh-pages/.nojekyll && cp -r build/gh-pages/. dist/gh-pages/",
     "prepare": "gulp all:tsconfig.json && gulp :tslint.json && gulp all:dist",
     "test": "gulp :lint && gulp lib-test",
     "test-online": "OCILO_TEST_ONLINE=true npm test",
     "prestart": "gulp example:build",
     "start": "node build/example/example/main.js",
     "prepublishOnly": "npm run test-online",
+    "typedoc": "typedoc --includeDeclarations --out docs/api/ --module commonjs --target es2015 --exclude '**/*.spec.ts' --mode modules --name Skype-Http --readme README.md src/lib/",
     ":lint": "gulp :lint"
   },
   "pre-commit": {

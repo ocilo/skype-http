@@ -1,7 +1,7 @@
 # Skype-Http
 
 [![npm](https://img.shields.io/npm/v/skype-http.svg?maxAge=2592000)](https://www.npmjs.com/package/skype-http)
-[![Build status](https://img.shields.io/travis/demurgos/skype-http/master.svg?maxAge=2592000)](https://travis-ci.org/demurgos/skype-http)
+[![Build status](https://img.shields.io/travis/ocilo/skype-http/master.svg?maxAge=2592000)](https://travis-ci.org/ocilo/skype-http)
 
 Unofficial Skype API for Node.js via HTTP.
 This relies on the Skype Web Application and requires the credentials of the account you want to use: use it with care.

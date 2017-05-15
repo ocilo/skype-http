@@ -6,8 +6,9 @@ notifications:
 node_js:
 - stable
 before_install:
-- npm install -g typings gulp-cli npm
+- npm install -g typings gulp-cli npm typedoc
 before_script:
 - npm run prepare
 script:
 - npm test
+- ./travis-ci/deploy-gh-pages.sh
