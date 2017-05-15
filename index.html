@@ -1,0 +1,410 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Skype-Http</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">Skype-Http</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1> Skype-Http</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<h1 id="skype-http">Skype-Http</h1>
+				<p><a href="https://www.npmjs.com/package/skype-http"><img src="https://img.shields.io/npm/v/skype-http.svg?maxAge=2592000" alt="npm"></a>
+				<a href="https://travis-ci.org/ocilo/skype-http"><img src="https://img.shields.io/travis/ocilo/skype-http/master.svg?maxAge=2592000" alt="Build status"></a></p>
+				<p>Unofficial Skype API for Node.js via HTTP.
+				This relies on the Skype Web Application and requires the credentials of the account you want to use: use it with care.</p>
+				<h2 id="installation">Installation</h2>
+				<pre><code class="lang-shell">npm install --save skype-http
+</code></pre>
+				<p>Import for Typescript or Javascript ES6:</p>
+				<pre><code class="lang-ts"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> skypeHttp <span class="hljs-keyword">from</span> <span class="hljs-string">"skype-http"</span>;
+</code></pre>
+				<p>Import for Javascript ES5:</p>
+				<pre><code class="lang-js"><span class="hljs-keyword">var</span> skypeHttp = <span class="hljs-built_in">require</span>(<span class="hljs-string">"skype-http"</span>);
+</code></pre>
+				<h2 id="running-example">Running example</h2>
+				<p>The demo will prompt you your username and password: you should use your Skype account (there is no support for
+				Microsoft accounts for now).</p>
+				<pre><code class="lang-shell">git clone https://github.com/demurgos/skype-http
+cd skype-http
+<span class="hljs-meta">#</span><span class="bash"> Ensure that you have the latest versions of the global dependencies</span>
+sudo npm install -g gulp-cli
+npm install
+npm start
+</code></pre>
+				<p>This will perform a verbose connection (it should log the acquisition of various tokens), display the list of contacts,
+				set the status to <code>&quot;Online&quot;</code> and start to respond to messages.</p>
+				<h2 id="usage">Usage</h2>
+				<p><a href="./doc/api/package.md">See the documentation</a></p>
+				<h2 id="contributing">Contributing</h2>
+				<p>Here are the main commands available for the project.
+					The project requires <code>gulp-cli</code> and <code>npm</code> 4.
+				The project has three targets:</p>
+				<ul>
+					<li><code>lib-es2015</code>: Build the core library. This is what is published to npm.<ul>
+							<li>Sources: <code>src/lib</code></li>
+						</ul>
+					</li>
+					<li><code>lib-test</code>: Build the library with the <em>mocha</em> unit-tests.<ul>
+							<li>Sources: <code>src/lib</code> and <code>src/test</code></li>
+						</ul>
+					</li>
+					<li><code>example</code>: Build the example command-line application.<ul>
+							<li>Sources: <code>src/lib</code> and <code>src/example</code></li>
+						</ul>
+					</li>
+				</ul>
+				<h3 id="-npm-prepare-"><code>npm prepare</code></h3>
+				<p>Generate the configuration files (<code>tslint.json</code>, <code>tsconfig.json</code>) and build all
+					the targets.
+					These files are not used by the build process (they are read-only) but allow
+					to use the <code>tsc</code> and <code>tslint</code> command line programs and help the editors detect
+				the configuration.</p>
+				<p><strong>Note</strong>: This command is executed automatically as part of <code>npm install</code>.</p>
+				<h3 id="-gulp-target-build-"><code>gulp &lt;target&gt;:build</code></h3>
+				<p>Build the specified target. Example: <code>gulp lib-es2015:build</code>.
+				The output directory is <code>build/&lt;target&gt;</code> (example: <code>build/lib-es2015</code>).</p>
+				<h3 id="-gulp-target-watch-"><code>gulp &lt;target&gt;:watch</code></h3>
+				<p>Watch the sources and rebuild on change.</p>
+				<p><strong>Note</strong>: You may have to restart it if you create <em>new</em> files.</p>
+				<h3 id="-npm-start-"><code>npm start</code></h3>
+				<p>Build <code>example</code> and run it.</p>
+				<h3 id="-gulp-lint-"><code>gulp :lint</code></h3>
+				<p>Static analysis with <code>tslint</code>.</p>
+				<h3 id="-gulp-lib-test-"><code>gulp lib-test</code></h3>
+				<p>Build the <code>lib-test</code> target and run the unit tests. Prints the report to
+				the terminal.</p>
+				<h3 id="-npm-test-"><code>npm test</code></h3>
+				<p>Run both <code>gulp :lint</code> and <code>gulp lib-test</code>.
+				This is executed on each commit and during Travis CI builds.</p>
+				<h2 id="resources">Resources</h2>
+				<p>If you just want to create a bot, take a look at <a href="https://github.com/Microsoft/BotBuilder">https://github.com/Microsoft/BotBuilder</a> first.</p>
+				<p>You can find the decompiled source code of the Skype Web Application on <a href="https://github.com/demurgos/skype-web-reversed">the <code>skype-web-reversed</code> repository</a>.</p>
+				<h2 id="what-s-not-working-and-probably-never-will-">What&#39;s not working and probably never will.</h2>
+				<ul>
+					<li><a href="https://github.com/ShyykoSerhiy/skyweb/issues/6">Old P2P group chats</a>. According to  <a href="http://community.skype.com/t5/Skype-for-Web-Beta/Group-chats-missing-on-skype-web/td-p/3884218">Skype community site </a> only new, Cloud based group chats are shown in SkypeWeb Beta(therefore works in this API). The old P2P group chats are not.  </li>
+				</ul>
+				<h2 id="project-background">Project Background</h2>
+				<p>This project started as a fork of the <a href="https://github.com/ShyykoSerhiy/skyweb">https://github.com/ShyykoSerhiy/skyweb</a> after slow progress from 3rd party patches. The goal is to provide stronger guarantees about the objects returned by the API (through checks and normalization) and better error management, because scrapping/unofficial API calls are unreliable so the library should be resilient.</p>
+				<h2 id="disclaimer">Disclaimer</h2>
+				<p>This project relies on SkypeWeb Skype implementation. If Microsoft Corporation decides to remove Skype
+					implementation (or change it in any) skype-http might not be in working state. Therefore it&#39;s not recommended to use it
+				in any critical part of production code. In fact it&#39;s not recommended to use it in production at all.</p>
+				<p><a href="https://github.com/demurgos/skype-http/blob/master/LICENSE.md">MIT License</a>.</p>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+					<li class="label tsd-is-external">
+						<span>Internals</span>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_api_.html">"src/lib/api"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_api_uri_.html">"src/lib/api-<wbr>uri"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_api_accept_contact_request_.html">"src/lib/api/accept-<wbr>contact-<wbr>request"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_api_decline_contact_request_.html">"src/lib/api/decline-<wbr>contact-<wbr>request"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_api_get_contact_.html">"src/lib/api/get-<wbr>contact"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_api_get_contacts_.html">"src/lib/api/get-<wbr>contacts"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_api_get_conversation_.html">"src/lib/api/get-<wbr>conversation"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_api_get_conversations_.html">"src/lib/api/get-<wbr>conversations"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_api_get_messages_.html">"src/lib/api/get-<wbr>messages"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_api_send_message_.html">"src/lib/api/send-<wbr>message"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_api_set_status_.html">"src/lib/api/set-<wbr>status"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_connect_.html">"src/lib/connect"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_consts_.html">"src/lib/consts"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_contacts_uri_.html">"src/lib/contacts-<wbr>uri"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_errors_http_.html">"src/lib/errors/http"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_errors_index_.html">"src/lib/errors/index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_errors_microsoft_account_get_live_keys_.html">"src/lib/errors/microsoft-<wbr>account/get-<wbr>live-<wbr>keys"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_errors_microsoft_account_get_live_token_.html">"src/lib/errors/microsoft-<wbr>account/get-<wbr>live-<wbr>token"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_errors_microsoft_account_get_skype_token_.html">"src/lib/errors/microsoft-<wbr>account/get-<wbr>skype-<wbr>token"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_errors_microsoft_account_index_.html">"src/lib/errors/microsoft-<wbr>account/index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_errors_microsoft_account_login_.html">"src/lib/errors/microsoft-<wbr>account/login"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_errors_wrong_credentials_.html">"src/lib/errors/wrong-<wbr>credentials"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_errors_wrong_credentials_limit_.html">"src/lib/errors/wrong-<wbr>credentials-<wbr>limit"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_index_.html">"src/lib/index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_interfaces_api_api_.html">"src/lib/interfaces/api/api"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_interfaces_api_contact_.html">"src/lib/interfaces/api/contact"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_interfaces_api_context_.html">"src/lib/interfaces/api/context"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_interfaces_api_conversation_.html">"src/lib/interfaces/api/conversation"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_interfaces_api_events_.html">"src/lib/interfaces/api/events"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_interfaces_api_resources_.html">"src/lib/interfaces/api/resources"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_interfaces_http_io_.html">"src/lib/interfaces/http-<wbr>io"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_interfaces_native_api_contact_.html">"src/lib/interfaces/native-<wbr>api/contact"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_interfaces_native_api_conversation_.html">"src/lib/interfaces/native-<wbr>api/conversation"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_interfaces_native_api_events_.html">"src/lib/interfaces/native-<wbr>api/events"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_interfaces_native_api_message_resources_.html">"src/lib/interfaces/native-<wbr>api/message-<wbr>resources"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_interfaces_native_api_resources_.html">"src/lib/interfaces/native-<wbr>api/resources"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_interfaces_utils_.html">"src/lib/interfaces/utils"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_login_.html">"src/lib/login"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_messages_uri_.html">"src/lib/messages-<wbr>uri"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_polling_messages_poller_.html">"src/lib/polling/messages-<wbr>poller"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_providers_microsoft_account_.html">"src/lib/providers/microsoft-<wbr>account"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_request_io_.html">"src/lib/request-<wbr>io"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_utils_.html">"src/lib/utils"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_utils_formatters_.html">"src/lib/utils/formatters"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_utils_hmac_sha256_.html">"src/lib/utils/hmac-<wbr>sha256"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_lib_utils_user_data_processor_.html">"src/lib/utils/user-<wbr>data-<wbr>processor"</a>
+					</li>
+					<li class="label tsd-is-external">
+						<span>Externals</span>
+					</li>
+					<li class=" tsd-kind-external-module tsd-is-external">
+						<a href="modules/_node_modules__types_big_integer_index_d_.html">"node_<wbr>modules/@types/big-<wbr>integer/index.d"</a>
+					</li>
+					<li class=" tsd-kind-external-module tsd-is-external">
+						<a href="modules/_node_modules__types_chai_index_d_.html">"node_<wbr>modules/@types/chai/index.d"</a>
+					</li>
+					<li class=" tsd-kind-external-module tsd-is-external">
+						<a href="modules/_node_modules__types_cheerio_index_d_.html">"node_<wbr>modules/@types/cheerio/index.d"</a>
+					</li>
+					<li class=" tsd-kind-external-module tsd-is-external">
+						<a href="modules/_node_modules__types_form_data_index_d_.html">"node_<wbr>modules/@types/form-<wbr>data/index.d"</a>
+					</li>
+					<li class=" tsd-kind-external-module tsd-is-external">
+						<a href="modules/_node_modules__types_lodash_index_d_.html">"node_<wbr>modules/@types/lodash/index.d"</a>
+					</li>
+					<li class=" tsd-kind-external-module tsd-is-external">
+						<a href="modules/_node_modules__types_mocha_index_d_.html">"node_<wbr>modules/@types/mocha/index.d"</a>
+					</li>
+					<li class=" tsd-kind-external-module tsd-is-external">
+						<a href="modules/_node_modules__types_node_index_d_.html">"node_<wbr>modules/@types/node/index.d"</a>
+					</li>
+					<li class=" tsd-kind-external-module tsd-is-external">
+						<a href="modules/_node_modules__types_request_index_d_.html">"node_<wbr>modules/@types/request/index.d"</a>
+					</li>
+					<li class=" tsd-kind-external-module tsd-is-external">
+						<a href="modules/_node_modules_incident_dist_lib_es2015_lib_incident_d_.html">"node_<wbr>modules/incident/dist/lib-<wbr>es2015/lib/incident.d"</a>
+					</li>
+					<li class=" tsd-kind-external-module tsd-is-external">
+						<a href="modules/_node_modules_incident_dist_lib_es2015_lib_index_d_.html">"node_<wbr>modules/incident/dist/lib-<wbr>es2015/lib/index.d"</a>
+					</li>
+					<li class=" tsd-kind-external-module tsd-is-external">
+						<a href="modules/_node_modules_incident_dist_lib_es2015_lib_interfaces_d_.html">"node_<wbr>modules/incident/dist/lib-<wbr>es2015/lib/interfaces.d"</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>
