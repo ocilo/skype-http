@@ -1,4 +1,4 @@
-﻿ import {Incident} from "incident";
+import {Incident} from "incident";
 import * as _ from "lodash";
 import {Contact} from "../interfaces/api/contact";
 import {Conversation, ThreadProperties} from "../interfaces/api/conversation";

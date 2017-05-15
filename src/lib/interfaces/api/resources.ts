@@ -1,7 +1,7 @@
 import {ParsedConversationId} from "./api";
 
 export interface Resource {
-  type: "Text" | "RichText" | "Control/ClearTyping" | "Control/Typing" /* | "Typing" | ... */;
+  type: "Text" | "RichText" | "Control/ClearTyping" | "Control/Typing" | "ConversationUpdate" /* | "Typing" | ... */;
   id: string;
   composeTime: Date;
   arrivalTime: Date;
@@ -28,4 +28,9 @@ export interface ControlClearTypingResource extends Resource {
 
 export interface ControlTypingResource extends Resource {
   type: "Control/Typing";
+}
+export interface ConversationUpdateResource extends Resource {
+  type: "ConversationUpdate";
+  clientId: string; // An id set by the client
+  content: string;
 }

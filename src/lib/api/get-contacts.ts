@@ -1,4 +1,4 @@
-﻿import {Incident} from "incident";
+import {Incident} from "incident";
 import * as _ from "lodash";
 import * as contactsUri from "../contacts-uri";
 import {Contact} from "../interfaces/api/contact";

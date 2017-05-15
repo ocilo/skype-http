@@ -1,4 +1,4 @@
-﻿ import {Nullable} from "../utils";
+import {Nullable} from "../utils";
 import {FullId} from "./api";
 
 export interface Location {
