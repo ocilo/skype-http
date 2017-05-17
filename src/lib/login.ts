@@ -1,4 +1,4 @@
-﻿import {Incident} from "incident";
+﻿ import {Incident} from "incident";
 import {MemoryCookieStore, Store as CookieStore} from "tough-cookie";
 import {parse as parseUri, Url} from "url";
 import * as Consts from "./consts";

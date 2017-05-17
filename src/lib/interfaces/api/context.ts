@@ -1,4 +1,4 @@
-﻿import {CookieJar, MemoryCookieStore, Store as CookieStore} from "tough-cookie";
+import {CookieJar, MemoryCookieStore, Store as CookieStore} from "tough-cookie";
 
 /**
  * Represents the OAuth token used for most calls to the Skype API.

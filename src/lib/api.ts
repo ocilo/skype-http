@@ -1,4 +1,4 @@
-﻿import {EventEmitter} from "events";
+import {EventEmitter} from "events";
 import acceptContactRequest from "./api/accept-contact-request";
 import declineContactRequest from "./api/decline-contact-request";
 import getContact from "./api/get-contact";

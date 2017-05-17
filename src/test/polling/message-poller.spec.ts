@@ -5,6 +5,7 @@ import * as messagesUri from "../../lib/messages-uri";
 import {
   formatControlClearTypingResource,
   formatControlTypingResource,
+  formatGenericMessageResource,
   parseContactId,
 } from "../../lib/polling/messages-poller";
 
@@ -60,7 +61,8 @@ describe("formatControlClearTypingResource", function () {
 
   for (const item of items) {
     it("should format a Control/ClearTyping Message resource", function () {
-      const actual: resources.ControlClearTypingResource = formatControlClearTypingResource(item.nativeResource);
+      // tslint:disable-next-line:max-line-length
+      const actual: resources.ControlClearTypingResource = formatControlClearTypingResource(formatGenericMessageResource(item.nativeResource, item.nativeResource.messagetype), item.nativeResource);
       const expected: resources.ControlClearTypingResource = item.expectedFormattedResource;
       assert.strictEqual(actual.type, expected.type);
       assert.strictEqual(actual.id, expected.id);
@@ -126,7 +128,8 @@ describe("formatControlTypingResource", function () {
 
   for (const item of items) {
     it("should format a Control/Typing Message resource", function () {
-      const actual: resources.ControlTypingResource = formatControlTypingResource(item.nativeResource);
+      // tslint:disable-next-line:max-line-length
+      const actual: resources.ControlTypingResource = formatControlTypingResource(formatGenericMessageResource(item.nativeResource, item.nativeResource.messagetype), item.nativeResource);
       const expected: resources.ControlTypingResource = item.expectedFormattedResource;
       assert.strictEqual(actual.type, expected.type);
       assert.strictEqual(actual.id, expected.id);
