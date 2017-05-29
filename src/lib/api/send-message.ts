@@ -1,9 +1,9 @@
-import {Incident} from "incident";
+import { Incident } from "incident";
 import * as api from "../interfaces/api/api";
-import {Context} from "../interfaces/api/context";
+import { Context } from "../interfaces/api/context";
 import * as io from "../interfaces/http-io";
 import * as messagesUri from "../messages-uri";
-import {getCurrentTime} from "../utils";
+import { getCurrentTime } from "../utils";
 
 interface SendMessageResponse {
   OriginalArrivalTime: number;
@@ -42,11 +42,13 @@ export async function sendMessage(
   if (res.statusCode !== 201) {
     return Promise.reject(new Incident("send-message", "Received wrong return code"));
   }
+  const parsed: messagesUri.MessageUri = messagesUri.parseMessage(res.headers["location"]);
   const body: SendMessageResponse = JSON.parse(res.body);
   return {
     clientMessageId: query.clientmessageid,
     arrivalTime: body.OriginalArrivalTime,
     textContent: query.content,
+    MessageId: parsed.message,
   };
 }
 

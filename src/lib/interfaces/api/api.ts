@@ -19,6 +19,7 @@ export interface SendMessageResult {
   clientMessageId: string;
   arrivalTime: number;
   textContent: string;
+  MessageId: string;
 }
 
 export interface NewMessage {
