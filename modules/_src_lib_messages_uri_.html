@@ -75,6 +75,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_src_lib_messages_uri_.contacturi.html" class="tsd-kind-icon">Contact<wbr>Uri</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_src_lib_messages_uri_.conversationuri.html" class="tsd-kind-icon">Conversation<wbr>Uri</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_src_lib_messages_uri_.messageuri.html" class="tsd-kind-icon">Message<wbr>Uri</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -85,6 +86,7 @@
 								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="_src_lib_messages_uri_.html#default_endpoint" class="tsd-kind-icon">DEFAULT_<wbr>ENDPOINT</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="_src_lib_messages_uri_.html#default_user" class="tsd-kind-icon">DEFAULT_<wbr>USER</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_src_lib_messages_uri_.html#messages_pattern" class="tsd-kind-icon">MESSAGES_<wbr>PATTERN</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_src_lib_messages_uri_.html#message_pattern" class="tsd-kind-icon">MESSAGE_<wbr>PATTERN</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -118,6 +120,7 @@
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_src_lib_messages_uri_.html#messages" class="tsd-kind-icon">messages</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_src_lib_messages_uri_.html#parsecontact" class="tsd-kind-icon">parse<wbr>Contact</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_src_lib_messages_uri_.html#parseconversation" class="tsd-kind-icon">parse<wbr>Conversation</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_src_lib_messages_uri_.html#parsemessage" class="tsd-kind-icon">parse<wbr>Message</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_src_lib_messages_uri_.html#poll" class="tsd-kind-icon">poll</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_src_lib_messages_uri_.html#subscriptions" class="tsd-kind-icon">subscriptions</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_src_lib_messages_uri_.html#thread" class="tsd-kind-icon">thread</a></li>
@@ -137,7 +140,7 @@
 					<div class="tsd-signature tsd-kind-icon">CONTACT_<wbr>PATTERN<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RegExp</span><span class="tsd-signature-symbol"> =&nbsp;/^\/v1\/users\/([^/]+)\/contacts\/([^/]+)$/</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L9">src/lib/messages-uri.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L9">src/lib/messages-uri.ts:9</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -147,7 +150,7 @@
 					<div class="tsd-signature tsd-kind-icon">CONVERSATION_<wbr>PATTERN<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RegExp</span><span class="tsd-signature-symbol"> =&nbsp;/^\/v1\/users\/([^/]+)\/conversations\/([^/]+)$/</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L8">src/lib/messages-uri.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L8">src/lib/messages-uri.ts:8</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -157,7 +160,7 @@
 					<div class="tsd-signature tsd-kind-icon">DEFAULT_<wbr>ENDPOINT<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;SELF&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L6">src/lib/messages-uri.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L6">src/lib/messages-uri.ts:6</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -167,7 +170,7 @@
 					<div class="tsd-signature tsd-kind-icon">DEFAULT_<wbr>USER<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;ME&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L5">src/lib/messages-uri.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L5">src/lib/messages-uri.ts:5</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -177,7 +180,17 @@
 					<div class="tsd-signature tsd-kind-icon">MESSAGES_<wbr>PATTERN<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RegExp</span><span class="tsd-signature-symbol"> =&nbsp;/^\/v1\/users\/([^/]+)\/conversations\/([^/]+)\/messages$/</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L10">src/lib/messages-uri.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L10">src/lib/messages-uri.ts:10</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="message_pattern" class="tsd-anchor"></a>
+					<h3>MESSAGE_<wbr>PATTERN</h3>
+					<div class="tsd-signature tsd-kind-icon">MESSAGE_<wbr>PATTERN<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RegExp</span><span class="tsd-signature-symbol"> =&nbsp;/^\/v1\/users\/([^/]+)\/conversations\/([^/]+)\/messages\/([^/]+)$/</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L11">src/lib/messages-uri.ts:11</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -194,7 +207,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L84">src/lib/messages-uri.ts:84</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L85">src/lib/messages-uri.ts:85</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -220,7 +233,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L79">src/lib/messages-uri.ts:79</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L80">src/lib/messages-uri.ts:80</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -243,7 +256,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L49">src/lib/messages-uri.ts:49</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L50">src/lib/messages-uri.ts:50</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -269,7 +282,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L74">src/lib/messages-uri.ts:74</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L75">src/lib/messages-uri.ts:75</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -295,7 +308,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L69">src/lib/messages-uri.ts:69</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L70">src/lib/messages-uri.ts:70</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -321,7 +334,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L44">src/lib/messages-uri.ts:44</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L45">src/lib/messages-uri.ts:45</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -344,7 +357,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L89">src/lib/messages-uri.ts:89</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L90">src/lib/messages-uri.ts:90</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -370,7 +383,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L64">src/lib/messages-uri.ts:64</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L65">src/lib/messages-uri.ts:65</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -399,7 +412,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L59">src/lib/messages-uri.ts:59</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L60">src/lib/messages-uri.ts:60</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -428,7 +441,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L54">src/lib/messages-uri.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L55">src/lib/messages-uri.ts:55</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -454,7 +467,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L29">src/lib/messages-uri.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L30">src/lib/messages-uri.ts:30</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -477,7 +490,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L24">src/lib/messages-uri.ts:24</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L25">src/lib/messages-uri.ts:25</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
@@ -494,7 +507,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L39">src/lib/messages-uri.ts:39</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L40">src/lib/messages-uri.ts:40</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -517,7 +530,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L99">src/lib/messages-uri.ts:99</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L100">src/lib/messages-uri.ts:100</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -540,7 +553,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L94">src/lib/messages-uri.ts:94</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L95">src/lib/messages-uri.ts:95</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -563,7 +576,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L34">src/lib/messages-uri.ts:34</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L35">src/lib/messages-uri.ts:35</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
@@ -580,7 +593,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L19">src/lib/messages-uri.ts:19</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L20">src/lib/messages-uri.ts:20</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
@@ -597,7 +610,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L157">src/lib/messages-uri.ts:157</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L158">src/lib/messages-uri.ts:158</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -626,7 +639,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L153">src/lib/messages-uri.ts:153</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L154">src/lib/messages-uri.ts:154</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -652,7 +665,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L132">src/lib/messages-uri.ts:132</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L133">src/lib/messages-uri.ts:133</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -681,7 +694,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L175">src/lib/messages-uri.ts:175</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L176">src/lib/messages-uri.ts:176</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -710,7 +723,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L128">src/lib/messages-uri.ts:128</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L129">src/lib/messages-uri.ts:129</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -736,7 +749,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L111">src/lib/messages-uri.ts:111</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L112">src/lib/messages-uri.ts:112</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -762,7 +775,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L107">src/lib/messages-uri.ts:107</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L108">src/lib/messages-uri.ts:108</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -791,7 +804,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L12">src/lib/messages-uri.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L13">src/lib/messages-uri.ts:13</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -814,7 +827,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L167">src/lib/messages-uri.ts:167</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L168">src/lib/messages-uri.ts:168</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -850,7 +863,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L186">src/lib/messages-uri.ts:186</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L210">src/lib/messages-uri.ts:210</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -873,7 +886,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L208">src/lib/messages-uri.ts:208</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L232">src/lib/messages-uri.ts:232</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -887,6 +900,29 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="parsemessage" class="tsd-anchor"></a>
+					<h3>parse<wbr>Message</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">parse<wbr>Message<span class="tsd-signature-symbol">(</span>uri<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_src_lib_messages_uri_.messageuri.html" class="tsd-signature-type">MessageUri</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L188">src/lib/messages-uri.ts:188</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>uri: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_src_lib_messages_uri_.messageuri.html" class="tsd-signature-type">MessageUri</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
 					<a name="poll" class="tsd-anchor"></a>
 					<h3>poll</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
@@ -896,7 +932,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L137">src/lib/messages-uri.ts:137</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L138">src/lib/messages-uri.ts:138</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -928,7 +964,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L148">src/lib/messages-uri.ts:148</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L149">src/lib/messages-uri.ts:149</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -964,7 +1000,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L115">src/lib/messages-uri.ts:115</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L116">src/lib/messages-uri.ts:116</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -990,7 +1026,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L123">src/lib/messages-uri.ts:123</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L124">src/lib/messages-uri.ts:124</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1016,7 +1052,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L171">src/lib/messages-uri.ts:171</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L172">src/lib/messages-uri.ts:172</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1042,7 +1078,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/08666d1/src/lib/messages-uri.ts#L119">src/lib/messages-uri.ts:119</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/5bc0116/src/lib/messages-uri.ts#L120">src/lib/messages-uri.ts:120</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1076,6 +1112,9 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="../interfaces/_src_lib_messages_uri_.conversationuri.html" class="tsd-kind-icon">Conversation<wbr>Uri</a>
 					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/_src_lib_messages_uri_.messageuri.html" class="tsd-kind-icon">Message<wbr>Uri</a>
+					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="_src_lib_messages_uri_.html#contact_pattern" class="tsd-kind-icon">CONTACT_<wbr>PATTERN</a>
 					</li>
@@ -1090,6 +1129,9 @@
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="_src_lib_messages_uri_.html#messages_pattern" class="tsd-kind-icon">MESSAGES_<wbr>PATTERN</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="_src_lib_messages_uri_.html#message_pattern" class="tsd-kind-icon">MESSAGE_<wbr>PATTERN</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="_src_lib_messages_uri_.html#buildconversation" class="tsd-kind-icon">build<wbr>Conversation</a>
@@ -1174,6 +1216,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_src_lib_messages_uri_.html#parseconversation" class="tsd-kind-icon">parse<wbr>Conversation</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_src_lib_messages_uri_.html#parsemessage" class="tsd-kind-icon">parse<wbr>Message</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_src_lib_messages_uri_.html#poll" class="tsd-kind-icon">poll</a>
