@@ -59,7 +59,11 @@ export interface EventCall extends MessageResource {
   content: string; // XML with root <partlist>
   skypeguid: string; // [0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}
 }
-
+export interface SignalFlamingo extends MessageResource {
+  messagetype: "Signal/Flamingo";
+  content: string; // json with then a base64 encoded payload
+  skypeguid: string;
+}
 export interface Text extends MessageResource {
   messagetype: "Text";
   clientmessageid: string; // A large integer (~20 digits)
@@ -71,9 +75,24 @@ export interface RichText extends MessageResource {
   clientmessageid: string; // A large integer (~20 digits)
   content: string; // For example when using smileys: "Hi <ss type=\"smile\">:)</ss>"
 }
-
 export interface UriObject extends MessageResource {
   messagetype: "RichText/UriObject";
+  clientmessageid: string; // A large integer (~20 digits)
+  content: string; // XML, root is <URIObject>
+}
+
+export interface LocationObject extends MessageResource {
+  messagetype: "RichText/Location";
+  clientmessageid: string; // A large integer (~20 digits)
+  content: string; // XML, root is <URIObject>
+}
+export interface MediaGenericFile extends MessageResource {
+  messagetype: "RichText/Media_GenericFile";
+  clientmessageid: string; // A large integer (~20 digits)
+  content: string; // XML, root is <URIObject>
+}
+export interface MediaVideo extends MessageResource {
+  messagetype: "RichText/Media_Video";
   clientmessageid: string; // A large integer (~20 digits)
   content: string; // XML, root is <URIObject>
 }

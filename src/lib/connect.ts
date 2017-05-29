@@ -1,4 +1,4 @@
-﻿import {Incident} from "incident";
+import {Incident} from "incident";
 import * as api from "./api";
 import {Credentials} from "./interfaces/api/api";
 import {Context} from "./interfaces/api/context";
