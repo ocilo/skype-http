@@ -1,6 +1,6 @@
-import {Incident} from "incident";
-import {posix} from "path";
-import {parse as parseUri, resolve as resolveUri, Url} from "url";
+import { Incident } from "incident";
+import { posix } from "path";
+import { parse as parseUri, resolve as resolveUri, Url } from "url";
 
 export const DEFAULT_USER: string = "ME";
 export const DEFAULT_ENDPOINT: string = "SELF";
@@ -8,6 +8,7 @@ export const DEFAULT_ENDPOINT: string = "SELF";
 const CONVERSATION_PATTERN: RegExp = /^\/v1\/users\/([^/]+)\/conversations\/([^/]+)$/;
 const CONTACT_PATTERN: RegExp = /^\/v1\/users\/([^/]+)\/contacts\/([^/]+)$/;
 const MESSAGES_PATTERN: RegExp = /^\/v1\/users\/([^/]+)\/conversations\/([^/]+)\/messages$/;
+const MESSAGE_PATTERN: RegExp = /^\/v1\/users\/([^/]+)\/conversations\/([^/]+)\/messages\/([^/]+)$/;
 
 function joinPath(parts: string[]): string {
   return posix.join.apply(null, parts);
@@ -130,12 +131,12 @@ export function endpoints(host: string, userId: string = DEFAULT_USER): string {
 }
 
 export function endpoint(host: string, userId: string = DEFAULT_USER,
-                         endpointId: string = DEFAULT_ENDPOINT): string {
+  endpointId: string = DEFAULT_ENDPOINT): string {
   return get(host, joinPath(buildEndpoint(userId, endpointId)));
 }
 
 export function poll(host: string, userId: string = DEFAULT_USER,
-                     endpointId: string = DEFAULT_ENDPOINT, subscriptionId: number = 0): string {
+  endpointId: string = DEFAULT_ENDPOINT, subscriptionId: number = 0): string {
   return get(host, joinPath(buildPoll(userId, endpointId, subscriptionId)));
 }
 
@@ -146,7 +147,7 @@ export function poll(host: string, userId: string = DEFAULT_USER,
  * @param endpointId
  */
 export function subscriptions(host: string, userId: string = DEFAULT_USER,
-                              endpointId: string = DEFAULT_ENDPOINT): string {
+  endpointId: string = DEFAULT_ENDPOINT): string {
   return get(host, joinPath(buildSubscriptions(userId, endpointId)));
 }
 
@@ -173,8 +174,32 @@ export function userMessagingService(host: string, user: string = DEFAULT_USER):
 }
 
 export function endpointMessagingService(host: string, user: string = DEFAULT_USER,
-                                         endpoint: string = DEFAULT_ENDPOINT): string {
+  endpoint: string = DEFAULT_ENDPOINT): string {
   return get(host, joinPath(buildEndpointMessagingService(user, endpoint)));
+}
+
+export interface MessageUri {
+  host: string;
+  user: string;
+  conversation: string;
+  message: string;
+}
+
+export function parseMessage(uri: string): MessageUri {
+  const parsed: Url = parseUri(uri);
+  if (parsed.host === undefined || parsed.pathname === undefined) {
+    throw new Incident("parse-error", "Expected URI to have a host and path");
+  }
+  const match: RegExpExecArray | null = MESSAGE_PATTERN.exec(parsed.pathname);
+  if (match === null) {
+    throw new Incident("parse-error", "Expected URI to be a message uri");
+  }
+  return {
+    host: parsed.host,
+    user: match[1],
+    conversation: match[2],
+    message: match[3],
+  };
 }
 
 export interface ContactUri {
@@ -182,7 +207,6 @@ export interface ContactUri {
   user: string;
   contact: string;
 }
-
 export function parseContact(uri: string): ContactUri {
   const parsed: Url = parseUri(uri);
   if (parsed.host === undefined || parsed.pathname === undefined) {
