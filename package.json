@@ -37,6 +37,7 @@
     "@types/form-data": "0.0.33",
     "@types/lodash": "^4.14.64",
     "@types/request": "0.0.43",
+    "async-file": "^2.0.2",
     "big-integer": "^1.5.6",
     "bluebird": "^3.3.5",
     "cheerio": "^0.19.0",

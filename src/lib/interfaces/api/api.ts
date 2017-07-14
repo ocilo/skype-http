@@ -26,6 +26,11 @@ export interface NewMessage {
   textContent: string;
 }
 
+export interface NewImage {
+  file: string;
+  name: string;
+}
+
 export interface ParsedId {
   id: string;
   typeKey: string;
