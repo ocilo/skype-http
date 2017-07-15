@@ -26,8 +26,8 @@ export interface NewMessage {
   textContent: string;
 }
 
-export interface NewPictureMessage {
-  url: string;
+export interface NewImage {
+  file: string;
   name: string;
 }
 
