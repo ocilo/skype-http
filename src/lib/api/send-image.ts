@@ -1,10 +1,10 @@
+import * as fs from "async-file";
 import { Incident } from "incident";
 import * as api from "../interfaces/api/api";
 import { Context } from "../interfaces/api/context";
 import * as io from "../interfaces/http-io";
 import * as messagesUri from "../messages-uri";
 import { getCurrentTime } from "../utils";
-import * as fs from "async-file";
 
 interface SendMessageResponse {
   OriginalArrivalTime: number;
@@ -26,19 +26,19 @@ export async function sendImage(
     return Promise.reject(new Incident("send-image", "Invalid parameters"));
   }
   let bodyNewObject = {
-    type: 'pish/image',
+    type: "pish/image",
     permissions: Object()
   };
-  bodyNewObject.permissions[conversationId] = ['read'];
+  bodyNewObject.permissions[conversationId] = ["read"];
   const bodyNewObjectStr : string = JSON.stringify(bodyNewObject);
   const requestOptionsNewObject: io.PostOptions = {
-    uri: messagesUri.objects('api.asm.skype.com'),
+    uri: messagesUri.objects("api.asm.skype.com"),
     cookies: apiContext.cookies,
     body: bodyNewObjectStr,
     headers: {
-      Authorization: 'skype_token '+apiContext.skypeToken.value,
-      'Content-Type': 'application/json',
-      'Content-Length': bodyNewObjectStr.length,
+      "Authorization": "skype_token " + apiContext.skypeToken.value,
+      "Content-Type": "application/json",
+      "Content-Length": bodyNewObjectStr.length,
     },
   };
   const resNewObject: io.Response = await io.post(requestOptionsNewObject);
@@ -50,13 +50,13 @@ export async function sendImage(
   
   const file = await fs.readFile(img.file);
   const requestOptionsPutObject: io.PutOptions = {
-    uri: messagesUri.objectContent('api.asm.skype.com', objectId, 'imgpsh'),
+    uri: messagesUri.objectContent("api.asm.skype.com", objectId, "imgpsh"),
     cookies: apiContext.cookies,
     body: file,
     headers: {
-      Authorization: 'skype_token '+apiContext.skypeToken.value,
-      'Content-Type': 'multipart/form-data',
-      'Content-Length': file.byteLength,
+      "Authorization": "skype_token " + apiContext.skypeToken.value,
+      "Content-Type": "multipart/form-data",
+      "Content-Length": file.byteLength,
     },
   };
   const resObject: io.Response = await io.put(requestOptionsPutObject);
@@ -67,7 +67,8 @@ export async function sendImage(
   
   const query: SendMessageQuery = {
     clientmessageid: String(getCurrentTime() + Math.floor(10000 * Math.random())),
-    content: String('<URIObject type="Picture.1" uri="'+messagesUri.object('api.asm.skype.com', objectId)+'" url_thumbnail="'+messagesUri.objectView('api.asm.skype.com', objectId, 'imgt1')+'">loading...<OriginalName v="'+img.name+'"/><meta type="photo" originalName="'+img.name+'"/></URIObject>'),
+    content: String("<URIObject type=\"Picture.1\" uri=\"" + messagesUri.object("api.asm.skype.com", objectId) + "\" url_thumbnail=\"" +
+      messagesUri.objectView("api.asm.skype.com", objectId, "imgt1") + "\">loading...<OriginalName v=\"" + img.name + "\"/><meta type=\"photo\" originalName=\"" + img.name + "\"/></URIObject>"),
     messagetype: "RichText/UriObject",
     contenttype: "text",
   };

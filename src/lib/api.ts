@@ -5,8 +5,8 @@ import getContact from "./api/get-contact";
 import getContacts from "./api/get-contacts";
 import getConversation from "./api/get-conversation";
 import getConversations from "./api/get-conversations";
-import sendMessage from "./api/send-message";
 import sendImage from "./api/send-image";
+import sendMessage from "./api/send-message";
 import setStatus from "./api/set-status";
 import * as api from "./interfaces/api/api";
 import {Contact} from "./interfaces/api/contact";
@@ -55,7 +55,7 @@ export class Api extends EventEmitter implements ApiEvents {
   getConversations(): Promise<Conversation[]> {
     return getConversations(this.io, this.context);
   }
-  
+
   sendMessage(message: api.NewMessage, conversationId: string): Promise<api.SendMessageResult> {
     return sendMessage(this.io, this.context, message, conversationId);
   }
