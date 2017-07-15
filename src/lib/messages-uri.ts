@@ -101,6 +101,26 @@ function buildUserMessagingService(user: string): string[] {
   return buildUserPresenceDocs(user).concat("endpointMessagingService");
 }
 
+// /v1/objects
+function buildObjects(): string[] {
+  return buildV1().concat("objects");
+}
+
+// /v1/objects/{objectId}
+function buildObject(objectId: string) {
+  return buildObjects().concat(objectId);
+}
+
+// /v1/objects/{objectId}/content/{content}
+function buildObjectContent(objectId: string, content: string) {
+  return buildObject(objectId).concat("content").concat(content);
+}
+
+// /v1/objects/{objectId}/view/{content}
+function buildObjectView(objectId: string, view: string) {
+  return buildObject(objectId).concat("view").concat(view);
+}
+
 /**
  * Returns an URI origin like: "https://host.com"
  * If host is `null`, returns an empty string
@@ -167,6 +187,22 @@ export function conversation(host: string, user: string, conversationId: string)
  */
 export function messages(host: string, user: string, conversationId: string): string {
   return get(host, joinPath(buildMessages(user, conversationId)));
+}
+
+export function objects(host: string): string {
+  return get(host, joinPath(buildObjects()));
+}
+
+export function object(host: string, objectId: string): string {
+  return get(host, joinPath(buildObject(objectId)));
+}
+
+export function objectContent(host: string, objectId: string, content: string): string {
+  return get(host, joinPath(buildObjectContent(objectId, content)));
+}
+
+export function objectView(host: string, objectId: string, view: string): string {
+  return get(host, joinPath(buildObjectView(objectId, view)));
 }
 
 export function userMessagingService(host: string, user: string = DEFAULT_USER): string {
