@@ -44,7 +44,8 @@
     "js-sha256": "^0.3.0",
     "lodash": "^4.12.0",
     "request": "2.61",
-    "tough-cookie": "^2.0.0"
+    "tough-cookie": "^2.0.0",
+    "async-file": "^2.0.2"
   },
   "devDependencies": {
     "@types/chai": "^3.5.2",

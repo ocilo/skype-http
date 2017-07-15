@@ -4,6 +4,7 @@ import { Context } from "../interfaces/api/context";
 import * as io from "../interfaces/http-io";
 import * as messagesUri from "../messages-uri";
 import { getCurrentTime } from "../utils";
+import * as fs from "async-file";
 
 interface SendMessageResponse {
   OriginalArrivalTime: number;
@@ -16,23 +17,28 @@ interface SendMessageQuery {
   contenttype: string;
 }
 
-export async function sendMessage(
+export async function sendImage(
   io: io.HttpIo, apiContext: Context,
   img: api.NewImage,
   conversationId: string,
 ): Promise<api.SendMessageResult> {
-
+  if (!img.file || !img.name) {
+    return Promise.reject(new Incident("send-image", "Invalid parameters"));
+  }
+  let bodyNewObject = {
+    type: 'pish/image',
+    permissions: Object()
+  };
+  bodyNewObject.permissions[conversationId] = ['read'];
+  const bodyNewObjectStr : string = JSON.stringify(bodyNewObject);
   const requestOptionsNewObject: io.PostOptions = {
-    uri: messagesUri.objects(apiContext.registrationToken.host),
+    uri: messagesUri.objects('api.asm.skype.com'),
     cookies: apiContext.cookies,
-    body: JSON.stringify({
-      'type': 'pish/image',
-      'permissions': {
-        ''+conversationId: ['read']
-      }
-    }),
+    body: bodyNewObjectStr,
     headers: {
-      RegistrationToken: apiContext.registrationToken.raw,
+      Authorization: 'skype_token '+apiContext.skypeToken.value,
+      'Content-Type': 'application/json',
+      'Content-Length': bodyNewObjectStr.length,
     },
   };
   const resNewObject: io.Response = await io.post(requestOptionsNewObject);
@@ -42,13 +48,13 @@ export async function sendMessage(
   }
   const objectId = JSON.parse(resNewObject.body).id;
   
-  const file = fs.readFileSync(img.path);
+  const file = await fs.readFile(img.file);
   const requestOptionsPutObject: io.PutOptions = {
-    uri: messagesUri.objectContent(apiContext.registrationToken.host, objectId, 'imgpsh'),
+    uri: messagesUri.objectContent('api.asm.skype.com', objectId, 'imgpsh'),
     cookies: apiContext.cookies,
     body: file,
     headers: {
-      RegistrationToken: apiContext.registrationToken.raw,
+      Authorization: 'skype_token '+apiContext.skypeToken.value,
       'Content-Type': 'multipart/form-data',
       'Content-Length': file.byteLength,
     },
@@ -61,7 +67,7 @@ export async function sendMessage(
   
   const query: SendMessageQuery = {
     clientmessageid: String(getCurrentTime() + Math.floor(10000 * Math.random())),
-    content: String('<URIObject type="Picture.1" uri="'+messagesUri.object(apiContext.registrationToken.host, objectId)+'" url_thumbnail="'+messagesUri.objectView(apiContext.registrationToken.host, objectId, 'imgt1')+'">loading...<OriginalName v="'+img.name+'"/><meta type="photo" originalName="'+img.name+'"/></URIObject>'),
+    content: String('<URIObject type="Picture.1" uri="'+messagesUri.object('api.asm.skype.com', objectId)+'" url_thumbnail="'+messagesUri.objectView('api.asm.skype.com', objectId, 'imgt1')+'">loading...<OriginalName v="'+img.name+'"/><meta type="photo" originalName="'+img.name+'"/></URIObject>'),
     messagetype: "RichText/UriObject",
     contenttype: "text",
   };
@@ -89,4 +95,4 @@ export async function sendMessage(
   };
 }
 
-export default sendMessage;
+export default sendImage;

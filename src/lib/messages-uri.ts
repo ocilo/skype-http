@@ -117,7 +117,7 @@ function buildObjectContent(objectId: string, content: string) {
 }
 
 // /v1/objects/{objectId}/view/{content}
-function buildObjectContent(objectId: string, view: string) {
+function buildObjectView(objectId: string, view: string) {
   return buildObject(objectId).concat("view").concat(view);
 }
 
