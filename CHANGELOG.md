@@ -1,8 +1,11 @@
-# Next
+# 0.0.13 (2017-07-16)
 
 - **[Breaking]** Allow `Contact.name.first` and `Contact.surname.first` to be null. This matches the Skype
   API.
+- **[Feature]** Send images with the new `sendImage` method
+- **[Feature]** Add support for state serialization. This allows you to export the state and then restore it.
 - **[Internal]** Add background information about the project and update the commands available to contributors.
+- **[Internal]** Add TypeDoc generation.
 
 # 0.0.12 (2017-05-10)
 
