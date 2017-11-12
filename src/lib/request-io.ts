@@ -11,9 +11,11 @@ import * as io from "./interfaces/http-io";
 function asRequestOptions(ioOptions: io.GetOptions | io.PostOptions | io.PutOptions): request.Options {
   const result: request.Options = {...<any> ioOptions};
   if (ioOptions.queryString !== undefined) {
+    delete (result as any).queryString;
     result.qs = ioOptions.queryString;
   }
   if (ioOptions.cookies !== undefined) {
+    delete (result as any).cookies;
     result.jar = request.jar(ioOptions.cookies);
   }
   return result;

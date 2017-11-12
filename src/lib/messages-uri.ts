@@ -145,7 +145,15 @@ export function user(host: string, userId: string = DEFAULT_USER): string {
   return get(host, joinPath(buildUser(userId)));
 }
 
-// https://{host}/v1/users/{userId}/endpoints
+/**
+ * Build the URI for the endpoints of a user.
+ *
+ * Template: `https://{host}/v1/users/{userId}/endpoints`
+ *
+ * @param host Hostname of the messages server.
+ * @param userId Id of the user. Default: `"ME"`.
+ * @return Formatted URI.
+ */
 export function endpoints(host: string, userId: string = DEFAULT_USER): string {
   return get(host, joinPath(buildEndpoints(userId)));
 }

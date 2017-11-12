@@ -1,4 +1,5 @@
 import { Incident } from "incident";
+import { inspect } from "util";
 import * as httpIo from "../interfaces/http-io";
 
 export namespace UnexpectedHttpStatusError {
@@ -23,11 +24,11 @@ export namespace UnexpectedHttpStatusError {
 
   export function format({expected, response, request}: Data) {
     const msg: string = `Received response with the HTTP status code \`${response.statusCode}\``
-      + ` but expected one of ${JSON.stringify([...expected])}.`;
+      + ` but expected one of ${inspect(expected)}.`;
     if (request === undefined) {
-      return `${msg} Response: ${response}`;
+      return `${msg} Response: ${inspect(response)}`;
     } else {
-      return `${msg} Request: ${JSON.stringify(request)}, Response: ${response}`;
+      return `${msg} Request: ${inspect(request)}, Response: ${inspect(response)}`;
     }
   }
 
@@ -37,6 +38,45 @@ export namespace UnexpectedHttpStatusError {
     request?: httpIo.GetOptions | httpIo.PostOptions | httpIo.PutOptions,
   ): UnexpectedHttpStatusError {
     return new Incident(name, {response, expected, request}, format);
+  }
+}
+
+export namespace MissingHeaderError {
+  export type Name = "MissingHeader";
+  export const name: Name = "MissingHeader";
+
+  export interface Data {
+    response: httpIo.Response;
+    headerName: string;
+    request?: httpIo.GetOptions | httpIo.PostOptions | httpIo.PutOptions;
+  }
+
+  export type Cause = undefined;
+}
+
+export type MissingHeaderError = Incident<MissingHeaderError.Data,
+  MissingHeaderError.Name,
+  MissingHeaderError.Cause>;
+
+export namespace MissingHeaderError {
+  export type Type = MissingHeaderError;
+
+  export function format({headerName, response, request}: Data) {
+    const msg: string = `Received response with headers \`${inspect(response.headers)}\``
+      + ` where the expected header ${inspect(headerName)} is missing.`;
+    if (request === undefined) {
+      return `${msg} Response: ${inspect(response)}`;
+    } else {
+      return `${msg} Request: ${inspect(request)}, Response: ${inspect(response)}`;
+    }
+  }
+
+  export function create(
+    response: httpIo.Response,
+    headerName: string,
+    request?: httpIo.GetOptions | httpIo.PostOptions | httpIo.PutOptions,
+  ): MissingHeaderError {
+    return new Incident(name, {response, headerName, request}, format);
   }
 }
 

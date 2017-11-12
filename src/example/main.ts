@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as sysPath from "path";
 import { createInterface, ReadLine } from "readline";
-import {Api as SkypeApi } from "../lib/api";
+import { Api as SkypeApi } from "../lib/api";
 import { VIRTUAL_CONTACTS } from "../lib/api/get-contact";
 import * as skypeHttp from "../lib/connect";
 import { Credentials } from "../lib/interfaces/api/api";
