@@ -1,5 +1,5 @@
 import * as _ from "lodash";
-import {Dictionary} from "./interfaces/utils";
+import { Dictionary } from "./interfaces/utils";
 
 /**
  * Returns the number of seconds since epoch.
@@ -24,7 +24,7 @@ export function padLeft(str: any, len: number, char: string = " "): string {
   let result: string = String(str);
   const missing: number = len - result.length;
   if (missing > 0) {
-    result = stringFromChar(char, missing) + str;
+    result = `${stringFromChar(char, missing)}${str}`;
   }
   return result;
 }
@@ -33,7 +33,7 @@ export function padRight(str: any, len: number, char: string = " "): string {
   let result: string = String(str);
   const missing: number = len - result.length;
   if (missing > 0) {
-    result = str + stringFromChar(char, missing);
+    result = `${str}${stringFromChar(char, missing)}`;
   }
   return result;
 }
@@ -62,7 +62,7 @@ export function getTimezone(): string {
 const HTTP_HEADER_SEPARATOR: string = ";";
 const HTTP_HEADER_OPERATOR: string = "=";
 
-export function stringifyHeaderParams (params: Dictionary<string>) {
+export function stringifyHeaderParams(params: Dictionary<string>) {
   const headerPairs: string[] = _.map(params, (value: string, key: string) => {
     if (value === undefined) {
       throw new Error(`Undefined value for the header: ${key}`);
@@ -75,12 +75,12 @@ export function stringifyHeaderParams (params: Dictionary<string>) {
 }
 
 // TODO: check with skype-web-reversed
-export function parseHeaderParams (params: string): Dictionary<string> {
-  const result: Dictionary<string> = {};
+export function parseHeaderParams(params: string): Map<string, string> {
+  const result: Map<string, string> = new Map();
 
   params
     .split(HTTP_HEADER_SEPARATOR)
-    .forEach((paramString) => {
+    .forEach(paramString => {
       paramString = _.trim(paramString);
       const operatorIdx: number = paramString.indexOf(HTTP_HEADER_OPERATOR);
       let key: string;
@@ -93,11 +93,9 @@ export function parseHeaderParams (params: string): Dictionary<string> {
         key = val = _.trim(paramString);
       }
       if (key.length > 0) {
-        result[key] = val;
+        result.set(key, val);
       }
     });
 
   return result;
 }
-
-export {hmacSha256 as getHMAC128} from "./utils/hmac-sha256";

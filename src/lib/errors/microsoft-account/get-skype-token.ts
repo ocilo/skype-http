@@ -1,17 +1,19 @@
-import {Incident} from "incident";
-import {RequestError} from "../http";
+import { Incident } from "incident";
+import { RequestError } from "../http";
 
 export namespace SkypeTokenNotFoundError {
   export type Name = "SkypeTokenNotFound";
   export const name: Name = "SkypeTokenNotFound";
+
   export interface Data {
     html: string;
   }
+
   export type Cause = undefined;
 }
 
-export type SkypeTokenNotFoundError = Incident<SkypeTokenNotFoundError.Name,
-  SkypeTokenNotFoundError.Data,
+export type SkypeTokenNotFoundError = Incident<SkypeTokenNotFoundError.Data,
+  SkypeTokenNotFoundError.Name,
   SkypeTokenNotFoundError.Cause>;
 
 export namespace SkypeTokenNotFoundError {
@@ -32,23 +34,23 @@ export namespace SkypeTokenNotFoundError {
 export namespace GetSkypeTokenError {
   export type Name = "GetSkypeToken";
   export const name: Name = "GetSkypeToken";
+
   export interface Data {
   }
+
   export type Cause = RequestError | SkypeTokenNotFoundError;
 }
 
-export type GetSkypeTokenError = Incident<GetSkypeTokenError.Name, GetSkypeTokenError.Data, GetSkypeTokenError.Cause>;
+export type GetSkypeTokenError = Incident<GetSkypeTokenError.Data, GetSkypeTokenError.Name, GetSkypeTokenError.Cause>;
 
 export namespace GetSkypeTokenError {
   export type Type = GetSkypeTokenError;
 
   export function format() {
-    return `Unable to get the OAuth Skype token.`;
+    return "Unable to get the OAuth Skype token.";
   }
 
   export function create(cause: Cause): GetSkypeTokenError {
     return Incident(cause, name, {}, format);
   }
 }
-
-export default GetSkypeTokenError;

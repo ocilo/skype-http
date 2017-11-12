@@ -3,23 +3,20 @@
   "description": "Unofficial Skype API for Node.js via HTTP",
   "version": "0.0.13",
   "license": "MIT",
-  "main": "dist/lib-es2015/lib/index.js",
-  "browser": "dist/lib-es2015/lib/index.js",
-  "types": "dist/lib-es2015/lib/index.d.ts",
+  "main": "dist/lib/index",
+  "types": "dist/lib/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git://github.com/ocilo/skype-http.git"
   },
   "scripts": {
-    "gh-pages": "rm -rf build/gh-pages/ && typedoc --includeDeclarations --out build/gh-pages/ --module commonjs --target es2015 --exclude '**/*.spec.ts' --mode modules --name Skype-Http --readme README.md src/lib/ && touch build/gh-pages/.nojekyll && cp -r build/gh-pages/. dist/gh-pages/",
-    "prepare": "gulp all:tsconfig.json && gulp :tslint.json && gulp all:dist",
-    "test": "gulp :lint && gulp lib-test",
-    "test-online": "OCILO_TEST_ONLINE=true npm test",
+    "prepare": "gulp all:tsconfig.json && gulp :tslint.json && gulp dist",
     "prestart": "gulp example:build",
     "start": "node build/example/example/main.js",
+    "test": "gulp :lint && gulp test",
+    "test-online": "OCILO_TEST_ONLINE=true npm test",
     "prepublishOnly": "npm run test-online",
-    "typedoc": "typedoc --includeDeclarations --out docs/api/ --module commonjs --target es2015 --exclude '**/*.spec.ts' --mode modules --name Skype-Http --readme README.md src/lib/",
-    ":lint": "gulp :lint"
+    "lint": "gulp :lint"
   },
   "pre-commit": {
     "run": [
@@ -32,33 +29,38 @@
     "Skype-HTTP"
   ],
   "dependencies": {
-    "@types/cheerio": "^0.22.2",
-    "@types/form-data": "0.0.33",
-    "@types/lodash": "^4.14.69",
-    "@types/request": "0.0.47",
+    "@types/cheerio": "^0.22.5",
+    "@types/form-data": "^2.2.1",
+    "@types/lodash": "^4.14.85",
+    "@types/request": "^2.0.8",
+    "@types/tough-cookie": "^2.3.2",
     "async-file": "^2.0.2",
-    "big-integer": "^1.6.23",
-    "bluebird": "^3.5.0",
+    "big-integer": "^1.6.25",
+    "bluebird": "^3.5.1",
     "cheerio": "^1.0.0-rc.2",
-    "incident": "^2.0.0",
-    "js-sha256": "^0.6.0",
+    "incident": "^3.0.0",
+    "js-sha256": "^0.7.1",
     "lodash": "^4.17.4",
-    "request": "^2.81.0",
-    "tough-cookie": "^2.3.2"
+    "request": "^2.83.0",
+    "tough-cookie": "^2.3.3"
   },
   "devDependencies": {
-    "@types/chai": "^4.0.1",
-    "@types/mocha": "^2.2.41",
-    "@types/node": "^8.0.13",
-    "chai": "^4.1.0",
+    "@types/chai": "^4.0.4",
+    "@types/minimist": "^1.2.0",
+    "@types/mocha": "^2.2.44",
+    "@types/node": "^8.0.51",
+    "chai": "^4.1.2",
     "del": "^3.0.0",
-    "demurgos-web-build-tools": "^0.14.3",
-    "fs-extra": "^4.0.0",
+    "fs-extra": "^4.0.2",
     "glob": "^7.0.3",
     "gulp": "github:gulpjs/gulp#4.0",
-    "mocha": "^3.4.2",
+    "gulp-cli": "^1.4.0",
+    "minimist": "^1.2.0",
+    "mocha": "^3.5.3",
     "pre-commit": "^1.2.2",
-    "tslint": "^5.5.0",
-    "typescript": "^2.3.2"
+    "ts-node": "^3.3.0",
+    "tslint": "^5.8.0",
+    "turbo-gulp": "^0.15.5",
+    "typescript": "^2.6.1"
   }
 }

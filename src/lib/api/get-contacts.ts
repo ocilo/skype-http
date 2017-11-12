@@ -1,11 +1,11 @@
-import {Incident} from "incident";
+import { Incident } from "incident";
 import * as _ from "lodash";
 import * as contactsUri from "../contacts-uri";
-import {Contact} from "../interfaces/api/contact";
-import {Context} from "../interfaces/api/context";
+import { Contact } from "../interfaces/api/contact";
+import { Context } from "../interfaces/api/context";
 import * as io from "../interfaces/http-io";
-import {Contact as NativeContact} from "../interfaces/native-api/contact";
-import {formatContact} from "../utils/formatters";
+import {Contact as NativeContact } from "../interfaces/native-api/contact";
+import { formatContact } from "../utils/formatters";
 interface ContactsResponse {
   contacts: NativeContact[];
   count: number; // contacts.length
@@ -28,5 +28,3 @@ export async function getContacts(io: io.HttpIo, apiContext: Context): Promise<C
   const body: ContactsResponse = JSON.parse(res.body);
   return _.map(body.contacts, formatContact);
 }
-
-export default getContacts;

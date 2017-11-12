@@ -1,11 +1,11 @@
-import {Incident} from "incident";
+import { Incident } from "incident";
 import * as _ from "lodash";
-import {Context} from "../interfaces/api/context";
-import {Conversation} from "../interfaces/api/conversation";
+import { Context } from "../interfaces/api/context";
+import { Conversation } from "../interfaces/api/conversation";
 import * as io from "../interfaces/http-io";
-import {Conversation as NativeConversation} from "../interfaces/native-api/conversation";
+import {Conversation as NativeConversation } from "../interfaces/native-api/conversation";
 import * as messagesUri from "../messages-uri";
-import {formatConversation} from "../utils/formatters";
+import { formatConversation } from "../utils/formatters";
 
 interface ConversationsBody {
   conversations: NativeConversation[];
@@ -46,5 +46,3 @@ export async function getConversations(io: io.HttpIo, apiContext: Context): Prom
   const body: ConversationsBody = JSON.parse(res.body);
   return _.map(body.conversations, formatConversation);
 }
-
-export default getConversations;

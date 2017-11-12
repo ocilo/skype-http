@@ -1,4 +1,4 @@
-import {CookieJar, MemoryCookieStore, Store as CookieStore} from "tough-cookie";
+import { CookieJar, MemoryCookieStore, Store as CookieStore } from "tough-cookie";
 
 /**
  * Represents the OAuth token used for most calls to the Skype API.
@@ -20,7 +20,7 @@ export namespace SkypeToken {
   /**
    * Export a SkypeToken to a JSON-safe object.
    */
-  export function toJson(token: SkypeToken): SkypeToken.Json {
+  export function toJson(token: SkypeToken): Json {
     return {
       value: token.value,
       expirationDate: token.expirationDate.toISOString(),
@@ -30,7 +30,7 @@ export namespace SkypeToken {
   /**
    * Import a SkypeToken from a JSON-safe object.
    */
-  export function fromJson(token: SkypeToken.Json): SkypeToken {
+  export function fromJson(token: Json): SkypeToken {
     return {
       value: token.value,
       expirationDate: new Date(token.expirationDate),
@@ -64,7 +64,7 @@ export namespace RegistrationToken {
   /**
    * Export a RegistrationToken to a JSON-safe object.
    */
-  export function toJson(token: RegistrationToken): RegistrationToken.Json {
+  export function toJson(token: RegistrationToken): Json {
     return {
       value: token.value,
       expirationDate: token.expirationDate.toISOString(),
@@ -77,7 +77,7 @@ export namespace RegistrationToken {
   /**
    * Import a RegistrationToken from a JSON-safe object.
    */
-  export function fromJson(token: RegistrationToken.Json): RegistrationToken {
+  export function fromJson(token: Json): RegistrationToken {
     return {
       value: token.value,
       expirationDate: new Date(token.expirationDate),
@@ -105,12 +105,12 @@ export namespace Context {
    */
   export interface Json {
     username: string;
-    cookies: Object;
+    cookies: CookieJar.Serialized;
     skypeToken: SkypeToken.Json;
     registrationToken: RegistrationToken.Json;
   }
 
-  export function toJson(context: Context): Context.Json {
+  export function toJson(context: Context): Json {
     return {
       username: context.username,
       cookies: new CookieJar(context.cookies).serializeSync(),
@@ -119,9 +119,11 @@ export namespace Context {
     };
   }
 
-  export function fromJson(context: Context.Json): Context {
+  export function fromJson(context: Json): Context {
     const cookies: MemoryCookieStore = new MemoryCookieStore();
-    CookieJar.deserializeSync(context.cookies, cookies);
+    // TODO: Send a PR to DefinitelyTyped to fix this
+    type DeserializeSync = (cookies: CookieJar.Serialized, store: CookieStore) => void;
+    (CookieJar.deserializeSync as DeserializeSync)(context.cookies, cookies);
 
     return {
       username: context.username,

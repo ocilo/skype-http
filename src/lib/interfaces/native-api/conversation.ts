@@ -1,5 +1,5 @@
-import {EmptyObject} from "../utils";
-import {MessageResource} from "./resources";
+import { EmptyObject } from "../utils";
+import { MessageResource } from "./resources";
 
 export interface ThreadProperties {
   topic?: string;

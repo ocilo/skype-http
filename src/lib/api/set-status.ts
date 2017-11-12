@@ -1,6 +1,6 @@
-import {Incident} from "incident";
+import { Incident } from "incident";
 import * as api from "../interfaces/api/api";
-import {Context} from "../interfaces/api/context";
+import { Context } from "../interfaces/api/context";
 import * as io from "../interfaces/http-io";
 import * as messagesUri from "../messages-uri";
 
@@ -10,7 +10,7 @@ interface RequestBody {
 
 export async function setStatus(io: io.HttpIo, apiContext: Context, status: api.Status): Promise<void> {
   const requestBody: RequestBody = {
-    status: status,
+    status,
   };
   const requestOptions: io.PostOptions = {
     uri: messagesUri.userMessagingService(apiContext.registrationToken.host),
@@ -26,5 +26,3 @@ export async function setStatus(io: io.HttpIo, apiContext: Context, status: api.
     return Promise.reject(new Incident("send-message", "Received wrong return code"));
   }
 }
-
-export default setStatus;

@@ -1,4 +1,4 @@
-import request = require("request");
+import * as request from "request";
 import * as io from "./interfaces/http-io";
 
 /**
@@ -8,8 +8,8 @@ import * as io from "./interfaces/http-io";
  * @param ioOptions Implementation independent IO options
  * @returns {request.Options} Corresponding `request` options
  */
-function asRequestOptions (ioOptions: io.GetOptions | io.PostOptions | io.PutOptions): request.Options {
-  const result: request.Options = {...ioOptions};
+function asRequestOptions(ioOptions: io.GetOptions | io.PostOptions | io.PutOptions): request.Options {
+  const result: request.Options = {...<any> ioOptions};
   if (ioOptions.queryString !== undefined) {
     result.qs = ioOptions.queryString;
   }
@@ -24,8 +24,8 @@ function asRequestOptions (ioOptions: io.GetOptions | io.PostOptions | io.PutOpt
  *
  * @param options
  */
-export function get (options: io.GetOptions): Promise<io.Response> {
-  return new Promise((resolve, reject) => {
+export async function get(options: io.GetOptions): Promise<io.Response> {
+  return new Promise<io.Response>((resolve, reject) => {
     request.get(asRequestOptions(options), (error, response, body) => {
       if (error) {
         return reject(error);
@@ -36,7 +36,7 @@ export function get (options: io.GetOptions): Promise<io.Response> {
 
       const ioResponse: io.Response = {
         statusCode: response.statusCode,
-        body: body,
+        body,
         headers: response.headers,
       };
 
@@ -50,8 +50,8 @@ export function get (options: io.GetOptions): Promise<io.Response> {
  *
  * @param options
  */
-export function post (options: io.PostOptions): Promise<io.Response> {
-  return new Promise((resolve, reject) => {
+export async function post(options: io.PostOptions): Promise<io.Response> {
+  return new Promise<io.Response>((resolve, reject) => {
     request.post(asRequestOptions(options), (error, response, body) => {
       if (error) {
         return reject(error);
@@ -62,7 +62,7 @@ export function post (options: io.PostOptions): Promise<io.Response> {
 
       const ioResponse: io.Response = {
         statusCode: response.statusCode,
-        body: body,
+        body,
         headers: response.headers,
       };
 
@@ -76,8 +76,8 @@ export function post (options: io.PostOptions): Promise<io.Response> {
  *
  * @param options
  */
-export function put (options: io.PutOptions): Promise<io.Response> {
-  return new Promise((resolve, reject) => {
+export async function put(options: io.PutOptions): Promise<io.Response> {
+  return new Promise<io.Response>((resolve, reject) => {
     request.put(asRequestOptions(options), (error, response, body) => {
       if (error) {
         return reject(error);
@@ -88,7 +88,7 @@ export function put (options: io.PutOptions): Promise<io.Response> {
 
       const ioResponse: io.Response = {
         statusCode: response.statusCode,
-        body: body,
+        body,
         headers: response.headers,
       };
 
@@ -98,9 +98,7 @@ export function put (options: io.PutOptions): Promise<io.Response> {
 }
 
 export const requestIo: io.HttpIo = {
-  get: get,
-  post: post,
-  put: put,
+  get,
+  post,
+  put,
 };
-
-export default requestIo;

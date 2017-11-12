@@ -1,6 +1,6 @@
-import {assert} from "chai";
-import {MemoryCookieStore} from "tough-cookie";
-import {SkypeToken} from "../../lib/interfaces/api/context";
+import { assert } from "chai";
+import { MemoryCookieStore } from "tough-cookie";
+import { SkypeToken } from "../../lib/interfaces/api/context";
 import {
   login,
   LoginOptions,
@@ -9,9 +9,9 @@ import {
   scrapSkypeTokenResponse,
   SkypeTokenResponse,
 } from "../../lib/providers/microsoft-account";
-import {requestIo} from "../../lib/request-io";
-import testConfig from "../test-config";
-import {readTextTestResource} from "../test-resources";
+import { requestIo } from "../../lib/request-io";
+import { testConfig } from "../test-config";
+import { readTextTestResource } from "../test-resources";
 
 describe("Microsoft Account provider", function (this: Mocha.ISuiteCallbackContext) {
   describe.skip("login", async function (this: Mocha.ISuiteCallbackContext) {

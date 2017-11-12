@@ -1,15 +1,15 @@
-﻿ import {Incident} from "incident";
-import {MemoryCookieStore, Store as CookieStore} from "tough-cookie";
-import {parse as parseUri, Url} from "url";
+import { Incident } from "incident";
+import { MemoryCookieStore, Store as CookieStore } from "tough-cookie";
+import { parse as parseUri, Url } from "url";
 import * as Consts from "./consts";
-import {Credentials} from "./interfaces/api/api";
-import {Context as ApiContext, RegistrationToken, SkypeToken} from "./interfaces/api/context";
+import { Credentials } from "./interfaces/api/api";
+import { Context as ApiContext, RegistrationToken, SkypeToken } from "./interfaces/api/context";
 import * as io from "./interfaces/http-io";
-import {Dictionary} from "./interfaces/utils";
+import { Dictionary } from "./interfaces/utils";
 import * as messagesUri from "./messages-uri";
 import * as microsoftAccount from "./providers/microsoft-account";
 import * as utils from "./utils";
-import {hmacSha256} from "./utils/hmac-sha256";
+import { hmacSha256 } from "./utils/hmac-sha256";
 
 interface IoOptions {
   io: io.HttpIo;
@@ -97,7 +97,7 @@ async function getRegistrationToken(
     LockAndKey: utils.stringifyHeaderParams({
       appId: Consts.SKYPEWEB_LOCKANDKEY_APPID,
       time: String(startTime),
-      lockAndKeyResponse: lockAndKeyResponse,
+      lockAndKeyResponse,
     }),
     ClientInfo: utils.stringifyHeaderParams({
       os: "Windows",
@@ -116,7 +116,7 @@ async function getRegistrationToken(
 
   const requestOptions: io.PostOptions = {
     uri: messagesUri.endpoints(messagesHost),
-    headers: headers,
+    headers,
     cookies: options.cookies,
     body: "{}", // Skype requires you to send an empty object as a body
   };
@@ -144,18 +144,21 @@ async function getRegistrationToken(
 
   // registrationTokenHeader is like "registrationToken=someString; expires=someNumber; endpointId={someString}"
   const registrationTokenHeader: string = res.headers["set-registrationtoken"];
-  const parsedHeader: Dictionary<string> = utils.parseHeaderParams(registrationTokenHeader);
+  const parsedHeader: Map<string, string> = utils.parseHeaderParams(registrationTokenHeader);
+  const expiresString: string | undefined = parsedHeader.get("expires");
+  const registrationTokenValue: string | undefined = parsedHeader.get("registrationToken");
+  const endpointId: string | undefined = parsedHeader.get("endpointId");
 
-  if (!parsedHeader["registrationToken"] || !parsedHeader["expires"] || !parsedHeader["endpointId"]) {
+  if (registrationTokenValue === undefined || expiresString === undefined || endpointId === undefined) {
     return Promise.reject(new Incident("protocol", "Missing parameters for the registrationToken"));
   }
 
-  const expires: number = parseInt(parsedHeader["expires"], 10); // in seconds
+  const expires: number = parseInt(expiresString, 10); // in seconds
 
   return <RegistrationToken> {
-    value: parsedHeader["registrationToken"],
+    value: registrationTokenValue,
     expirationDate: new Date(1000 * expires),
-    endpointId: parsedHeader["endpointId"],
+    endpointId,
     raw: registrationTokenHeader,
     host: messagesHost,
   };
@@ -210,12 +213,8 @@ async function subscribeToResources(ioOptions: IoOptions, registrationToken: Reg
 }
 
 async function createPresenceDocs(ioOptions: IoOptions, registrationToken: RegistrationToken): Promise<any> {
-
-  if (!registrationToken.endpointId) {
-    return Promise.reject(new Incident("Missing endpoint id in registration token"));
-  }
-
   // this is the exact json that is needed to register endpoint for setting of status.
+  // demurgos: If I remember well enough, it's order dependant.
   // TODO: typedef
   // tslint:disable-next-line:typedef
   const requestBody = {
@@ -230,7 +229,7 @@ async function createPresenceDocs(ioOptions: IoOptions, registrationToken: Regis
       type: 1,
       skypeNameVersion: Consts.SKYPEWEB_CLIENTINFO_NAME,
       nodeInfo: "xx",
-      version: Consts.SKYPEWEB_CLIENTINFO_VERSION + "//" + Consts.SKYPEWEB_CLIENTINFO_NAME,
+      version: `${Consts.SKYPEWEB_CLIENTINFO_VERSION}//${Consts.SKYPEWEB_CLIENTINFO_NAME}`,
     },
   };
 
@@ -241,7 +240,7 @@ async function createPresenceDocs(ioOptions: IoOptions, registrationToken: Regis
   );
 
   const requestOptions: io.PutOptions = {
-    uri: uri,
+    uri,
     cookies: ioOptions.cookies,
     body: JSON.stringify(requestBody),
     headers: {
@@ -255,5 +254,3 @@ async function createPresenceDocs(ioOptions: IoOptions, registrationToken: Regis
     return Promise.reject(new Incident("net", "Unable to create presence endpoint"));
   }
 }
-
-export default login;

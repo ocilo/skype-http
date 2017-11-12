@@ -1,5 +1,5 @@
-import {Nullable} from "../utils";
-import {FullId} from "./api";
+import { Nullable } from "../utils";
+import { FullId } from "./api";
 
 export interface Location {
   country: string; // almost certainly an enum...

@@ -1,13 +1,13 @@
-import {Incident} from "incident";
-import {Context} from "../interfaces/api/context";
-import {Conversation} from "../interfaces/api/conversation";
+import { Incident } from "incident";
+import { Context } from "../interfaces/api/context";
+import { Conversation } from "../interfaces/api/conversation";
 import * as io from "../interfaces/http-io";
 import {
   Conversation as NativeConversation,
   Thread as NativeThread,
 } from "../interfaces/native-api/conversation";
 import * as messagesUri from "../messages-uri";
-import {formatConversation, formatThread} from "../utils/formatters";
+import { formatConversation, formatThread } from "../utils/formatters";
 
 interface ConversationBody {
   conversations: NativeConversation[];
@@ -44,7 +44,7 @@ export async function getConversation(
   }
 
   const requestOptions: io.GetOptions = {
-    uri: uri,
+    uri,
     cookies: apiContext.cookies,
     queryString: query,
     headers: {
@@ -66,5 +66,3 @@ export async function getConversation(
     return Promise.reject(new Incident("unknonwn-type", "Unknown type for conversation..."));
   }
 }
-
-export default getConversation;

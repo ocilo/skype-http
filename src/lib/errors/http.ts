@@ -1,19 +1,21 @@
-import {Incident} from "incident";
+import { Incident } from "incident";
 import * as httpIo from "../interfaces/http-io";
 
 export namespace UnexpectedHttpStatusError {
   export type Name = "UnexpectedHttpStatus";
   export const name: Name = "UnexpectedHttpStatus";
+
   export interface Data {
     response: httpIo.Response;
     expected: Set<number>;
     request?: httpIo.GetOptions | httpIo.PostOptions | httpIo.PutOptions;
   }
+
   export type Cause = undefined;
 }
 
-export type UnexpectedHttpStatusError = Incident<UnexpectedHttpStatusError.Name,
-  UnexpectedHttpStatusError.Data,
+export type UnexpectedHttpStatusError = Incident<UnexpectedHttpStatusError.Data,
+  UnexpectedHttpStatusError.Name,
   UnexpectedHttpStatusError.Cause>;
 
 export namespace UnexpectedHttpStatusError {
@@ -41,13 +43,15 @@ export namespace UnexpectedHttpStatusError {
 export namespace RequestError {
   export type Name = "Request";
   export const name: Name = "Request";
+
   export interface Data {
     request: httpIo.GetOptions | httpIo.PostOptions | httpIo.PutOptions;
   }
+
   export type Cause = Error;
 }
 
-export type RequestError = Incident<RequestError.Name, RequestError.Data, RequestError.Cause>;
+export type RequestError = Incident<RequestError.Data, RequestError.Name, RequestError.Cause>;
 
 export namespace RequestError {
   export type Type = RequestError;
@@ -63,5 +67,3 @@ export namespace RequestError {
     return new Incident(cause, name, {request}, format);
   }
 }
-
-export default RequestError;

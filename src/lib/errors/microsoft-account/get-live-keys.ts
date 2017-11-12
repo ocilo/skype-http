@@ -1,19 +1,21 @@
-import {Incident} from "incident";
+import { Incident } from "incident";
 import * as httpIo from "../../interfaces/http-io";
-import {RequestError} from "../http";
+import { RequestError } from "../http";
 
 export namespace MsprequCookieNotFoundError {
   export type Name = "MsprequCookieNotFound";
   export const name: Name = "MsprequCookieNotFound";
+
   export interface Data {
     request: httpIo.GetOptions;
     response: httpIo.Response;
   }
+
   export type Cause = undefined;
 }
 
-export type MsprequCookieNotFoundError = Incident<MsprequCookieNotFoundError.Name,
-  MsprequCookieNotFoundError.Data,
+export type MsprequCookieNotFoundError = Incident<MsprequCookieNotFoundError.Data,
+  MsprequCookieNotFoundError.Name,
   MsprequCookieNotFoundError.Cause>;
 
 export namespace MsprequCookieNotFoundError {
@@ -34,15 +36,17 @@ export namespace MsprequCookieNotFoundError {
 export namespace MspokCookieNotFoundError {
   export type Name = "MspokCookieNotFound";
   export const name: Name = "MspokCookieNotFound";
+
   export interface Data {
     request: httpIo.GetOptions;
     response: httpIo.Response;
   }
+
   export type Cause = undefined;
 }
 
-export type MspokCookieNotFoundError = Incident<MspokCookieNotFoundError.Name,
-  MspokCookieNotFoundError.Data,
+export type MspokCookieNotFoundError = Incident<MspokCookieNotFoundError.Data,
+  MspokCookieNotFoundError.Name,
   MspokCookieNotFoundError.Cause>;
 
 export namespace MspokCookieNotFoundError {
@@ -63,14 +67,16 @@ export namespace MspokCookieNotFoundError {
 export namespace PpftKeyNotFoundError {
   export type Name = "PpftKeyNotFound";
   export const name: Name = "PpftKeyNotFound";
+
   export interface Data {
     html: string;
   }
+
   export type Cause = undefined;
 }
 
-export type PpftKeyNotFoundError = Incident<PpftKeyNotFoundError.Name,
-  PpftKeyNotFoundError.Data,
+export type PpftKeyNotFoundError = Incident<PpftKeyNotFoundError.Data,
+  PpftKeyNotFoundError.Name,
   PpftKeyNotFoundError.Cause>;
 
 export namespace PpftKeyNotFoundError {
@@ -92,22 +98,23 @@ export namespace PpftKeyNotFoundError {
 export namespace GetLiveKeysError {
   export type Name = "GetLiveKeys";
   export const name: Name = "GetLiveKeys";
-  export interface Data {}
+
+  export interface Data {
+  }
+
   export type Cause = RequestError | MspokCookieNotFoundError | MsprequCookieNotFoundError | PpftKeyNotFoundError;
 }
 
-export type GetLiveKeysError = Incident<GetLiveKeysError.Name, GetLiveKeysError.Data, GetLiveKeysError.Cause>;
+export type GetLiveKeysError = Incident<GetLiveKeysError.Data, GetLiveKeysError.Name, GetLiveKeysError.Cause>;
 
 export namespace GetLiveKeysError {
   export type Type = GetLiveKeysError;
 
   export function format() {
-    return `Unable to get the MSPRequ, MSPOK and PPFT keys from login.live.com`;
+    return "Unable to get the MSPRequ, MSPOK and PPFT keys from login.live.com";
   }
 
   export function create(cause: Cause): GetLiveKeysError {
     return Incident(cause, name, {}, format);
   }
 }
-
-export default GetLiveKeysError;

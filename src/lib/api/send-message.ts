@@ -51,5 +51,3 @@ export async function sendMessage(
     MessageId: parsed.message,
   };
 }
-
-export default sendMessage;
