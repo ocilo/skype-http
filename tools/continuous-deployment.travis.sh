@@ -29,7 +29,7 @@ DEPLOY_INTERVAL=86400
 # Deploy only on merge commit to this branch
 DEPLOYMENT_BRANCH="master"
 # Id in the name of the key and iv files
-TRAVIS_ENCRYPTION_ID="fa98f77d113d"
+TRAVIS_ENCRYPTION_ID="fa5122df9563"
 # Build id used for the publication of pre-release builds to `npm`
 BUILD_ID=${TRAVIS_BUILD_NUMBER}
 # Branch name or tag name
