@@ -1,6 +1,6 @@
 import * as bigInt from "big-integer";
-import {Buffer} from "buffer";
-import {sha256} from "js-sha256";
+import { Buffer } from "buffer";
+import { sha256 } from "js-sha256";
 
 const HEX_CHARS: string = "0123456789abcdef";
 const MAX_INT32: number = 0x7fffffff; // Math.pow(2, 31) - 1 (the leading sign bit is 0);

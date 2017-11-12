@@ -1,17 +1,19 @@
-import {Incident} from "incident";
-import {RequestError} from "../http";
+import { Incident } from "incident";
+import { RequestError } from "../http";
 
 export namespace LiveTokenNotFoundError {
   export type Name = "LiveTokenNotFound";
   export const name: Name = "LiveTokenNotFound";
+
   export interface Data {
     html: string;
   }
+
   export type Cause = undefined;
 }
 
-export type LiveTokenNotFoundError = Incident<LiveTokenNotFoundError.Name,
-  LiveTokenNotFoundError.Data,
+export type LiveTokenNotFoundError = Incident<LiveTokenNotFoundError.Data,
+  LiveTokenNotFoundError.Name,
   LiveTokenNotFoundError.Cause>;
 
 export namespace LiveTokenNotFoundError {
@@ -32,22 +34,23 @@ export namespace LiveTokenNotFoundError {
 export namespace GetLiveTokenError {
   export type Name = "GetLiveToken";
   export const name: Name = "GetLiveToken";
-  export interface Data {}
+
+  export interface Data {
+  }
+
   export type Cause = RequestError | LiveTokenNotFoundError;
 }
 
-export type GetLiveTokenError = Incident<GetLiveTokenError.Name, GetLiveTokenError.Data, GetLiveTokenError.Cause>;
+export type GetLiveTokenError = Incident<GetLiveTokenError.Data, GetLiveTokenError.Name, GetLiveTokenError.Cause>;
 
 export namespace GetLiveTokenError {
   export type Type = GetLiveTokenError;
 
   export function format() {
-    return `Unable to get the Live token for Skype`;
+    return "Unable to get the Live token for Skype";
   }
 
   export function create(cause: Cause): GetLiveTokenError {
     return Incident(cause, name, {}, format);
   }
 }
-
-export default GetLiveTokenError;

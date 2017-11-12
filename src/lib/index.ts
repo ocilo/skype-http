@@ -1,17 +1,19 @@
-﻿ import * as api from "./api";
-export { connect, ConnectOptions } from "./connect";
+import * as api from "./api";
+import * as errors from "./errors/index";
 import * as apiInterface from "./interfaces/api/api";
 import * as contact from "./interfaces/api/contact";
 import * as conversation from "./interfaces/api/conversation";
 import * as events from "./interfaces/api/events";
-export { events };
 import * as resources from "./interfaces/api/resources";
-export { resources };
 import * as nativeContact from "./interfaces/native-api/contact";
 import * as nativeConversation from "./interfaces/native-api/conversation";
 import * as nativeEvents from "./interfaces/native-api/events";
 import * as nativeMessageResources from "./interfaces/native-api/message-resources";
 import * as nativeResources from "./interfaces/native-api/resources";
+
+export { connect, ConnectOptions } from "./connect";
+export { events };
+export { resources };
 namespace native {
   export import contact = nativeContact;
   export import conversation = nativeConversation;
@@ -37,5 +39,4 @@ export namespace Conversation {
   export type ThreadProperties = conversation.ThreadProperties;
 }
 
-import * as errors from "./errors/index";
-export {errors};
+export { errors };

@@ -1,5 +1,5 @@
-import {ParsedConversationId} from "./api";
-import {Resource} from "./resources";
+import { ParsedConversationId } from "./api";
+import { Resource } from "./resources";
 
 export interface EventMessage {
   id: number;

@@ -1,14 +1,17 @@
-import {Incident} from "incident";
+import { Incident } from "incident";
 
 export namespace WrongCredentialsLimitError {
   export type Name = "WrongCredentialsLimit";
   export const name: Name = "WrongCredentialsLimit";
-  export interface Data {}
+
+  export interface Data {
+  }
+
   export type Cause = undefined;
 }
 
 /* tslint:disable-next-line:max-line-length */
-export type WrongCredentialsLimitError = Incident<WrongCredentialsLimitError.Name, WrongCredentialsLimitError.Data, WrongCredentialsLimitError.Cause>;
+export type WrongCredentialsLimitError = Incident<WrongCredentialsLimitError.Data, WrongCredentialsLimitError.Name, WrongCredentialsLimitError.Cause>;
 
 export namespace WrongCredentialsLimitError {
   export type Type = WrongCredentialsLimitError;
@@ -21,5 +24,3 @@ export namespace WrongCredentialsLimitError {
     return Incident(name, {username}, format);
   }
 }
-
-export default WrongCredentialsLimitError;

@@ -1,5 +1,5 @@
-import {assert} from "chai";
-import {hmacSha256, int32ToLittleEndianHexString} from "../../lib/utils/hmac-sha256";
+import { assert } from "chai";
+import { hmacSha256, int32ToLittleEndianHexString } from "../../lib/utils/hmac-sha256";
 
 describe("int32ToLittleEndianHexString", function () {
   interface Item {

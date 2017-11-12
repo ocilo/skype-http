@@ -1,7 +1,7 @@
-﻿ import {Incident} from "incident";
+import { Incident } from "incident";
 import * as apiUri from "../api-uri";
-import {Contact} from "../interfaces/api/contact";
-import {Context} from "../interfaces/api/context";
+import { Contact } from "../interfaces/api/contact";
+import { Context } from "../interfaces/api/context";
 import * as io from "../interfaces/http-io";
 import { formatSearchContact } from "../utils/formatters";
 
@@ -15,7 +15,7 @@ export async function getContact(io: io.HttpIo, apiContext: Context, contactId: 
   const requestOptions: io.PostOptions = {
     uri: apiUri.userProfiles(),
     cookies: apiContext.cookies,
-    form: { usernames: [contactId] },
+    form: {usernames: [contactId]},
     headers: {
       "X-Skypetoken": apiContext.skypeToken.value,
     },
@@ -27,5 +27,3 @@ export async function getContact(io: io.HttpIo, apiContext: Context, contactId: 
   const body: Contact = formatSearchContact(JSON.parse(res.body)[0]);
   return body;
 }
-
-export default getContact;

@@ -1,12 +1,12 @@
 import * as fs from "fs";
 import * as sysPath from "path";
-import {createInterface, ReadLine} from "readline";
-import {Api as SkypeApi} from "../lib/api";
-import {VIRTUAL_CONTACTS} from "../lib/api/get-contact";
+import { createInterface, ReadLine } from "readline";
+import {Api as SkypeApi } from "../lib/api";
+import { VIRTUAL_CONTACTS } from "../lib/api/get-contact";
 import * as skypeHttp from "../lib/connect";
-import {Credentials} from "../lib/interfaces/api/api";
-import {Contact} from "../lib/interfaces/api/contact";
-import {Context} from "../lib/interfaces/api/context";
+import { Credentials } from "../lib/interfaces/api/api";
+import { Contact } from "../lib/interfaces/api/contact";
+import { Context } from "../lib/interfaces/api/context";
 import * as events from "../lib/interfaces/api/events";
 import * as resources from "../lib/interfaces/api/resources";
 
@@ -58,7 +58,7 @@ async function run(): Promise<void> {
   } catch (err) {
     console.log("Unable to restore the state from file, performing login with credentials");
     const credentials: Credentials = await promptCredentials();
-    api = await skypeHttp.connect({credentials: credentials, verbose: true});
+    api = await skypeHttp.connect({credentials, verbose: true});
   }
 
   const apiState: Context.Json = api.getState();

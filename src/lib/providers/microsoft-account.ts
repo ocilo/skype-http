@@ -1,17 +1,17 @@
 import * as cheerio from "cheerio";
 import * as path from "path";
-import {Cookie, CookieJar, Store as CookieStore} from "tough-cookie";
+import { Cookie, CookieJar, Store as CookieStore } from "tough-cookie";
 import * as url from "url";
 import * as httpErrors from "../errors/http";
 import * as getLiveKeysErrors from "../errors/microsoft-account/get-live-keys";
 import * as getLiveTokenErrors from "../errors/microsoft-account/get-live-token";
 import * as getSkypeTokenErrors from "../errors/microsoft-account/get-skype-token";
-import {MicrosoftAccountLoginError} from "../errors/microsoft-account/login";
-import {WrongCredentialsError} from "../errors/wrong-credentials";
-import {WrongCredentialsLimitError} from "../errors/wrong-credentials-limit";
-import {SkypeToken} from "../interfaces/api/context";
+import { MicrosoftAccountLoginError } from "../errors/microsoft-account/login";
+import { WrongCredentialsError } from "../errors/wrong-credentials";
+import { WrongCredentialsLimitError } from "../errors/wrong-credentials-limit";
+import { SkypeToken } from "../interfaces/api/context";
 import * as io from "../interfaces/http-io";
-import {Dictionary} from "../interfaces/utils";
+import { Dictionary } from "../interfaces/utils";
 
 export const skypeWebUri: string = "https://web.skype.com/";
 export const skypeLoginUri: string = "https://login.skype.com/login/";
@@ -140,6 +140,9 @@ export async function getLiveKeys(options: LoadLiveKeysOptions): Promise<LiveKey
           break;
         case "MSPOK":
           mspOk = cookie.value;
+          break;
+        default:
+          // Ignore other cookies
           break;
       }
     }

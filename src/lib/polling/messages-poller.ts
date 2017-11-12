@@ -31,34 +31,45 @@ export function parseContactId(contactId: string): ParsedConversationId {
     username: match[2],
   };
 }
-// tslint:disable-next-line:max-line-length
-export function formatRichTextResource(retObj: resources.Resource, nativeResource: nativeMessageResources.RichText): resources.RichTextResource {
+
+export function formatRichTextResource(
+  retObj: resources.Resource,
+  nativeResource: nativeMessageResources.RichText,
+): resources.RichTextResource {
   const ret: resources.RichTextResource = retObj as resources.RichTextResource;
   ret.content = nativeResource.content;
   ret.clientId = nativeResource.clientmessageid;
   return ret;
 }
-// tslint:disable-next-line:max-line-length
-export function formatTextResource(retObj: resources.Resource, nativeResource: nativeMessageResources.Text): resources.TextResource {
+
+export function formatTextResource(
+  retObj: resources.Resource,
+  nativeResource: nativeMessageResources.Text,
+): resources.TextResource {
   const ret: resources.TextResource = retObj as resources.TextResource;
   ret.content = nativeResource.content;
   ret.clientId = nativeResource.clientmessageid;
   return ret;
 }
 
-// tslint:disable-next-line:max-line-length
-export function formatControlClearTypingResource(retObj: resources.Resource, nativeResource: nativeMessageResources.ControlClearTyping): resources.ControlClearTypingResource {
-  const ret: resources.ControlClearTypingResource = retObj as resources.ControlClearTypingResource;
-  return ret;
+export function formatControlClearTypingResource(
+  retObj: resources.Resource,
+  nativeResource: nativeMessageResources.ControlClearTyping,
+): resources.ControlClearTypingResource {
+  return retObj as resources.ControlClearTypingResource;
 }
-// tslint:disable-next-line:max-line-length
-export function formatGenericMessageResource(nativeResource: nativeResources.MessageResource, type: resources.ResourceType) { // have to export for testing...
+
+// Export for testing
+export function formatGenericMessageResource(
+  nativeResource: nativeResources.MessageResource,
+  type: resources.ResourceType,
+) {
   const parsedConversationUri: messagesUri.ConversationUri = messagesUri
     .parseConversation(nativeResource.conversationLink);
   const parsedContactUri: messagesUri.ContactUri = messagesUri.parseContact(nativeResource.from);
   const parsedContactId: ParsedConversationId = parseContactId(parsedContactUri.contact);
   return {
-    type: type,
+    type,
     id: nativeResource.id,
     composeTime: new Date(nativeResource.composetime),
     arrivalTime: new Date(nativeResource.originalarrivaltime),
@@ -88,16 +99,24 @@ export function formatConversationUpdateResource(nativeResource: nativeResources
 }
 
 // tslint:disable-next-line:max-line-length
-export function formatControlTypingResource(retObj: resources.Resource, nativeResource: nativeMessageResources.ControlTyping): resources.ControlTypingResource {
+export function formatControlTypingResource(
+  retObj: resources.Resource,
+  nativeResource: nativeMessageResources.ControlTyping,
+): resources.ControlTypingResource {
   const ret: resources.ControlTypingResource = retObj as resources.ControlTypingResource;
   return ret;
 }
+
 // tslint:disable-next-line:max-line-length
-export function formatSignalFlamingoResource(retObj: resources.Resource, nativeResource: nativeMessageResources.SignalFlamingo): resources.SignalFlamingoResource {
+export function formatSignalFlamingoResource(
+  retObj: resources.Resource,
+  nativeResource: nativeMessageResources.SignalFlamingo,
+): resources.SignalFlamingoResource {
   const ret: resources.SignalFlamingoResource = retObj as resources.SignalFlamingoResource;
   ret.skypeguid = nativeResource.skypeguid;
   return ret;
 }
+
 function formatMessageResource(nativeResource: nativeResources.MessageResource): resources.Resource {
   switch (nativeResource.messagetype) {
     case "RichText/UriObject":
@@ -135,8 +154,13 @@ function formatMessageResource(nativeResource: nativeResources.MessageResource):
       throw new Error(`Unknown ressource.messageType (${JSON.stringify(nativeResource.messagetype)}) for resource:\n${JSON.stringify(nativeResource, null, "\t")}`);
   }
 }
-// tslint:disable-next-line:max-line-length
-function formatFileResource(retObj: resources.Resource, native: nativeMessageResources.MediaGenericFile | nativeMessageResources.UriObject | nativeMessageResources.MediaVideo): resources.FileResource {
+
+type NativeFileResouce =
+  nativeMessageResources.MediaGenericFile
+  | nativeMessageResources.UriObject
+  | nativeMessageResources.MediaVideo;
+
+function formatFileResource(retObj: resources.Resource, native: NativeFileResouce): resources.FileResource {
   const ret: resources.FileResource = retObj as resources.FileResource;
   const $: CheerioStatic = cheerio.load(native.content);
   const obj: Cheerio = $("URIObject");
@@ -144,31 +168,46 @@ function formatFileResource(retObj: resources.Resource, native: nativeMessageRes
   ret.uri = obj.attr("uri");
   ret.uri_thumbnail = obj.attr("url_thumbnail");
   ret.uri_w_login = $(obj.find("a")).attr("href");
-  const size: string = $(obj.find("FileSize")).attr("v");
-  if (size) {
-    ret.file_size = parseInt(size, 10);
+  const sizeString: string | undefined = $(obj.find("FileSize")).attr("v");
+  if (sizeString !== undefined) {
+    ret.file_size = parseInt(sizeString, 10);
   }
   ret.original_file_name = $(obj.find("OriginalName")).attr("v");
   return ret;
 }
+
 // tslint:disable-next-line:max-line-length
-function formatMediaGenericFileResource(retObj: resources.FileResource, native: nativeMessageResources.MediaGenericFile): resources.RichTextMediaGenericFileResource {
-  const ret: resources.RichTextMediaGenericFileResource = retObj as resources.RichTextMediaGenericFileResource;
-  return ret;
-}
-// tslint:disable-next-line:max-line-length
-function formatMediaVideoResource(retObj: resources.FileResource, native: nativeMessageResources.MediaVideo): resources.RichTextMediaGenericFileResource {
+function formatMediaGenericFileResource(
+  retObj: resources.FileResource,
+  native: nativeMessageResources.MediaGenericFile,
+): resources.RichTextMediaGenericFileResource {
   const ret: resources.RichTextMediaGenericFileResource = retObj as resources.RichTextMediaGenericFileResource;
   return ret;
 }
 
 // tslint:disable-next-line:max-line-length
-function formatUriObjectResource(retObj: resources.FileResource, native: nativeMessageResources.UriObject): resources.RichTextUriObjectResource {
+function formatMediaVideoResource(
+  retObj: resources.FileResource,
+  native: nativeMessageResources.MediaVideo,
+): resources.RichTextMediaGenericFileResource {
+  const ret: resources.RichTextMediaGenericFileResource = retObj as resources.RichTextMediaGenericFileResource;
+  return ret;
+}
+
+// tslint:disable-next-line:max-line-length
+function formatUriObjectResource(
+  retObj: resources.FileResource,
+  native: nativeMessageResources.UriObject,
+): resources.RichTextUriObjectResource {
   const ret: resources.RichTextUriObjectResource = retObj as resources.RichTextUriObjectResource;
   return ret;
 }
+
 // tslint:disable-next-line:max-line-length
-function formatLocationResource(retObj: resources.Resource, native: nativeMessageResources.LocationObject): resources.RichTextLocationResource {
+function formatLocationResource(
+  retObj: resources.Resource,
+  native: nativeMessageResources.LocationObject,
+): resources.RichTextLocationResource {
   const ret: resources.RichTextLocationResource = retObj as resources.RichTextLocationResource;
   const $: CheerioStatic = cheerio.load(native.content);
   const obj: Cheerio = $("location");
@@ -182,8 +221,12 @@ function formatLocationResource(retObj: resources.Resource, native: nativeMessag
   ret.map_url = $(obj.find("a")).attr("href");
   return ret;
 }
+
 // tslint:disable-next-line:max-line-length
-function formatEventCallResource(retObj: resources.Resource, native: nativeMessageResources.EventCall): resources.EventCallResource {
+function formatEventCallResource(
+  retObj: resources.Resource,
+  native: nativeMessageResources.EventCall,
+): resources.EventCallResource {
   const ret: resources.EventCallResource = retObj as resources.EventCallResource;
   const $: CheerioStatic = cheerio.load(native.content);
   const type: string = $("partlist").attr("type");
@@ -197,13 +240,13 @@ function formatEventCallResource(retObj: resources.Resource, native: nativeMessa
 
   let shortest: number | null = null;
   let connected: boolean = false;
-  const participants: resources.CallParticipant[] = new Array();
+  const participants: resources.CallParticipant[] = [];
   const parts: CheerioElement[] = $("part").toArray();
   for (const part of parts) {
     const pjs: Cheerio = $(part);
-    const add: resources.CallParticipant = { displayName: pjs.find("name").text(), username: pjs.attr("identity") };
-    const duration: string = pjs.find("duration").text();
-    if (duration || duration === "0") {
+    const add: resources.CallParticipant = {displayName: pjs.find("name").text(), username: pjs.attr("identity")};
+    const duration: string | undefined = pjs.find("duration").text();
+    if (duration !== undefined && duration !== "") {
       add.duration = parseInt(duration, 10);
       if (add.duration > 0) {
         connected = true;
@@ -221,6 +264,7 @@ function formatEventCallResource(retObj: resources.Resource, native: nativeMessa
   }
   return ret;
 }
+
 function formatEventMessage(native: nativeEvents.EventMessage): events.EventMessage {
   let resource: resources.Resource | null;
   switch (native.resourceType) {
@@ -247,7 +291,7 @@ function formatEventMessage(native: nativeEvents.EventMessage): events.EventMess
     resourceType: native.resourceType,
     time: new Date(native.time),
     resourceLink: native.resourceLink,
-    resource: resource,
+    resource,
   };
 }
 
@@ -309,16 +353,16 @@ export class MessagesPoller extends EventEmitter {
         return;
       }
 
-      const body: { eventMessages?: nativeEvents.EventMessage[] } = JSON.parse(res.body);
+      const body: {eventMessages?: nativeEvents.EventMessage[]} = JSON.parse(res.body);
 
-      if (body.eventMessages) {
+      if (body.eventMessages !== undefined) {
         for (const msg of body.eventMessages) {
           // tslint:disable-next-line:max-line-length
           // if (msg.resourceType != "UserPresence" && msg.resourceType != "EndpointPresence" && msg.resourceType != "ConversationUpdate")
           //  console.log("EVT: " + JSON.stringify(msg, null, "\t"));
 
           const formatted: events.EventMessage = formatEventMessage(msg);
-          if (formatted && formatted.resource) {
+          if (formatted.resource !== null) {
             this.emit("event-message", formatted);
           }
         }
@@ -328,5 +372,3 @@ export class MessagesPoller extends EventEmitter {
     }
   }
 }
-
-export default MessagesPoller;

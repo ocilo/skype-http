@@ -1,4 +1,4 @@
-import {Credentials} from "../lib/interfaces/api/api";
+import { Credentials } from "../lib/interfaces/api/api";
 
 export interface TestConfig {
   /**
@@ -32,5 +32,3 @@ const secondaryAccounts: Credentials[] = [
 ];
 
 export const testConfig: TestConfig = {online, credentials, secondaryAccounts, verbose};
-
-export default testConfig;

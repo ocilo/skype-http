@@ -1,6 +1,6 @@
-import {Incident} from "incident";
+import { Incident } from "incident";
 import * as apiUri from "../api-uri";
-import {Context} from "../interfaces/api/context";
+import { Context } from "../interfaces/api/context";
 import * as io from "../interfaces/http-io";
 
 export async function declineContactRequest(
@@ -21,5 +21,3 @@ export async function declineContactRequest(
     return Promise.reject(new Incident("net", "Failed to decline contact"));
   }
 }
-
-export default declineContactRequest;

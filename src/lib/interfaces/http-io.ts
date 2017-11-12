@@ -1,5 +1,5 @@
-import {Store as CookieStore} from "tough-cookie";
-import {Dictionary} from "./utils";
+import { Store as CookieStore } from "tough-cookie";
+import { Dictionary } from "./utils";
 
 export interface BaseOptions {
   uri: string;
@@ -26,7 +26,9 @@ export interface Response {
 }
 
 export interface HttpIo {
-  get (options: GetOptions): PromiseLike<Response>;
-  post (options: PostOptions): PromiseLike<Response>;
-  put (options: PutOptions): PromiseLike<Response>;
+  get(options: GetOptions): Promise<Response>;
+
+  post(options: PostOptions): Promise<Response>;
+
+  put(options: PutOptions): Promise<Response>;
 }

@@ -1,4 +1,4 @@
-import {MessageResource, Resource} from "./resources";
+import { MessageResource, Resource } from "./resources";
 
 export interface Control extends MessageResource {
   messagetype: "Control/LiveState" | "Control/ClearTyping" | "Control/Typing";

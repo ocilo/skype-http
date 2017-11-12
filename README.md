@@ -2,6 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/skype-http.svg?maxAge=2592000)](https://www.npmjs.com/package/skype-http)
 [![Build status](https://img.shields.io/travis/ocilo/skype-http/master.svg?maxAge=2592000)](https://travis-ci.org/ocilo/skype-http)
+[![GitHub repository](https://img.shields.io/badge/Github-ocilo%2Fskype--http-blue.svg)](https://github.com/ocilo/skype-http)
 
 Unofficial Skype API for Node.js via HTTP.
 This relies on the Skype Web Application and requires the credentials of the account you want to use: use it with care.
@@ -49,9 +50,9 @@ set the status to `"Online"` and start to respond to messages.
 Here are the main commands available for the project.
 The project requires `gulp-cli` and `npm` 4.
 The project has three targets:
-- `lib-es2015`: Build the core library. This is what is published to npm.
+- `lib`: Build the core library. This is what is published to npm.
   - Sources: `src/lib`
-- `lib-test`: Build the library with the _mocha_ unit-tests.
+- `test`: Build the library with the _mocha_ unit-tests.
   - Sources: `src/lib` and `src/test`
 - `example`: Build the example command-line application.
   - Sources: `src/lib` and `src/example`
@@ -66,12 +67,11 @@ the configuration.
 
 **Note**: This command is executed automatically as part of `npm install`.
 
-### `gulp <target>:build`
+### `gulp lib:build`
 
-Build the specified target. Example: `gulp lib-es2015:build`.
-The output directory is `build/<target>` (example: `build/lib-es2015`).
+Build the library.
 
-### `gulp <target>:watch`
+### `gulp lib:watch`
 
 Watch the sources and rebuild on change.
 
@@ -85,9 +85,9 @@ Build `example` and run it.
 
 Static analysis with `tslint`.
 
-### `gulp lib-test`
+### `gulp test`
 
-Build the `lib-test` target and run the unit tests. Prints the report to
+Build the `test` target and run the unit tests. Prints the report to
 the terminal.
 
 ### `npm test`
@@ -102,10 +102,11 @@ If you just want to create a bot, take a look at <https://github.com/Microsoft/B
 You can find the decompiled source code of the Skype Web Application on [the `skype-web-reversed` repository](https://github.com/demurgos/skype-web-reversed).
 
 ## What's not working and probably never will.
+
 * [Old P2P group chats](https://github.com/ShyykoSerhiy/skyweb/issues/6). According to  [Skype community site ](http://community.skype.com/t5/Skype-for-Web-Beta/Group-chats-missing-on-skype-web/td-p/3884218) only new, Cloud based group chats are shown in SkypeWeb Beta(therefore works in this API). The old P2P group chats are not.  
 
-
 ## Project Background
+
 This project started as a fork of the https://github.com/ShyykoSerhiy/skyweb after slow progress from 3rd party patches. The goal is to provide stronger guarantees about the objects returned by the API (through checks and normalization) and better error management, because scrapping/unofficial API calls are unreliable so the library should be resilient.
 
 ## Disclaimer 

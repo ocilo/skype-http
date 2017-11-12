@@ -22,9 +22,6 @@ export async function sendImage(
   img: api.NewImage,
   conversationId: string,
 ): Promise<api.SendMessageResult> {
-  if (!img.file || !img.name) {
-    return Promise.reject(new Incident("send-image", "Invalid parameters"));
-  }
   const bodyNewObject: any = {
     type: "pish/image",
     permissions: {[conversationId]: ["read"]},
@@ -101,5 +98,3 @@ export async function sendImage(
     MessageId: parsed.message,
   };
 }
-
-export default sendImage;

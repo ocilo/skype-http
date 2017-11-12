@@ -7,7 +7,7 @@
     "alwaysStrict": true,
     "charset": "utf8",
     "checkJs": false,
-    "declaration": true,
+    "declaration": false,
     "disableSizeLimit": false,
     "downlevelIteration": false,
     "emitBOM": false,
@@ -35,15 +35,13 @@
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noStrictGenericChecks": false,
-    "noUnusedLocals": false,
+    "noUnusedLocals": true,
     "noUnusedParameters": false,
     "noImplicitUseStrict": false,
     "noLib": false,
     "noResolve": false,
-    "outDir": "../../build/example",
-    "preserveConstEnums": true,
+    "preserveConstEnums": false,
     "removeComments": false,
-    "rootDir": "..",
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
@@ -53,13 +51,8 @@
     "target": "es2017",
     "traceResolution": false,
     "typeRoots": [
-      "../../node_modules/@types",
-      "../custom-typings"
+      "src/custom-typings",
+      "node_modules/@types"
     ]
-  },
-  "include": [
-    "**/*.ts",
-    "../lib/**/*.ts"
-  ],
-  "exclude": []
+  }
 }

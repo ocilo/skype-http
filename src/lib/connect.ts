@@ -1,9 +1,9 @@
-import {Incident} from "incident";
+import { Incident } from "incident";
 import * as api from "./api";
-import {Credentials} from "./interfaces/api/api";
-import {Context} from "./interfaces/api/context";
-import {login} from "./login";
-import requestIO from "./request-io";
+import { Credentials } from "./interfaces/api/api";
+import { Context } from "./interfaces/api/context";
+import { login } from "./login";
+import { requestIo } from "./request-io";
 
 export interface StateContainer {
   state: any;
@@ -28,7 +28,7 @@ export async function connect(options: ConnectOptions): Promise<api.Api> {
     apiContext = Context.fromJson(options.state);
   } else if (options.credentials !== undefined) {
     apiContext = await login({
-      io: requestIO,
+      io: requestIo,
       credentials: options.credentials,
       verbose: options.verbose,
     });
@@ -43,5 +43,5 @@ export async function connect(options: ConnectOptions): Promise<api.Api> {
   } else {
     return Promise.reject(new Incident("todo", "Connect must define `credentials`"));
   }
-  return new api.Api(apiContext, requestIO);
+  return new api.Api(apiContext, requestIo);
 }

@@ -1,5 +1,5 @@
-import {posix} from "path";
-import {resolve as resolveUri} from "url";
+import { posix } from "path";
+import {resolve as resolveUri } from "url";
 
 function joinPath(parts: string[]): string {
   return posix.join.apply(null, parts);
