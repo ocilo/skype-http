@@ -3,6 +3,7 @@
 - **[Feature]** Expose detailed errors for endpoint registration.
 - **[Internal]** Update project tools to [turbo-gulp](https://www.npmjs.com/package/turbo-gulp)
 - **[Internal]** Enable integration with Codecov
+- **[Internal]** Enable integration with Greenkeeper
 
 # 0.0.13 (2017-07-16)
 
