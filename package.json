@@ -41,7 +41,7 @@
     "bluebird": "^3.5.1",
     "cheerio": "^1.0.0-rc.2",
     "incident": "^3.0.0",
-    "js-sha256": "^0.7.1",
+    "js-sha256": "^0.8.0",
     "lodash": "^4.17.4",
     "request": "^2.83.0",
     "tough-cookie": "^2.3.3"
@@ -58,7 +58,7 @@
     "gulp": "github:gulpjs/gulp#4.0",
     "gulp-cli": "^1.4.0",
     "minimist": "^1.2.0",
-    "mocha": "^3.5.3",
+    "mocha": "^4.0.1",
     "pre-commit": "^1.2.2",
     "ts-node": "^3.3.0",
     "tslint": "^5.8.0",
