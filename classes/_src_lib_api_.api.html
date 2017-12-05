@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Api | Skype-Http</title>
+	<title>Api | Skype Http</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">Skype-Http</a>
+					<a href="../index.html" class="title">Skype Http</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -73,7 +73,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html" class="tsd-signature-type">EventEmitter</a>
+						<span class="tsd-signature-type">EventEmitter</span>
 						<ul class="tsd-hierarchy">
 							<li>
 								<span class="target">Api</span>
@@ -154,7 +154,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/62c4a2c/src/lib/api.ts#L22">src/lib/api.ts:22</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/18a4f1c/src/lib/api.ts#L26">src/lib/api.ts:26</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -179,7 +179,7 @@
 					<div class="tsd-signature tsd-kind-icon">context<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ApiContext</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/62c4a2c/src/lib/api.ts#L21">src/lib/api.ts:21</a></li>
+							<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/18a4f1c/src/lib/api.ts#L25">src/lib/api.ts:25</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -189,7 +189,7 @@
 					<div class="tsd-signature tsd-kind-icon">io<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_src_lib_interfaces_http_io_.httpio.html" class="tsd-signature-type">HttpIo</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/62c4a2c/src/lib/api.ts#L20">src/lib/api.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/18a4f1c/src/lib/api.ts#L24">src/lib/api.ts:24</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -199,7 +199,7 @@
 					<div class="tsd-signature tsd-kind-icon">messages<wbr>Poller<span class="tsd-signature-symbol">:</span> <a href="_src_lib_polling_messages_poller_.messagespoller.html" class="tsd-signature-type">MessagesPoller</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/62c4a2c/src/lib/api.ts#L22">src/lib/api.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/18a4f1c/src/lib/api.ts#L26">src/lib/api.ts:26</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -208,9 +208,9 @@
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> default<wbr>Max<wbr>Listeners</h3>
 					<div class="tsd-signature tsd-kind-icon">default<wbr>Max<wbr>Listeners<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html">EventEmitter</a>.<a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html#defaultmaxlisteners">defaultMaxListeners</a></p>
+						<p>Inherited from EventEmitter.defaultMaxListeners</p>
 						<ul>
-							<li>Defined in node_modules/@types/node/index.d.ts:622</li>
+							<li>Defined in node_modules/@types/node/index.d.ts:812</li>
 						</ul>
 					</aside>
 				</section>
@@ -227,7 +227,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/62c4a2c/src/lib/api.ts#L33">src/lib/api.ts:33</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/18a4f1c/src/lib/api.ts#L38">src/lib/api.ts:38</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -244,16 +244,15 @@
 					<a name="addlistener" class="tsd-anchor"></a>
 					<h3>add<wbr>Listener</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Listener<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">symbol</span>, listener<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Listener<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">symbol</span>, listener<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_src_lib_api_.apievents.html">ApiEvents</a>.<a href="../interfaces/_src_lib_api_.apievents.html#addlistener">addListener</a></p>
-								<p>Inherited from <a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html">EventEmitter</a>.<a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html#addlistener">addListener</a></p>
-								<p>Overrides <a href="_node_modules__types_node_index_d_.nodejs.eventemitter.html">EventEmitter</a>.<a href="_node_modules__types_node_index_d_.nodejs.eventemitter.html#addlistener">addListener</a></p>
+								<p>Inherited from EventEmitter.addListener</p>
+								<p>Overrides EventEmitter.addListener</p>
 								<ul>
-									<li>Defined in node_modules/@types/node/index.d.ts:624</li>
+									<li>Defined in node_modules/@types/node/index.d.ts:814</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -262,7 +261,25 @@
 									<h5>event: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">symbol</span></h5>
 								</li>
 								<li>
-									<h5>listener: <span class="tsd-signature-type">Function</span></h5>
+									<h5>listener: <span class="tsd-signature-type">function</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>args: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
@@ -279,7 +296,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/62c4a2c/src/lib/api.ts#L38">src/lib/api.ts:38</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/18a4f1c/src/lib/api.ts#L43">src/lib/api.ts:43</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -302,10 +319,10 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_src_lib_api_.apievents.html">ApiEvents</a>.<a href="../interfaces/_src_lib_api_.apievents.html#emit">emit</a></p>
-								<p>Inherited from <a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html">EventEmitter</a>.<a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html#emit">emit</a></p>
-								<p>Overrides <a href="_node_modules__types_node_index_d_.nodejs.eventemitter.html">EventEmitter</a>.<a href="_node_modules__types_node_index_d_.nodejs.eventemitter.html#emit">emit</a></p>
+								<p>Inherited from EventEmitter.emit</p>
+								<p>Overrides EventEmitter.emit</p>
 								<ul>
-									<li>Defined in node_modules/@types/node/index.d.ts:634</li>
+									<li>Defined in node_modules/@types/node/index.d.ts:824</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -325,19 +342,19 @@
 					<a name="eventnames" class="tsd-anchor"></a>
 					<h3>event<wbr>Names</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">event<wbr>Names<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">event<wbr>Names<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_src_lib_api_.apievents.html">ApiEvents</a>.<a href="../interfaces/_src_lib_api_.apievents.html#eventnames">eventNames</a></p>
-								<p>Inherited from <a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html">EventEmitter</a>.<a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html#eventnames">eventNames</a></p>
-								<p>Overrides <a href="_node_modules__types_node_index_d_.nodejs.eventemitter.html">EventEmitter</a>.<a href="_node_modules__types_node_index_d_.nodejs.eventemitter.html#eventnames">eventNames</a></p>
+								<p>Inherited from EventEmitter.eventNames</p>
+								<p>Overrides EventEmitter.eventNames</p>
 								<ul>
-									<li>Defined in node_modules/@types/node/index.d.ts:635</li>
+									<li>Defined in node_modules/@types/node/index.d.ts:825</li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -351,7 +368,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/62c4a2c/src/lib/api.ts#L43">src/lib/api.ts:43</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/18a4f1c/src/lib/api.ts#L48">src/lib/api.ts:48</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -374,7 +391,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/62c4a2c/src/lib/api.ts#L47">src/lib/api.ts:47</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/18a4f1c/src/lib/api.ts#L52">src/lib/api.ts:52</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_src_lib_interfaces_api_contact_.contact.html" class="tsd-signature-type">Contact</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -391,7 +408,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/62c4a2c/src/lib/api.ts#L51">src/lib/api.ts:51</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/18a4f1c/src/lib/api.ts#L56">src/lib/api.ts:56</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -414,7 +431,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/62c4a2c/src/lib/api.ts#L55">src/lib/api.ts:55</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/18a4f1c/src/lib/api.ts#L60">src/lib/api.ts:60</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_src_lib_interfaces_api_conversation_.conversation.html" class="tsd-signature-type">Conversation</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -431,10 +448,10 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_src_lib_api_.apievents.html">ApiEvents</a>.<a href="../interfaces/_src_lib_api_.apievents.html#getmaxlisteners">getMaxListeners</a></p>
-								<p>Inherited from <a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html">EventEmitter</a>.<a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html#getmaxlisteners">getMaxListeners</a></p>
-								<p>Overrides <a href="_node_modules__types_node_index_d_.nodejs.eventemitter.html">EventEmitter</a>.<a href="_node_modules__types_node_index_d_.nodejs.eventemitter.html#getmaxlisteners">getMaxListeners</a></p>
+								<p>Inherited from EventEmitter.getMaxListeners</p>
+								<p>Overrides EventEmitter.getMaxListeners</p>
 								<ul>
-									<li>Defined in node_modules/@types/node/index.d.ts:632</li>
+									<li>Defined in node_modules/@types/node/index.d.ts:822</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -451,7 +468,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/62c4a2c/src/lib/api.ts#L67">src/lib/api.ts:67</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/18a4f1c/src/lib/api.ts#L72">src/lib/api.ts:72</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">ApiContext.Json</span></h4>
@@ -468,7 +485,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/62c4a2c/src/lib/api.ts#L91">src/lib/api.ts:91</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/18a4f1c/src/lib/api.ts#L96">src/lib/api.ts:96</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -491,7 +508,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/62c4a2c/src/lib/api.ts#L78">src/lib/api.ts:78</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/18a4f1c/src/lib/api.ts#L83">src/lib/api.ts:83</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -513,10 +530,10 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_src_lib_api_.apievents.html">ApiEvents</a>.<a href="../interfaces/_src_lib_api_.apievents.html#listenercount">listenerCount</a></p>
-								<p>Inherited from <a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html">EventEmitter</a>.<a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html#listenercount">listenerCount</a></p>
-								<p>Overrides <a href="_node_modules__types_node_index_d_.nodejs.eventemitter.html">EventEmitter</a>.<a href="_node_modules__types_node_index_d_.nodejs.eventemitter.html#listenercount">listenerCount</a></p>
+								<p>Inherited from EventEmitter.listenerCount</p>
+								<p>Overrides EventEmitter.listenerCount</p>
 								<ul>
-									<li>Defined in node_modules/@types/node/index.d.ts:636</li>
+									<li>Defined in node_modules/@types/node/index.d.ts:826</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -539,10 +556,10 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_src_lib_api_.apievents.html">ApiEvents</a>.<a href="../interfaces/_src_lib_api_.apievents.html#listeners">listeners</a></p>
-								<p>Inherited from <a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html">EventEmitter</a>.<a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html#listeners">listeners</a></p>
-								<p>Overrides <a href="_node_modules__types_node_index_d_.nodejs.eventemitter.html">EventEmitter</a>.<a href="_node_modules__types_node_index_d_.nodejs.eventemitter.html#listeners">listeners</a></p>
+								<p>Inherited from EventEmitter.listeners</p>
+								<p>Overrides EventEmitter.listeners</p>
 								<ul>
-									<li>Defined in node_modules/@types/node/index.d.ts:633</li>
+									<li>Defined in node_modules/@types/node/index.d.ts:823</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -559,16 +576,15 @@
 					<a name="on" class="tsd-anchor"></a>
 					<h3>on</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">on<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">symbol</span>, listener<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">on<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">symbol</span>, listener<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_src_lib_api_.apievents.html">ApiEvents</a>.<a href="../interfaces/_src_lib_api_.apievents.html#on">on</a></p>
-								<p>Inherited from <a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html">EventEmitter</a>.<a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html#on">on</a></p>
-								<p>Overrides <a href="_node_modules__types_node_index_d_.nodejs.eventemitter.html">EventEmitter</a>.<a href="_node_modules__types_node_index_d_.nodejs.eventemitter.html#on">on</a></p>
+								<p>Inherited from EventEmitter.on</p>
+								<p>Overrides EventEmitter.on</p>
 								<ul>
-									<li>Defined in node_modules/@types/node/index.d.ts:625</li>
+									<li>Defined in node_modules/@types/node/index.d.ts:815</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -577,7 +593,25 @@
 									<h5>event: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">symbol</span></h5>
 								</li>
 								<li>
-									<h5>listener: <span class="tsd-signature-type">Function</span></h5>
+									<h5>listener: <span class="tsd-signature-type">function</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>args: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
@@ -588,16 +622,15 @@
 					<a name="once" class="tsd-anchor"></a>
 					<h3>once</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">once<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">symbol</span>, listener<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">once<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">symbol</span>, listener<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_src_lib_api_.apievents.html">ApiEvents</a>.<a href="../interfaces/_src_lib_api_.apievents.html#once">once</a></p>
-								<p>Inherited from <a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html">EventEmitter</a>.<a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html#once">once</a></p>
-								<p>Overrides <a href="_node_modules__types_node_index_d_.nodejs.eventemitter.html">EventEmitter</a>.<a href="_node_modules__types_node_index_d_.nodejs.eventemitter.html#once">once</a></p>
+								<p>Inherited from EventEmitter.once</p>
+								<p>Overrides EventEmitter.once</p>
 								<ul>
-									<li>Defined in node_modules/@types/node/index.d.ts:626</li>
+									<li>Defined in node_modules/@types/node/index.d.ts:816</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -606,7 +639,25 @@
 									<h5>event: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">symbol</span></h5>
 								</li>
 								<li>
-									<h5>listener: <span class="tsd-signature-type">Function</span></h5>
+									<h5>listener: <span class="tsd-signature-type">function</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>args: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
@@ -617,16 +668,15 @@
 					<a name="prependlistener" class="tsd-anchor"></a>
 					<h3>prepend<wbr>Listener</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">prepend<wbr>Listener<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">symbol</span>, listener<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">prepend<wbr>Listener<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">symbol</span>, listener<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_src_lib_api_.apievents.html">ApiEvents</a>.<a href="../interfaces/_src_lib_api_.apievents.html#prependlistener">prependListener</a></p>
-								<p>Inherited from <a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html">EventEmitter</a>.<a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html#prependlistener">prependListener</a></p>
-								<p>Overrides <a href="_node_modules__types_node_index_d_.nodejs.eventemitter.html">EventEmitter</a>.<a href="_node_modules__types_node_index_d_.nodejs.eventemitter.html#prependlistener">prependListener</a></p>
+								<p>Inherited from EventEmitter.prependListener</p>
+								<p>Overrides EventEmitter.prependListener</p>
 								<ul>
-									<li>Defined in node_modules/@types/node/index.d.ts:627</li>
+									<li>Defined in node_modules/@types/node/index.d.ts:817</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -635,7 +685,25 @@
 									<h5>event: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">symbol</span></h5>
 								</li>
 								<li>
-									<h5>listener: <span class="tsd-signature-type">Function</span></h5>
+									<h5>listener: <span class="tsd-signature-type">function</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>args: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
@@ -646,16 +714,15 @@
 					<a name="prependoncelistener" class="tsd-anchor"></a>
 					<h3>prepend<wbr>Once<wbr>Listener</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">prepend<wbr>Once<wbr>Listener<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">symbol</span>, listener<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">prepend<wbr>Once<wbr>Listener<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">symbol</span>, listener<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_src_lib_api_.apievents.html">ApiEvents</a>.<a href="../interfaces/_src_lib_api_.apievents.html#prependoncelistener">prependOnceListener</a></p>
-								<p>Inherited from <a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html">EventEmitter</a>.<a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html#prependoncelistener">prependOnceListener</a></p>
-								<p>Overrides <a href="_node_modules__types_node_index_d_.nodejs.eventemitter.html">EventEmitter</a>.<a href="_node_modules__types_node_index_d_.nodejs.eventemitter.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Inherited from EventEmitter.prependOnceListener</p>
+								<p>Overrides EventEmitter.prependOnceListener</p>
 								<ul>
-									<li>Defined in node_modules/@types/node/index.d.ts:628</li>
+									<li>Defined in node_modules/@types/node/index.d.ts:818</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -664,7 +731,25 @@
 									<h5>event: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">symbol</span></h5>
 								</li>
 								<li>
-									<h5>listener: <span class="tsd-signature-type">Function</span></h5>
+									<h5>listener: <span class="tsd-signature-type">function</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>args: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
@@ -681,10 +766,10 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_src_lib_api_.apievents.html">ApiEvents</a>.<a href="../interfaces/_src_lib_api_.apievents.html#removealllisteners">removeAllListeners</a></p>
-								<p>Inherited from <a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html">EventEmitter</a>.<a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html#removealllisteners">removeAllListeners</a></p>
-								<p>Overrides <a href="_node_modules__types_node_index_d_.nodejs.eventemitter.html">EventEmitter</a>.<a href="_node_modules__types_node_index_d_.nodejs.eventemitter.html#removealllisteners">removeAllListeners</a></p>
+								<p>Inherited from EventEmitter.removeAllListeners</p>
+								<p>Overrides EventEmitter.removeAllListeners</p>
 								<ul>
-									<li>Defined in node_modules/@types/node/index.d.ts:630</li>
+									<li>Defined in node_modules/@types/node/index.d.ts:820</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -701,16 +786,15 @@
 					<a name="removelistener" class="tsd-anchor"></a>
 					<h3>remove<wbr>Listener</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">remove<wbr>Listener<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">symbol</span>, listener<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">remove<wbr>Listener<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">symbol</span>, listener<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_src_lib_api_.apievents.html">ApiEvents</a>.<a href="../interfaces/_src_lib_api_.apievents.html#removelistener">removeListener</a></p>
-								<p>Inherited from <a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html">EventEmitter</a>.<a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html#removelistener">removeListener</a></p>
-								<p>Overrides <a href="_node_modules__types_node_index_d_.nodejs.eventemitter.html">EventEmitter</a>.<a href="_node_modules__types_node_index_d_.nodejs.eventemitter.html#removelistener">removeListener</a></p>
+								<p>Inherited from EventEmitter.removeListener</p>
+								<p>Overrides EventEmitter.removeListener</p>
 								<ul>
-									<li>Defined in node_modules/@types/node/index.d.ts:629</li>
+									<li>Defined in node_modules/@types/node/index.d.ts:819</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -719,7 +803,25 @@
 									<h5>event: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">symbol</span></h5>
 								</li>
 								<li>
-									<h5>listener: <span class="tsd-signature-type">Function</span></h5>
+									<h5>listener: <span class="tsd-signature-type">function</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>args: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
@@ -736,7 +838,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/62c4a2c/src/lib/api.ts#L63">src/lib/api.ts:63</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/18a4f1c/src/lib/api.ts#L68">src/lib/api.ts:68</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -762,7 +864,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/62c4a2c/src/lib/api.ts#L59">src/lib/api.ts:59</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/18a4f1c/src/lib/api.ts#L64">src/lib/api.ts:64</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -788,10 +890,10 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_src_lib_api_.apievents.html">ApiEvents</a>.<a href="../interfaces/_src_lib_api_.apievents.html#setmaxlisteners">setMaxListeners</a></p>
-								<p>Inherited from <a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html">EventEmitter</a>.<a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html#setmaxlisteners">setMaxListeners</a></p>
-								<p>Overrides <a href="_node_modules__types_node_index_d_.nodejs.eventemitter.html">EventEmitter</a>.<a href="_node_modules__types_node_index_d_.nodejs.eventemitter.html#setmaxlisteners">setMaxListeners</a></p>
+								<p>Inherited from EventEmitter.setMaxListeners</p>
+								<p>Overrides EventEmitter.setMaxListeners</p>
 								<ul>
-									<li>Defined in node_modules/@types/node/index.d.ts:631</li>
+									<li>Defined in node_modules/@types/node/index.d.ts:821</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -808,13 +910,13 @@
 					<a name="setstatus" class="tsd-anchor"></a>
 					<h3>set<wbr>Status</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Status<span class="tsd-signature-symbol">(</span>status<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">api.Status</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Status<span class="tsd-signature-symbol">(</span>status<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">api.Status</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/62c4a2c/src/lib/api.ts#L71">src/lib/api.ts:71</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/18a4f1c/src/lib/api.ts#L76">src/lib/api.ts:76</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -823,7 +925,7 @@
 									<h5>status: <span class="tsd-signature-type">api.Status</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -837,7 +939,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/62c4a2c/src/lib/api.ts#L86">src/lib/api.ts:86</a></li>
+									<li>Defined in <a href="https://github.com/ocilo/skype-http/blob/18a4f1c/src/lib/api.ts#L91">src/lib/api.ts:91</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -853,20 +955,20 @@
 					<a name="listenercount-1" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> listener<wbr>Count</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">listener<wbr>Count<span class="tsd-signature-symbol">(</span>emitter<span class="tsd-signature-symbol">: </span><a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html" class="tsd-signature-type">EventEmitter</a>, event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+						<li class="tsd-signature tsd-kind-icon">listener<wbr>Count<span class="tsd-signature-symbol">(</span>emitter<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">EventEmitter</span>, event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html">EventEmitter</a>.<a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html#listenercount-1">listenerCount</a></p>
+								<p>Inherited from EventEmitter.listenerCount</p>
 								<ul>
-									<li>Defined in node_modules/@types/node/index.d.ts:621</li>
+									<li>Defined in node_modules/@types/node/index.d.ts:811</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>emitter: <a href="_node_modules__types_node_index_d_._events_.internal.eventemitter.html" class="tsd-signature-type">EventEmitter</a></h5>
+									<h5>emitter: <span class="tsd-signature-type">EventEmitter</span></h5>
 								</li>
 								<li>
 									<h5>event: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">symbol</span></h5>
