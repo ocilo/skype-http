@@ -39,7 +39,11 @@ export namespace SkypeToken {
 }
 
 /**
- * Represents the OAuth registration token. This token allows to subscribe to resources (receive messages).
+ * Represents the OAuth registration token.
+ * Here are some of the actions requiring a registration token:
+ * - set status
+ * - send message
+ * - get conversations list
  */
 export interface RegistrationToken {
   value: string;

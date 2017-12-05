@@ -50,9 +50,9 @@ const lib: buildTools.LibTarget = {
   },
   typedoc: {
     dir: "typedoc",
-    name: "Incident",
+    name: "Skype Http",
     deploy: {
-      repository: "git@github.com:demurgos/incident.git",
+      repository: "git@github.com:ocilo/skype-http.git",
       branch: "gh-pages",
     },
   },

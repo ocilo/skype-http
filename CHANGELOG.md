@@ -1,5 +1,6 @@
 # Next
 
+- **[Feature]** Expose detailed errors for endpoint registration.
 - **[Internal]** Update project tools to [turbo-gulp](https://www.npmjs.com/package/turbo-gulp)
 
 # 0.0.13 (2017-07-16)

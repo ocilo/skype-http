@@ -34,6 +34,7 @@
     "@types/lodash": "^4.14.85",
     "@types/request": "^2.0.8",
     "@types/tough-cookie": "^2.3.2",
+    "assertion-error": "^1.0.2",
     "async-file": "^2.0.2",
     "big-integer": "^1.6.25",
     "bluebird": "^3.5.1",

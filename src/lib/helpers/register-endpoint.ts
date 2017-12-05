@@ -2,7 +2,9 @@ import { Incident } from "incident";
 import { Store as CookieStore } from "tough-cookie";
 import { parse as parseUri, Url } from "url";
 import * as Consts from "../consts";
+import { EndpointRegistrationError } from "../errors/endpoint-registration";
 import { MissingHeaderError, UnexpectedHttpStatusError } from "../errors/http";
+import { LoginRateLimitExceeded, RedirectionLimit } from "../errors/index";
 import { RegistrationToken, SkypeToken } from "../interfaces/api/context";
 import * as io from "../interfaces/http-io";
 import * as messagesUri from "../messages-uri";
@@ -54,6 +56,7 @@ function getLockAndKeyHeader(time: number): string {
  * @param retries Number of request retries before emitting an error. Example: if `retries` is `1`, this function
  *                will send 1 or 2 requests.
  * @return Registration token
+ * @throws [[EndpointRegistrationError]]
  */
 export async function registerEndpoint(
   io: io.HttpIo,
@@ -87,27 +90,23 @@ export async function registerEndpoint(
 
     if (res.statusCode === 429) {
       // Expected res.body: `'{"errorCode":803,"message":"Login Rate limit exceeded"}'`
-      type Cause = Incident<{tries: {req: io.PostOptions; res: io.Response}[]}>;
-      const cause: Cause = Incident("LoginRateLimitExceeded", {tries});
-      throw new Incident(cause, "EndpointRegistrationError", "Unable to register endpoint");
+      throw new EndpointRegistrationError(LoginRateLimitExceeded.create(req, res), tries);
     }
 
     const expectedStatusCode: Set<number> = new Set([201, 301]);
     if (!expectedStatusCode.has(res.statusCode)) {
-      const cause: UnexpectedHttpStatusError = UnexpectedHttpStatusError.create(res, expectedStatusCode, req);
-      throw new Incident(cause, "EndpointRegistrationError", "Unable to register endpoint");
+      throw new EndpointRegistrationError(UnexpectedHttpStatusError.create(res, expectedStatusCode, req), tries);
     }
 
     const locationHeader: string | undefined = res.headers["location"];
     if (locationHeader === undefined) {
-      const cause: MissingHeaderError = MissingHeaderError.create(res, "Location", req);
-      throw new Incident(cause, "EndpointRegistrationError", "Unable to register endpoint");
+      throw new EndpointRegistrationError(MissingHeaderError.create(res, "Location", req), tries);
     }
 
     // TODO: parse in messages-uri.ts
     const location: Url = parseUri(locationHeader);
     if (location.host === undefined) {
-      throw new Incident("ParseError", "Expected location to define host");
+      throw new Incident("ParseError", {res}, "Expected `Location` header to have host");
     }
     // Handle redirections, up to `retry` times
     if (location.host !== messagesHostname) { // mainly when 301, but sometimes when 201
@@ -119,16 +118,13 @@ export async function registerEndpoint(
     const registrationTokenHeader: string | undefined = res.headers["set-registrationtoken"];
 
     if (registrationTokenHeader === undefined) {
-      const cause: MissingHeaderError = MissingHeaderError.create(res, "Set-Registrationtoken", req);
-      throw new Incident(cause, "EndpointRegistrationError", "Unable to register endpoint");
+      throw new EndpointRegistrationError(MissingHeaderError.create(res, "Set-Registrationtoken", req), tries);
     }
 
     return readSetRegistrationTokenHeader(messagesHostname, registrationTokenHeader);
   }
 
-  type Cause = Incident<{tries: {req: io.PostOptions; res: io.Response}[]}>;
-  const cause: Cause = Incident("EndpointRedirectionsLimit", {tries});
-  throw new Incident(cause, "EndpointRegistrationError", "Unable to register endpoint");
+  throw new EndpointRegistrationError(RedirectionLimit.create(retries), tries);
 }
 
 /**
