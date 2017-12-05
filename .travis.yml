@@ -9,8 +9,11 @@ node_js:
 - stable
 
 before_install:
-- npm install -g gulp-cli
+- npm install -g gulp-cli codecov
 
 script:
 - npm test
 - if [[ -n "${NPM_TOKEN}" ]]; then echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc && ./tools/continuous-deployment.travis.sh; fi
+
+after_script:
+- codecov
