@@ -131,7 +131,7 @@
     "no-unused-expression": true,
     "no-var-keyword": true,
     "no-var-requires": true,
-    "number-literal-format": true,
+    "number-literal-format": false,
     "object-literal-key-quotes": [
       true,
       "consistent-as-needed"

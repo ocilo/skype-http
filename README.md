@@ -9,18 +9,25 @@ This relies on the Skype Web Application and requires the credentials of the acc
 
 ## Installation
 
-````shell
-npm install --save skype-http
+- Stable version:
 
-````
+  ````shell
+  npm install --save skype-http
+  ````
+
+- Git master:
+
+  ```shell
+  npm install --save skype-http@next
+  ```
 
 Import for Typescript or Javascript ES6:
-````ts
+````typescript
 import * as skypeHttp from "skype-http";
 ````
 
 Import for Javascript ES5:
-````js
+````javascript
 var skypeHttp = require("skype-http");
 ````
 

@@ -13,7 +13,8 @@
     "prepare": "gulp all:tsconfig.json && gulp :tslint.json && gulp dist",
     "prestart": "gulp example:build",
     "start": "node build/example/example/main.js",
-    "test": "gulp :lint && gulp test",
+    "pretest": "gulp :lint && gulp lib:build",
+    "test": "gulp test",
     "test-online": "OCILO_TEST_ONLINE=true npm test",
     "prepublishOnly": "npm run test-online",
     "lint": "gulp :lint"
@@ -61,7 +62,7 @@
     "pre-commit": "^1.2.2",
     "ts-node": "^3.3.0",
     "tslint": "^5.8.0",
-    "turbo-gulp": "^0.15.5",
+    "turbo-gulp": "^0.15.8",
     "typescript": "^2.6.1"
   }
 }
