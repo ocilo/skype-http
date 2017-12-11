@@ -66,18 +66,28 @@
 			<div class="tsd-panel tsd-typography">
 				<h1 id="skype-http">Skype-Http</h1>
 				<p><a href="https://www.npmjs.com/package/skype-http"><img src="https://img.shields.io/npm/v/skype-http.svg?maxAge=2592000" alt="npm"></a>
+					<a href="https://github.com/ocilo/skype-http"><img src="https://img.shields.io/badge/Github-ocilo%2Fskype--http-blue.svg" alt="GitHub repository"></a>
+					<a href="https://codecov.io/gh/ocilo/skype-http"><img src="https://codecov.io/gh/ocilo/skype-http/branch/master/graph/badge.svg" alt="Codecov"></a>
 					<a href="https://travis-ci.org/ocilo/skype-http"><img src="https://img.shields.io/travis/ocilo/skype-http/master.svg?maxAge=2592000" alt="Build status"></a>
-				<a href="https://github.com/ocilo/skype-http"><img src="https://img.shields.io/badge/Github-ocilo%2Fskype--http-blue.svg" alt="GitHub repository"></a></p>
+				<a href="https://greenkeeper.io/"><img src="https://badges.greenkeeper.io/ocilo/skype-http.svg" alt="Greenkeeper badge"></a></p>
 				<p>Unofficial Skype API for Node.js via HTTP.
 				This relies on the Skype Web Application and requires the credentials of the account you want to use: use it with care.</p>
 				<h2 id="installation">Installation</h2>
-				<pre><code class="lang-shell">npm install --save skype-http
+				<ul>
+					<li><p>Stable version:</p>
+						<pre><code class="lang-shell">npm install --save skype-http
 </code></pre>
+					</li>
+					<li><p>Git master:</p>
+						<pre><code class="lang-shell">npm install --save skype-http@next
+</code></pre>
+					</li>
+				</ul>
 				<p>Import for Typescript or Javascript ES6:</p>
-				<pre><code class="lang-ts"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> skypeHttp <span class="hljs-keyword">from</span> <span class="hljs-string">"skype-http"</span>;
+				<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> skypeHttp <span class="hljs-keyword">from</span> <span class="hljs-string">"skype-http"</span>;
 </code></pre>
 				<p>Import for Javascript ES5:</p>
-				<pre><code class="lang-js"><span class="hljs-keyword">var</span> skypeHttp = <span class="hljs-built_in">require</span>(<span class="hljs-string">"skype-http"</span>);
+				<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> skypeHttp = <span class="hljs-built_in">require</span>(<span class="hljs-string">"skype-http"</span>);
 </code></pre>
 				<h2 id="running-example">Running example</h2>
 				<p>The demo will prompt you your username and password: you should use your Skype account (there is no support for
