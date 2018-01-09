@@ -1,4 +1,4 @@
-import * as _ from "lodash";
+import _ from "lodash";
 
 // github:demurgos/skype-web-reversed -> utils/people/userDataProcessor.js
 export function sanitizeXml(xmlString: string) {

@@ -144,6 +144,9 @@ echo "Successfully deployed to npm"
 # gh-pages deployment                                                         #
 ###############################################################################
 
+echo "Skipping deployment to gh-pages: waiting for typedoc@0.10.0"
+exit 0
+
 echo "Deploying to gh-pages..."
 
 # Get the deploy key by using Travis's stored variables to decrypt deploy_key.enc

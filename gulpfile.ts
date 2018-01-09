@@ -1,8 +1,7 @@
 import * as buildTools from "turbo-gulp";
 
-import * as gulp from "gulp";
-import * as minimist from "minimist";
-import { ParsedArgs } from "minimist";
+import gulp from "gulp";
+import minimist, { ParsedArgs } from "minimist";
 
 interface Options {
   devDist?: string;
@@ -69,6 +68,7 @@ const example: buildTools.NodeTarget = {
   tsconfigJson: "src/example/tsconfig.json",
   mainModule: "example/main",
   customTypingsDir: "src/custom-typings",
+  outModules: buildTools.OutModules.Both,
   tscOptions: {
     skipLibCheck: true,
   },

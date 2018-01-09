@@ -1,5 +1,5 @@
 import { Incident } from "incident";
-import { MemoryCookieStore, Store as CookieStore } from "tough-cookie";
+import toughCookie from "tough-cookie";
 import * as Consts from "./consts";
 import { registerEndpoint } from "./helpers/register-endpoint";
 import { Credentials } from "./interfaces/api/api";
@@ -10,7 +10,7 @@ import * as microsoftAccount from "./providers/microsoft-account";
 
 interface IoOptions {
   io: io.HttpIo;
-  cookies: CookieStore;
+  cookies: toughCookie.Store;
 }
 
 export interface LoginOptions {
@@ -32,7 +32,7 @@ export interface LoginOptions {
  * @returns A new API context with the tokens for the provided user
  */
 export async function login(options: LoginOptions): Promise<ApiContext> {
-  const cookies: MemoryCookieStore = new MemoryCookieStore();
+  const cookies: toughCookie.MemoryCookieStore = new toughCookie.MemoryCookieStore();
   const ioOptions: IoOptions = {io: options.io, cookies};
 
   const skypeToken: SkypeToken = await microsoftAccount.login({

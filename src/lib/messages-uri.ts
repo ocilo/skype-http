@@ -1,6 +1,6 @@
 import { Incident } from "incident";
-import { posix } from "path";
-import { parse as parseUri, resolve as resolveUri, Url } from "url";
+import path from "path";
+import url from "url";
 
 export const DEFAULT_USER: string = "ME";
 export const DEFAULT_ENDPOINT: string = "SELF";
@@ -11,7 +11,7 @@ const MESSAGES_PATTERN: RegExp = /^\/v1\/users\/([^/]+)\/conversations\/([^/]+)\
 const MESSAGE_PATTERN: RegExp = /^\/v1\/users\/([^/]+)\/conversations\/([^/]+)\/messages\/([^/]+)$/;
 
 function joinPath(parts: string[]): string {
-  return posix.join.apply(null, parts);
+  return path.posix.join.apply(null, parts);
 }
 
 // The following functions build an array of parts to build the path
@@ -129,8 +129,8 @@ function getOrigin(host: string): string {
   return host === null ? "" : "https://" + host;
 }
 
-function get(host: string, path: string) {
-  return resolveUri(getOrigin(host), path);
+function get(host: string, p: string) {
+  return url.resolve(getOrigin(host), p);
 }
 
 export function thread(host: string, threadId: string): string {
@@ -230,7 +230,7 @@ export interface MessageUri {
 }
 
 export function parseMessage(uri: string): MessageUri {
-  const parsed: Url = parseUri(uri);
+  const parsed: url.Url = url.parse(uri);
   if (parsed.host === undefined || parsed.pathname === undefined) {
     throw new Incident("parse-error", "Expected URI to have a host and path");
   }
@@ -252,7 +252,7 @@ export interface ContactUri {
   contact: string;
 }
 export function parseContact(uri: string): ContactUri {
-  const parsed: Url = parseUri(uri);
+  const parsed: url.Url = url.parse(uri);
   if (parsed.host === undefined || parsed.pathname === undefined) {
     throw new Incident("parse-error", "Expected URI to have a host and path");
   }
@@ -274,7 +274,7 @@ export interface ConversationUri {
 }
 
 export function parseConversation(uri: string): ConversationUri {
-  const parsed: Url = parseUri(uri);
+  const parsed: url.Url = url.parse(uri);
   if (parsed.host === undefined || parsed.pathname === undefined) {
     throw new Incident("parse-error", "Expected URI to have a host and path");
   }

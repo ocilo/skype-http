@@ -1,6 +1,6 @@
 import { Incident } from "incident";
-import { Store as CookieStore } from "tough-cookie";
-import { parse as parseUri, Url } from "url";
+import toughCookie from "tough-cookie";
+import url from "url";
 import * as Consts from "../consts";
 import { EndpointRegistrationError } from "../errors/endpoint-registration";
 import { MissingHeaderError, UnexpectedHttpStatusError } from "../errors/http";
@@ -60,7 +60,7 @@ function getLockAndKeyHeader(time: number): string {
  */
 export async function registerEndpoint(
   io: io.HttpIo,
-  cookies: CookieStore,
+  cookies: toughCookie.Store,
   skypeToken: SkypeToken,
   messagesHostname: string,
   retries: number = 2,
@@ -104,7 +104,7 @@ export async function registerEndpoint(
     }
 
     // TODO: parse in messages-uri.ts
-    const location: Url = parseUri(locationHeader);
+    const location: url.Url = url.parse(locationHeader);
     if (location.host === undefined) {
       throw new Incident("ParseError", {res}, "Expected `Location` header to have host");
     }

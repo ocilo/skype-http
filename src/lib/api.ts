@@ -1,4 +1,4 @@
-import { EventEmitter } from "events";
+import events from "events";
 import { acceptContactRequest } from "./api/accept-contact-request";
 import { declineContactRequest } from "./api/decline-contact-request";
 import { getContact } from "./api/get-contact";
@@ -20,7 +20,7 @@ export interface ApiEvents extends NodeJS.EventEmitter {
 
 }
 
-export class Api extends EventEmitter implements ApiEvents {
+export class Api extends events.EventEmitter implements ApiEvents {
   io: HttpIo;
   context: ApiContext;
   messagesPoller: MessagesPoller;

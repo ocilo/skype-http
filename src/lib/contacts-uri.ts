@@ -1,8 +1,8 @@
-import { posix } from "path";
-import {resolve as resolveUri } from "url";
+import path from "path";
+import url from "url";
 
 function joinPath(parts: string[]): string {
-  return posix.join.apply(null, parts);
+  return path.posix.join.apply(null, parts);
 }
 
 const CONTACTS_HOST: string = "contacts.skype.com";
@@ -69,8 +69,8 @@ function getOrigin(): string {
   return "https://" + CONTACTS_HOST;
 }
 
-function get(path: string) {
-  return resolveUri(getOrigin(), path);
+function get(p: string) {
+  return url.resolve(getOrigin(), p);
 }
 
 // https://contacts.skype.com/contacts/v1/users/:username/contacts

@@ -1,6 +1,6 @@
-import * as fs from "fs";
-import * as sysPath from "path";
-import { createInterface, ReadLine } from "readline";
+import fs from "fs";
+import path from "path";
+import readline from "readline";
 import { Api as SkypeApi } from "../lib/api";
 import { VIRTUAL_CONTACTS } from "../lib/api/get-contact";
 import * as skypeHttp from "../lib/connect";
@@ -9,12 +9,13 @@ import { Contact } from "../lib/interfaces/api/contact";
 import { Context } from "../lib/interfaces/api/context";
 import * as events from "../lib/interfaces/api/events";
 import * as resources from "../lib/interfaces/api/resources";
+import meta from "./meta.js";
 
 /**
  * Command line interface prompt for the user credentials
  */
 async function promptCredentials(): Promise<Credentials> {
-  const cliInterface: ReadLine = createInterface({
+  const cliInterface: readline.ReadLine = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
   });
@@ -46,8 +47,8 @@ async function promptCredentials(): Promise<Credentials> {
   return result;
 }
 
-async function run(): Promise<void> {
-  const statePath: string = sysPath.resolve(__dirname, "api-state.json");
+async function runExample(): Promise<void> {
+  const statePath: string = path.resolve(meta.dirname, "api-state.json");
   let api: SkypeApi;
   try {
     const stateContent: string = fs.readFileSync(statePath).toString("utf8");
@@ -116,7 +117,7 @@ async function run(): Promise<void> {
   console.log("Ready");
 }
 
-run()
+runExample()
   .catch((err: Error): never => {
     console.error(err.stack);
     return process.exit(1) as never;

@@ -1,5 +1,5 @@
-import * as cheerio from "cheerio";
-import { EventEmitter } from "events";
+import cheerio from "cheerio";
+import _events from "events";
 import { Incident } from "incident";
 import { UnexpectedHttpStatusError } from "../errors/http";
 import { ParsedConversationId } from "../interfaces/api/api";
@@ -295,7 +295,7 @@ function formatEventMessage(native: nativeEvents.EventMessage): events.EventMess
   };
 }
 
-export class MessagesPoller extends EventEmitter {
+export class MessagesPoller extends _events.EventEmitter {
   io: httpIo.HttpIo;
   apiContext: ApiContext;
   intervalId: number | NodeJS.Timer | null;

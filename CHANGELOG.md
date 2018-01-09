@@ -1,6 +1,7 @@
 # Next
 
 - **[Feature]** Expose detailed errors for endpoint registration.
+- **[Feature]** Support ES modules (ESM)
 - **[Internal]** Update project tools to [turbo-gulp](https://www.npmjs.com/package/turbo-gulp)
 - **[Internal]** Enable integration with Codecov
 - **[Internal]** Enable integration with Greenkeeper

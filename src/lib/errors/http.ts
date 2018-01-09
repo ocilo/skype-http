@@ -1,5 +1,5 @@
 import { Incident } from "incident";
-import { inspect } from "util";
+import util from "util";
 import * as httpIo from "../interfaces/http-io";
 
 export namespace UnexpectedHttpStatusError {
@@ -24,11 +24,11 @@ export namespace UnexpectedHttpStatusError {
 
   export function format({expected, response, request}: Data) {
     const msg: string = `Received response with the HTTP status code \`${response.statusCode}\``
-      + ` but expected one of ${inspect(expected)}.`;
+      + ` but expected one of ${util.inspect(expected)}.`;
     if (request === undefined) {
-      return `${msg} Response: ${inspect(response)}`;
+      return `${msg} Response: ${util.inspect(response)}`;
     } else {
-      return `${msg} Request: ${inspect(request)}, Response: ${inspect(response)}`;
+      return `${msg} Request: ${util.inspect(request)}, Response: ${util.inspect(response)}`;
     }
   }
 
@@ -62,12 +62,12 @@ export namespace MissingHeaderError {
   export type Type = MissingHeaderError;
 
   export function format({headerName, response, request}: Data) {
-    const msg: string = `Received response with headers \`${inspect(response.headers)}\``
-      + ` where the expected header ${inspect(headerName)} is missing.`;
+    const msg: string = `Received response with headers \`${util.inspect(response.headers)}\``
+      + ` where the expected header ${util.inspect(headerName)} is missing.`;
     if (request === undefined) {
-      return `${msg} Response: ${inspect(response)}`;
+      return `${msg} Response: ${util.inspect(response)}`;
     } else {
-      return `${msg} Request: ${inspect(request)}, Response: ${inspect(response)}`;
+      return `${msg} Request: ${util.inspect(request)}, Response: ${util.inspect(response)}`;
     }
   }
 

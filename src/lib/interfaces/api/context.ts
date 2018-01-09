@@ -1,4 +1,4 @@
-import { CookieJar, MemoryCookieStore, Store as CookieStore } from "tough-cookie";
+import toughCookie from "tough-cookie";
 
 /**
  * Represents the OAuth token used for most calls to the Skype API.
@@ -98,7 +98,7 @@ export namespace RegistrationToken {
 // TODO(demurgos): Rename to `State` or even `ApiState` so it's easier to understand the purpose of this interface.
 export interface Context {
   username: string;
-  cookies: CookieStore;
+  cookies: toughCookie.Store;
   skypeToken: SkypeToken;
   registrationToken: RegistrationToken;
 }
@@ -109,7 +109,7 @@ export namespace Context {
    */
   export interface Json {
     username: string;
-    cookies: CookieJar.Serialized;
+    cookies: toughCookie.CookieJar.Serialized;
     skypeToken: SkypeToken.Json;
     registrationToken: RegistrationToken.Json;
   }
@@ -117,17 +117,17 @@ export namespace Context {
   export function toJson(context: Context): Json {
     return {
       username: context.username,
-      cookies: new CookieJar(context.cookies).serializeSync(),
+      cookies: new toughCookie.CookieJar(context.cookies).serializeSync(),
       skypeToken: SkypeToken.toJson(context.skypeToken),
       registrationToken: RegistrationToken.toJson(context.registrationToken),
     };
   }
 
   export function fromJson(context: Json): Context {
-    const cookies: MemoryCookieStore = new MemoryCookieStore();
+    const cookies: toughCookie.MemoryCookieStore = new toughCookie.MemoryCookieStore();
     // TODO: Send a PR to DefinitelyTyped to fix this
-    type DeserializeSync = (cookies: CookieJar.Serialized, store: CookieStore) => void;
-    (CookieJar.deserializeSync as DeserializeSync)(context.cookies, cookies);
+    type DeserializeSync = (cookies: toughCookie.CookieJar.Serialized, store: toughCookie.Store) => void;
+    (toughCookie.CookieJar.deserializeSync as DeserializeSync)(context.cookies, cookies);
 
     return {
       username: context.username,

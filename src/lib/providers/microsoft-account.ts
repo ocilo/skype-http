@@ -1,7 +1,7 @@
-import * as cheerio from "cheerio";
-import * as path from "path";
-import { Cookie, CookieJar, Store as CookieStore } from "tough-cookie";
-import * as url from "url";
+import cheerio from "cheerio";
+import path from "path";
+import toughCookie from "tough-cookie";
+import url from "url";
 import * as httpErrors from "../errors/http";
 import * as getLiveKeysErrors from "../errors/microsoft-account/get-live-keys";
 import * as getLiveTokenErrors from "../errors/microsoft-account/get-live-token";
@@ -47,7 +47,7 @@ export interface Credentials {
 export interface LoginOptions {
   credentials: Credentials;
   httpIo: io.HttpIo;
-  cookies: CookieStore;
+  cookies: toughCookie.Store;
 }
 
 export async function login(options: LoginOptions): Promise<SkypeToken> {
@@ -84,7 +84,7 @@ export async function login(options: LoginOptions): Promise<SkypeToken> {
 
 export interface LoadLiveKeysOptions {
   httpIo: io.HttpIo;
-  cookies: CookieStore;
+  cookies: toughCookie.Store;
 }
 
 export interface LiveKeys {
@@ -132,7 +132,8 @@ export async function getLiveKeys(options: LoadLiveKeysOptions): Promise<LiveKey
     let mspOk: string | undefined;
 
     // Retrieve values for the cookies "MSPRequ" and "MSPOK"
-    const cookies: Cookie[] = new CookieJar(options.cookies).getCookiesSync("https://login.live.com/");
+    const cookies: toughCookie.Cookie[] = new toughCookie.CookieJar(options.cookies)
+      .getCookiesSync("https://login.live.com/");
     for (const cookie of cookies) {
       switch (cookie.key) {
         case "MSPRequ":
@@ -197,7 +198,7 @@ export interface GetLiveTokenOptions {
   password: string;
   liveKeys: LiveKeys;
   httpIo: io.HttpIo;
-  cookies: CookieStore;
+  cookies: toughCookie.Store;
 }
 
 export async function getLiveToken(options: GetLiveTokenOptions): Promise<string> {
@@ -235,12 +236,12 @@ export async function requestLiveToken(options: GetLiveTokenOptions): Promise<io
   // MSPRequ should already be set
   // MSPOK should already be set
   const millisecondsSinceEpoch: number = Date.now(); // Milliseconds since epoch
-  const ckTstCookie: Cookie = new (<any> Cookie)({
+  const ckTstCookie: toughCookie.Cookie = new (<any> toughCookie.Cookie)({
     key: "CkTst",
     value: millisecondsSinceEpoch.toString(10),
   });
 
-  new CookieJar(options.cookies).setCookieSync(ckTstCookie, "https://login.live.com/");
+  new toughCookie.CookieJar(options.cookies).setCookieSync(ckTstCookie, "https://login.live.com/");
 
   const formData: any = {
     login: options.username,
@@ -289,7 +290,7 @@ export function scrapLiveToken(html: string): string {
 export interface GetSkypeTokenOptions {
   liveToken: string;
   httpIo: io.HttpIo;
-  cookies: CookieStore;
+  cookies: toughCookie.Store;
 }
 
 /**

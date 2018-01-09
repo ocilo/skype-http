@@ -1,6 +1,5 @@
-import * as bigInt from "big-integer";
-import { Buffer } from "buffer";
-import { sha256 } from "js-sha256";
+import bigInt from "big-integer";
+import sha256 from "js-sha256";
 
 const HEX_CHARS: string = "0123456789abcdef";
 const MAX_INT32: number = 0x7fffffff; // Math.pow(2, 31) - 1 (the leading sign bit is 0);
@@ -118,7 +117,7 @@ export function hmacSha256(input: Buffer, productId: Buffer, productKey: Buffer)
 
   const challengeParts: Uint32Array = uint8ArrayToUint32Array(message);
 
-  const sha256HexString: string = sha256(Buffer.concat([input, productKey]));
+  const sha256HexString: string = sha256.sha256(Buffer.concat([input, productKey]));
   const sha256Buffer: Buffer = Buffer.from(sha256HexString, "hex");
 
   // Get half of the sha256 as 4 uint32

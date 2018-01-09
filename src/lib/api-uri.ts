@@ -1,11 +1,11 @@
- import { posix } from "path";
-import {resolve as resolveUri } from "url";
+import path from "path";
+import url from "url";
 import { SKYPEWEB_API_SKYPE_HOST } from "./consts";
 
 export const DEFAULT_USER: string = "self";
 
 function joinPath(parts: string[]): string {
-  return posix.join.apply(null, parts);
+  return path.posix.join.apply(null, parts);
 }
 
 // The following functions build an array of parts to build the path
@@ -19,9 +19,11 @@ function buildV1(): string[] {
 function buildUsers(): string[] {
   return ["users"];
 }
+
 function buildBatch(): string[] {
   return buildUsers().concat("batch");
 }
+
 // /users/:user
 function buildUser(username: string): string[] {
   return buildUsers().concat(username);
@@ -89,15 +91,17 @@ function buildAvatar(username: string): string[] {
 function buildUpdatedAvatar(username: string): string[] {
   return buildProfile(username).concat("avatar");
 }
+
 function buildProfiles(): string[] {
   return buildBatch().concat("profiles");
 }
+
 function getOrigin(): string {
   return "https://" + SKYPEWEB_API_SKYPE_HOST;
 }
 
-function get(path: string) {
-  return resolveUri(getOrigin(), path);
+function get(p: string) {
+  return url.resolve(getOrigin(), p);
 }
 
 export function displayName(username: string): string {

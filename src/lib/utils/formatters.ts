@@ -1,5 +1,5 @@
 import { Incident } from "incident";
-import * as _ from "lodash";
+import _ from "lodash";
 import { Contact } from "../interfaces/api/contact";
 import { Conversation, ThreadProperties } from "../interfaces/api/conversation";
 import { Contact as NativeContact, SearchContact as NativeSearchContact } from "../interfaces/native-api/contact";

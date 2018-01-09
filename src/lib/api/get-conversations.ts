@@ -1,5 +1,5 @@
 import { Incident } from "incident";
-import * as _ from "lodash";
+import _ from "lodash";
 import { Context } from "../interfaces/api/context";
 import { Conversation } from "../interfaces/api/conversation";
 import * as io from "../interfaces/http-io";
