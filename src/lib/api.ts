@@ -54,12 +54,6 @@ export class Api extends events.EventEmitter implements ApiEvents {
     return this.contactsService.getInvites(this.context);
   }
 
-  /**
-   * Returns a single legacy contact.
-   *
-   * @deprecated Use `getContacts` and filter yourself. We should implement `getProfile` as a
-   *             replacement.
-   */
   async getContact(contactId: string): Promise<_Contact> {
     return getContact(this.io, this.context, contactId);
   }

@@ -49,6 +49,12 @@ export enum MriType {
    * Public switched telephone network
    */
   Pstn = "pstn",
+
+  /**
+   * This is not the official name (but it is likely).
+   * This MRI type was added to properly handle the type code `19`.
+   */
+  GroupConversation = "group_conversation",
 }
 
 /**
@@ -56,7 +62,7 @@ export enum MriType {
  *
  * @internal
  */
-export type MriTypeCode = "1" | "2" | "4" | "8" | "28";
+export type MriTypeCode = "1" | "2" | "4" | "8" | "19" | "28";
 
 const MRI_TYPE_TO_TYPE_CODE: Map<MriType, MriTypeCode> = new Map<MriType, MriTypeCode>([
   [MriType.Agent, "28"],
@@ -64,6 +70,7 @@ const MRI_TYPE_TO_TYPE_CODE: Map<MriType, MriTypeCode> = new Map<MriType, MriTyp
   [MriType.Msn, "1"],
   [MriType.Skype, "8"],
   [MriType.Pstn, "4"],
+  [MriType.GroupConversation, "19"],
 ]);
 
 const MRI_TYPE_FROM_TYPE_CODE: Map<MriTypeCode, MriType> = reverseMap(MRI_TYPE_TO_TYPE_CODE);
@@ -73,7 +80,7 @@ const MRI_TYPE_FROM_TYPE_CODE: Map<MriTypeCode, MriType> = reverseMap(MRI_TYPE_T
  *
  * @internal
  */
-export type MriTypeName = "agent" | "lync" | "msn" | "skype" | "pstn";
+export type MriTypeName = "agent" | "lync" | "msn" | "skype" | "pstn" | "group_conversation";
 
 const MRI_TYPE_TO_TYPE_NAME: Map<MriType, MriTypeName> = new Map<MriType, MriTypeName>([
   [MriType.Agent, "agent"],
@@ -81,6 +88,7 @@ const MRI_TYPE_TO_TYPE_NAME: Map<MriType, MriTypeName> = new Map<MriType, MriTyp
   [MriType.Msn, "msn"],
   [MriType.Skype, "skype"],
   [MriType.Pstn, "pstn"],
+  [MriType.GroupConversation, "group_conversation"],
 ]);
 
 const MRI_TYPE_FROM_TYPE_NAME: Map<MriTypeName, MriType> = reverseMap(MRI_TYPE_TO_TYPE_NAME);

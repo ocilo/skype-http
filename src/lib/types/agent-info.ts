@@ -1,6 +1,5 @@
 import { CaseStyle } from "kryo/case-style";
 import { ArrayType } from "kryo/types/array";
-import { BooleanType } from "kryo/types/boolean";
 import { DocumentType } from "kryo/types/document";
 import { JsonType } from "kryo/types/json";
 import { Ucs2StringType } from "kryo/types/ucs2-string";
@@ -14,10 +13,18 @@ import { Ucs2StringType } from "kryo/types/ucs2-string";
  *   "type": "Participant"
  * }
  * ```
+ *
+ * Example (concierge bot, from a new user):
+ * ```
+ * {
+ *   "trusted": "True",
+ *   "type": "Participant"
+ * }
+ * ```
  */
 export interface AgentInfo {
-  capabilities: any[];
-  trusted: boolean;
+  capabilities?: any[];
+  trusted: boolean | "True";
   /**
    * `"Participant" | ...`
    */
@@ -26,8 +33,8 @@ export interface AgentInfo {
 
 export const $AgentInfo: DocumentType<AgentInfo> = new DocumentType<AgentInfo>({
   properties: {
-    capabilities: {type: new ArrayType({itemType: new JsonType(), maxLength: Infinity})},
-    trusted: {type: new BooleanType()},
+    capabilities: {type: new ArrayType({itemType: new JsonType(), maxLength: Infinity}), optional: true},
+    trusted: {type: new JsonType()},
     type: {type: new Ucs2StringType({maxLength: Infinity})},
   },
   rename: CaseStyle.SnakeCase,

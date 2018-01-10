@@ -8,21 +8,25 @@ import { $Name, Name } from "./name";
 import { $Phone, Phone } from "./phone";
 import { $Url, Url } from "./url";
 
-export interface Profile {
+/**
+ * Represents a profile returned by the contact API v2 (contacts.skype.com/contacts/v2).
+ * It is possible for a profile to only contain the name (`28:concierge` for a newly create user)
+ */
+export interface ContactProfile {
   /**
    * Examples:
    * - `https://avatar.skype.com/v1/avatars/:userId?auth_key=1601633273` (the authKey can be negative)
    * - `https://avatar.skype.com/v1/avatars/:userId/public`
    * - `https://az705183.vo.msecnd.net/dam/skype/media/concierge-assets/avatar/avatarcnsrg-144.png`
    */
-  avatarUrl: Url;
+  avatarUrl?: Url;
   birthday?: IsoDate;
   /**
    * `"male" | "female"`
    */
   gender?: string;
   locations?: Location[];
-  phones: Phone[];
+  phones?: Phone[];
   /**
    * Can contain tags.
    * Examples:
@@ -45,9 +49,9 @@ export interface Profile {
   language?: string;
 }
 
-export const $Profile: DocumentType<Profile> = new DocumentType<Profile>({
+export const $ContactProfile: DocumentType<ContactProfile> = new DocumentType<ContactProfile>({
   properties: {
-    avatarUrl: {type: $Url},
+    avatarUrl: {type: $Url, optional: true},
     birthday: {type: $IsoDate, optional: true},
     gender: {type: new Ucs2StringType({maxLength: Infinity}), optional: true},
     locations: {type: new ArrayType({itemType: $Location, maxLength: Infinity}), optional: true},

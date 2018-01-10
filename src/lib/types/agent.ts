@@ -20,9 +20,21 @@ import { $AgentInfo, AgentInfo } from "./agent-info";
  *   "stage_info": {}
  * }
  * ```
+ *
+ * Example (concierge bot, from a new user):
+ * ```
+ * {
+ *   "trust": "not-trusted",
+ *   "type": "participant",
+ *   "info": {
+ *     "trusted": "True",
+ *     "type": "Participant"
+ *   }
+ * }
+ * ```
  */
 export interface Agent {
-  capabilities: any[];
+  capabilities?: any[];
   /**
    * `"participant" | ...`
    */
@@ -34,16 +46,16 @@ export interface Agent {
 
   info: AgentInfo;
 
-  stageInfo: any;
+  stageInfo?: any;
 }
 
 export const $Agent: DocumentType<Agent> = new DocumentType<Agent>({
   properties: {
-    capabilities: {type: new ArrayType({itemType: new JsonType(), maxLength: Infinity})},
+    capabilities: {type: new ArrayType({itemType: new JsonType(), maxLength: Infinity}), optional: true},
     type: {type: new Ucs2StringType({maxLength: Infinity})},
     trust: {type: new Ucs2StringType({maxLength: Infinity})},
     info: {type: $AgentInfo},
-    stageInfo: {type: new JsonType()},
+    stageInfo: {type: new JsonType(), optional: true},
   },
   rename: CaseStyle.SnakeCase,
 });

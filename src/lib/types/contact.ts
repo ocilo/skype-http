@@ -4,10 +4,10 @@ import { DateType } from "kryo/types/date";
 import { DocumentType } from "kryo/types/document";
 import { Ucs2StringType } from "kryo/types/ucs2-string";
 import { $Agent, Agent } from "./agent";
+import { $ContactProfile, ContactProfile } from "./contact-profile";
 import { $DisplayName, DisplayName } from "./display-name";
 import { $DisplayNameSource, DisplayNameSource } from "./display-name-source";
 import { $MriKey, MriKey } from "./mri-key";
-import { $Profile, Profile } from "./profile";
 import { $RelationshipHistory, RelationshipHistory } from "./relationship-history";
 
 export interface Contact {
@@ -22,7 +22,7 @@ export interface Contact {
   mri: MriKey;
   displayName: DisplayName;
   displayNameSource: DisplayNameSource;
-  profile: Profile;
+  profile: ContactProfile;
   agent?: Agent;
   authorized: boolean;
   /**
@@ -40,7 +40,7 @@ export const $Contact: DocumentType<Contact> = new DocumentType<Contact>({
     mri: {type: $MriKey},
     displayName: {type: $DisplayName},
     displayNameSource: {type: $DisplayNameSource},
-    profile: {type: $Profile},
+    profile: {type: $ContactProfile},
     agent: {type: $Agent, optional: true},
     authorized: {type: new BooleanType()},
     authCertificate: {type: new Ucs2StringType({maxLength: Infinity}), optional: true},

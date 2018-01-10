@@ -1,5 +1,6 @@
 import { Incident } from "incident";
 import toughCookie from "tough-cookie";
+import { getSelfProfile } from "./api/get-self-profile";
 import * as Consts from "./consts";
 import { registerEndpoint } from "./helpers/register-endpoint";
 import { Credentials } from "./interfaces/api/api";
@@ -7,6 +8,7 @@ import { Context as ApiContext, RegistrationToken, SkypeToken } from "./interfac
 import * as io from "./interfaces/http-io";
 import * as messagesUri from "./messages-uri";
 import * as microsoftAccount from "./providers/microsoft-account";
+import { ApiProfile } from "./types/api-profile";
 
 interface IoOptions {
   io: io.HttpIo;
@@ -24,6 +26,7 @@ export interface LoginOptions {
  * This involves the requests:
  * GET <loginUrl> to scrap the LoginKeys (pie & etm)
  * POST <loginUrl> to get the SkypeToken from the credentials and LoginKeys
+ * GET <selfProfileUrl> to get the userId
  * POST <registrationUrl> to get RegistrationToken from the SkypeToken
  *   Eventually, follow a redirection to use the assigned host
  * POST <subscription> to gain access to resources with the RegistrationToken
@@ -47,6 +50,13 @@ export async function login(options: LoginOptions): Promise<ApiContext> {
     console.log("Acquired SkypeToken");
   }
 
+  const profile: ApiProfile = await getSelfProfile(options.io, cookies, skypeToken);
+  const username: string = profile.username;
+
+  if (options.verbose) {
+    console.log("Acquired username");
+  }
+
   const registrationToken: RegistrationToken = await registerEndpoint(
     ioOptions.io,
     ioOptions.cookies,
@@ -68,7 +78,7 @@ export async function login(options: LoginOptions): Promise<ApiContext> {
   }
 
   return {
-    username: options.credentials.username,
+    username,
     skypeToken,
     cookies,
     registrationToken,

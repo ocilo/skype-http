@@ -10,11 +10,6 @@ function joinPath(parts: string[]): string {
 
 // The following functions build an array of parts to build the path
 
-// /contacts/v1
-function buildV1(): string[] {
-  return ["contacts/v1"];
-}
-
 // /users
 function buildUsers(): string[] {
   return ["users"];
@@ -106,6 +101,10 @@ function get(p: string) {
 
 export function displayName(username: string): string {
   return get(joinPath(buildDisplayName(username)));
+}
+
+export function userProfile(user: string): string {
+  return get(joinPath(buildProfile(user)));
 }
 
 export function userProfiles(): string {

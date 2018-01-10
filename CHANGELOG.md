@@ -6,6 +6,7 @@
     It is no longer possible to get a single contact.
 - **[Feature]** Expose detailed errors for endpoint registration.
 - **[Feature]** Support ES modules (ESM)
+- **[Fix]** Add support email login (#58)
 - **[Internal]** Update project tools to [turbo-gulp](https://www.npmjs.com/package/turbo-gulp)
 - **[Internal]** Enable integration with Codecov
 - **[Internal]** Enable integration with Greenkeeper

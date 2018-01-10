@@ -8,7 +8,7 @@ export interface Location {
    */
   type: string;
   /**
-   * `"BE" | "FR" | "fr" ...`
+   * `"BE" | "FR" | "fr" | "gb" |...`
    */
   country?: string;
   city?: string;
