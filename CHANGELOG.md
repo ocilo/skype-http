@@ -1,4 +1,4 @@
-# Next
+# 0.0.14 (2018-01-12)
 
 - **[Breaking change]** Use contacts API v2: the new types are in `lib/types`, the old types
     remain in `lib/interfaces`. The main difference is that the MRI key (`8:user_id`) is no longer

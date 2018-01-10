@@ -1,7 +1,7 @@
 {
   "name": "skype-http",
   "description": "Unofficial Skype API for Node.js via HTTP",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "license": "MIT",
   "main": "dist/lib/index",
   "types": "dist/lib/index.d.ts",
