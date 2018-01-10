@@ -11,7 +11,6 @@ import { WrongCredentialsError } from "../errors/wrong-credentials";
 import { WrongCredentialsLimitError } from "../errors/wrong-credentials-limit";
 import { SkypeToken } from "../interfaces/api/context";
 import * as io from "../interfaces/http-io";
-import { Dictionary } from "../interfaces/utils";
 
 export const skypeWebUri: string = "https://web.skype.com/";
 export const skypeLoginUri: string = "https://login.skype.com/login/";
@@ -115,7 +114,7 @@ export interface LiveKeys {
 export async function getLiveKeys(options: LoadLiveKeysOptions): Promise<LiveKeys> {
   try {
     const uri: string = url.resolve(skypeLoginUri, path.posix.join("oauth", "microsoft"));
-    const queryString: Dictionary<string> = {
+    const queryString: {[key: string]: string} = {
       client_id: webClientLiveLoginId,
       redirect_uri: skypeWebUri,
     };
@@ -227,7 +226,7 @@ export async function getLiveToken(options: GetLiveTokenOptions): Promise<string
 // Get live token from live keys and credentials
 export async function requestLiveToken(options: GetLiveTokenOptions): Promise<io.Response> {
   const uri: string = url.resolve(liveLoginUri, path.posix.join("ppsecure", "post.srf"));
-  const queryString: Dictionary<string> = {
+  const queryString: {[key: string]: string} = {
     wa: "wsignin1.0",
     wp: "MBI_SSL",
     // tslint:disable-next-line:max-line-length
@@ -324,12 +323,12 @@ export async function getSkypeToken(options: GetSkypeTokenOptions): Promise<Skyp
 export async function requestSkypeToken(options: GetSkypeTokenOptions): Promise<io.Response> {
   const uri: string = url.resolve(skypeLoginUri, "microsoft");
 
-  const queryString: Dictionary<string> = {
+  const queryString: {[key: string]: string} = {
     client_id: "578134",
     redirect_uri: "https://web.skype.com",
   };
 
-  const formData: Dictionary<string> = {
+  const formData: {[key: string]: string} = {
     t: options.liveToken,
     client_id: "578134",
     oauthPartner: "999",

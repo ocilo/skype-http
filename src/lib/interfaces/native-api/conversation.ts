@@ -1,4 +1,3 @@
-import { EmptyObject } from "../utils";
 import { MessageResource } from "./resources";
 
 export interface ThreadProperties {
@@ -20,7 +19,8 @@ export interface Conversation {
     // example: "1461605505609;1461605570732;10435004700722293356"
     consumptionhorizon?: string;
   };
-  lastMessage: EmptyObject | MessageResource;
+  // TODO: Check if empty object really occurs
+  lastMessage: {} | MessageResource;
   // https://{host}/v1/users/ME/contacts/{thread}/messages (even if targetLink points to /v1/threads)
   messages: string;
 }

@@ -1,11 +1,10 @@
 import { Store as CookieStore } from "tough-cookie";
-import { Dictionary } from "./utils";
 
 export interface BaseOptions {
   uri: string;
   cookies?: CookieStore;
-  headers?: Dictionary<any>;
-  queryString?: Dictionary<any>;
+  headers?: any; // {[name: string]: string};
+  queryString?: any; // {[key: string]: string};
 }
 
 export interface GetOptions extends BaseOptions {
@@ -22,7 +21,7 @@ export type PutOptions = PostOptions;
 export interface Response {
   statusCode: number;
   body: string;
-  headers: Dictionary<any>;
+  headers: any; // {[name: string]: string};
 }
 
 export interface HttpIo {

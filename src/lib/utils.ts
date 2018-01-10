@@ -1,5 +1,4 @@
 import _ from "lodash";
-import { Dictionary } from "./interfaces/utils";
 
 /**
  * Returns the number of seconds since epoch.
@@ -62,7 +61,7 @@ export function getTimezone(): string {
 const HTTP_HEADER_SEPARATOR: string = ";";
 const HTTP_HEADER_OPERATOR: string = "=";
 
-export function stringifyHeaderParams(params: Dictionary<string>) {
+export function stringifyHeaderParams(params: {[key: string]: string}) {
   const headerPairs: string[] = _.map(params, (value: string, key: string) => {
     if (value === undefined) {
       throw new Error(`Undefined value for the header: ${key}`);

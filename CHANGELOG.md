@@ -1,10 +1,15 @@
 # Next
 
+- **[Breaking change]** Use contacts API v2: the new types are in `lib/types`, the old types
+    remain in `lib/interfaces`. The main difference is that the MRI key (`8:user_id`) is no longer
+    parsed and most of the contact details are now in a `Profile` object.
+    It is no longer possible to get a single contact.
 - **[Feature]** Expose detailed errors for endpoint registration.
 - **[Feature]** Support ES modules (ESM)
 - **[Internal]** Update project tools to [turbo-gulp](https://www.npmjs.com/package/turbo-gulp)
 - **[Internal]** Enable integration with Codecov
 - **[Internal]** Enable integration with Greenkeeper
+- **[Internal]** Use runtime representation of the types with Kryo
 
 # 0.0.13 (2017-07-16)
 

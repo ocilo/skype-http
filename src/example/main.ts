@@ -2,13 +2,12 @@ import fs from "fs";
 import path from "path";
 import readline from "readline";
 import { Api as SkypeApi } from "../lib/api";
-import { VIRTUAL_CONTACTS } from "../lib/api/get-contact";
 import * as skypeHttp from "../lib/connect";
 import { Credentials } from "../lib/interfaces/api/api";
-import { Contact } from "../lib/interfaces/api/contact";
 import { Context } from "../lib/interfaces/api/context";
 import * as events from "../lib/interfaces/api/events";
 import * as resources from "../lib/interfaces/api/resources";
+import { Contact } from "../lib/types/contact";
 import meta from "./meta.js";
 
 /**
@@ -98,18 +97,6 @@ async function runExample(): Promise<void> {
   const contacts: Contact[] = await api.getContacts();
   console.log("Your contacts:");
   console.log(JSON.stringify(contacts, null, 2));
-
-  await Promise.all(contacts.map(async function (contact: Contact) {
-    try {
-      if (VIRTUAL_CONTACTS.has(contact.id.id)) {
-        return;
-      }
-      const fullContact: Contact = await api.getContact(contact.id.id);
-      console.log(JSON.stringify(fullContact, null, 2));
-    } catch (err) {
-      console.warn(err);
-    }
-  }));
 
   console.log("Starting polling:");
   await api.listen();

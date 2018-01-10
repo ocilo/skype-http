@@ -32,9 +32,9 @@ export async function sendImage(
     cookies: apiContext.cookies,
     body: bodyNewObjectStr,
     headers: {
-      "Authorization": "skype_token " + apiContext.skypeToken.value,
+      "Authorization": `skype_token ${apiContext.skypeToken.value}`,
       "Content-Type": "application/json",
-      "Content-Length": bodyNewObjectStr.length,
+      "Content-Length": bodyNewObjectStr.length.toString(10),
     },
   };
   const resNewObject: io.Response = await io.post(requestOptionsNewObject);
@@ -50,9 +50,9 @@ export async function sendImage(
     cookies: apiContext.cookies,
     body: file,
     headers: {
-      "Authorization": "skype_token " + apiContext.skypeToken.value,
+      "Authorization": `skype_token ${apiContext.skypeToken.value}`,
       "Content-Type": "multipart/form-data",
-      "Content-Length": file.byteLength,
+      "Content-Length": file.byteLength.toString(10),
     },
   };
   const resObject: io.Response = await io.put(requestOptionsPutObject);

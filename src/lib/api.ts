@@ -2,19 +2,21 @@ import events from "events";
 import { acceptContactRequest } from "./api/accept-contact-request";
 import { declineContactRequest } from "./api/decline-contact-request";
 import { getContact } from "./api/get-contact";
-import { getContacts } from "./api/get-contacts";
 import { getConversation } from "./api/get-conversation";
 import { getConversations } from "./api/get-conversations";
 import { sendImage } from "./api/send-image";
 import { sendMessage } from "./api/send-message";
 import { setStatus } from "./api/set-status";
+import { ContactsInterface, ContactsService } from "./contacts/contacts";
 import * as api from "./interfaces/api/api";
-import { Contact } from "./interfaces/api/contact";
+import { Contact as _Contact } from "./interfaces/api/contact";
 import { Context as ApiContext } from "./interfaces/api/context";
 import { Conversation } from "./interfaces/api/conversation";
 import * as apiEvents from "./interfaces/api/events";
 import { HttpIo } from "./interfaces/http-io";
 import { MessagesPoller } from "./polling/messages-poller";
+import { Contact } from "./types/contact";
+import { Invite } from "./types/invite";
 
 export interface ApiEvents extends NodeJS.EventEmitter {
 
@@ -25,6 +27,8 @@ export class Api extends events.EventEmitter implements ApiEvents {
   context: ApiContext;
   messagesPoller: MessagesPoller;
 
+  private readonly contactsService: ContactsInterface;
+
   constructor(context: ApiContext, io: HttpIo) {
     super();
     this.context = context;
@@ -33,6 +37,7 @@ export class Api extends events.EventEmitter implements ApiEvents {
     this.messagesPoller.on("error", (err: Error) => this.emit("error", err));
     // tslint:disable-next-line:no-void-expression
     this.messagesPoller.on("event-message", (ev: apiEvents.EventMessage) => this.handlePollingEvent(ev));
+    this.contactsService = new ContactsService(this.io);
   }
 
   async acceptContactRequest(contactUsername: string): Promise<this> {
@@ -45,12 +50,22 @@ export class Api extends events.EventEmitter implements ApiEvents {
     return this;
   }
 
-  async getContact(contactId: string): Promise<Contact> {
+  async getContactInvites(): Promise<Invite[]> {
+    return this.contactsService.getInvites(this.context);
+  }
+
+  /**
+   * Returns a single legacy contact.
+   *
+   * @deprecated Use `getContacts` and filter yourself. We should implement `getProfile` as a
+   *             replacement.
+   */
+  async getContact(contactId: string): Promise<_Contact> {
     return getContact(this.io, this.context, contactId);
   }
 
   async getContacts(): Promise<Contact[]> {
-    return getContacts(this.io, this.context);
+    return this.contactsService.getContacts(this.context);
   }
 
   async getConversation(conversationId: string): Promise<Conversation> {

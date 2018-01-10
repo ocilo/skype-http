@@ -4,10 +4,10 @@ import { Contact } from "../interfaces/api/contact";
 import { Conversation, ThreadProperties } from "../interfaces/api/conversation";
 import { Contact as NativeContact, SearchContact as NativeSearchContact } from "../interfaces/native-api/contact";
 import {
-  Conversation as NativeConversation,
-  Thread as NativeThread,
+  Conversation as NativeConversation, Thread as NativeThread,
   ThreadMember as NativeThreadMember,
 } from "../interfaces/native-api/conversation";
+import { MriType, MriTypeCode, mriTypeFromTypeName, MriTypeName, mriTypeToTypeCode, mriTypeToTypeName } from "../mri";
 import { sanitizeXml } from "./user-data-processor";
 
 export function formatConversation(native: NativeConversation): Conversation {
@@ -84,14 +84,14 @@ function searchContactToPerson(native: NativeSearchContact): Contact {
 
   const phoneNumbers: any[] = [];
   const locations: any[] = [];
-  const type: string = "skype";
-  const typeKey: string = contactTypeNameToContactTypeKey(type);
+  const type: MriType = MriType.Skype;
+  const typeKey: MriTypeCode = mriTypeToTypeCode(type);
   let result: Contact;
   result = {
     id: {
       id: native.username,
       typeKey,
-      typeName: type,
+      typeName: mriTypeToTypeName(type),
       raw: `${typeKey}:${native.username}`,
     },
     emails: native.emails,
@@ -157,7 +157,9 @@ function contactToPerson(native: NativeContact): Contact {
     authorizationState = authorizationStates.PENDING_OUTGOING;
   }
 
-  const typeKey: string = contactTypeNameToContactTypeKey(native.type);
+  // We can safely cast here because `mriTypeFromTypeName` tests the validity of the name.
+  const type: MriType = mriTypeFromTypeName(native.type as MriTypeName);
+  const typeKey: MriTypeCode = mriTypeToTypeCode(type);
   const isAgent: boolean = native.type === "agent";
 
   let avatarUrl: string | null;
@@ -202,50 +204,6 @@ function contactToPerson(native: NativeContact): Contact {
     locations,
   };
   return result;
-}
-
-// github:demurgos/skype-web-reversed -> jSkype/modelHelpers/contacts/dataMappers/dataMaps.js
-function contactTypeNameToContactTypeKey(typeName: string) {
-  switch (typeName) {
-    case "msn":
-      return "1";
-    case "lync":
-      return "2";
-    case "pstn":
-      return "4"; // Public switched telephone network
-    case "skype":
-      return "8";
-    case "agent":
-      return "28";
-    default:
-      throw new Incident(
-        "unknown-contact-type-name",
-        {typeName},
-        `Unknwon contact type name ${typeName}`,
-      );
-  }
-}
-
-// github:demurgos/skype-web-reversed -> jSkype/modelHelpers/contacts/dataMappers/dataMaps.js
-function contactTypeKeyToContactTypeName(typeKey: string) {
-  switch (typeKey) {
-    case "1":
-      return "msn";
-    case "2":
-      return "lync";
-    case "4":
-      return "pstn"; // Public switched telephone network
-    case "8":
-      return "skype";
-    case "28":
-      return "agent";
-    default:
-      throw new Incident(
-        "unknown-contact-type-key",
-        {typeCode: typeKey},
-        `Unknwon contact type key ${typeKey}`,
-      );
-  }
 }
 
 // github:demurgos/skype-web-reversed -> jSkype/modelHelpers/contacts/dataMappers/dataMaps.js

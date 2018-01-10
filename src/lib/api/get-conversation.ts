@@ -20,7 +20,7 @@ interface ConversationBody {
 }
 
 interface GetConversationQuery {
-  startTime: number; // a timestamp ?
+  startTime: string; // a timestamp ?
   view: "msnp24Equivalent" | string;
   targetType: string; // seen: Passport|Skype|Lync|Thread
 }
@@ -31,7 +31,7 @@ export async function getConversation(
   conversationId: string,
 ): Promise<Conversation> {
   const query: GetConversationQuery = {
-    startTime: 0,
+    startTime: "0",
     view: "msnp24Equivalent",
     targetType: "Passport|Skype|Lync|Thread",
   };

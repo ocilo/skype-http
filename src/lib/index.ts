@@ -10,6 +10,7 @@ import * as nativeConversation from "./interfaces/native-api/conversation";
 import * as nativeEvents from "./interfaces/native-api/events";
 import * as nativeMessageResources from "./interfaces/native-api/message-resources";
 import * as nativeResources from "./interfaces/native-api/resources";
+import { Location as _Location } from "./types/location";
 
 export { connect, ConnectOptions } from "./connect";
 export { events };
@@ -30,7 +31,7 @@ export type Contact = contact.Contact;
 export namespace Contact {
   export type Contact = contact.Contact;
   export type Phone = contact.Phone;
-  export type Location = contact.Location;
+  export type Location = _Location;
 }
 
 export type Conversation = conversation.Conversation;
