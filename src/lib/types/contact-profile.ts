@@ -63,4 +63,5 @@ export const $ContactProfile: DocumentType<ContactProfile> = new DocumentType<Co
     language: {type: new Ucs2StringType({maxLength: Infinity}), optional: true},
   },
   rename: CaseStyle.SnakeCase,
+  ignoreExtraKeys: true,
 });

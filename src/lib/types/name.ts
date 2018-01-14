@@ -27,4 +27,5 @@ export const $Name: DocumentType<Name> = new DocumentType<Name>({
     company: {type: new Ucs2StringType({maxLength: Infinity}), optional: true},
   },
   rename: CaseStyle.SnakeCase,
+  ignoreExtraKeys: true,
 });

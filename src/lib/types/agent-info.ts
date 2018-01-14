@@ -38,4 +38,5 @@ export const $AgentInfo: DocumentType<AgentInfo> = new DocumentType<AgentInfo>({
     type: {type: new Ucs2StringType({maxLength: Infinity})},
   },
   rename: CaseStyle.SnakeCase,
+  ignoreExtraKeys: true,
 });

@@ -117,4 +117,5 @@ export const $ApiProfile: DocumentType<ApiProfile> = new DocumentType<ApiProfile
     avatarUrl: {type: nullable($Url)},
     username: {type: new Ucs2StringType({maxLength: Infinity})},
   },
+  ignoreExtraKeys: true,
 });

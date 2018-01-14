@@ -17,7 +17,7 @@
     "test": "gulp test",
     "test-online": "OCILO_TEST_ONLINE=true npm test",
     "prepublishOnly": "npm run test-online",
-    "lint": "gulp :lint"
+    "lint": "gulp :lint:fix"
   },
   "pre-commit": {
     "run": [

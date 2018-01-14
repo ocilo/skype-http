@@ -15,6 +15,22 @@ export interface RelationshipHistory {
    *   }
    * ]
    * ```
+   *
+   * ```
+   * "relationship_history": {
+   *   "sources": [
+   *     {
+   *       "type": "scd",
+   *       "time": "2017-12-03T15:27:37.019204Z"
+   *     },
+   *     {
+   *       "type": "scd",
+   *       "subtype": "auto_accept",
+   *       "time": "2017-12-03T15:27:37.019204Z"
+   *     }
+   *   ]
+   * }
+   * ```
    */
   sources: any[];
 }
@@ -24,4 +40,5 @@ export const $RelationshipHistory: DocumentType<RelationshipHistory> = new Docum
     sources: {type: new ArrayType({itemType: new JsonType(), maxLength: Infinity})},
   },
   rename: CaseStyle.SnakeCase,
+  ignoreExtraKeys: true,
 });

@@ -1,3 +1,7 @@
+# Next
+
+- **[Fix]** Do not throw on unexpected extra keys when reading responses.
+
 # 0.0.14 (2018-01-12)
 
 - **[Breaking change]** Use contacts API v2: the new types are in `lib/types`, the old types

@@ -26,4 +26,5 @@ export const $ContactGroup: DocumentType<ContactGroup> = new DocumentType<Contac
     isFavorite: {type: new BooleanType()},
   },
   rename: CaseStyle.SnakeCase,
+  ignoreExtraKeys: true,
 });

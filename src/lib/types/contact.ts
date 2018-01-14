@@ -1,13 +1,16 @@
 import { CaseStyle } from "kryo/case-style";
+import { ArrayType } from "kryo/types/array";
 import { BooleanType } from "kryo/types/boolean";
 import { DateType } from "kryo/types/date";
 import { DocumentType } from "kryo/types/document";
+import { JsonType } from "kryo/types/json";
 import { Ucs2StringType } from "kryo/types/ucs2-string";
 import { $Agent, Agent } from "./agent";
 import { $ContactProfile, ContactProfile } from "./contact-profile";
 import { $DisplayName, DisplayName } from "./display-name";
 import { $DisplayNameSource, DisplayNameSource } from "./display-name-source";
 import { $MriKey, MriKey } from "./mri-key";
+import { $Phone, Phone } from "./phone";
 import { $RelationshipHistory, RelationshipHistory } from "./relationship-history";
 
 export interface Contact {
@@ -22,6 +25,19 @@ export interface Contact {
   mri: MriKey;
   displayName: DisplayName;
   displayNameSource: DisplayNameSource;
+  /**
+   * Phones are normally defined in `profile.phone` but I had one case where it was defined
+   * here instead (old inactive contact):
+   * ```
+   * [
+   *   {
+   *     "number": "+33666666666",
+   *     "type": "mobile"
+   *   }
+   * ]
+   * ```
+   */
+  phones?: Phone[];
   profile: ContactProfile;
   agent?: Agent;
   authorized: boolean;
@@ -32,6 +48,8 @@ export interface Contact {
   blocked: boolean;
   creationTime: Date;
   relationshipHistory?: RelationshipHistory;
+  suggested?: boolean;
+  phoneHashes?: any[];
 }
 
 export const $Contact: DocumentType<Contact> = new DocumentType<Contact>({
@@ -40,6 +58,7 @@ export const $Contact: DocumentType<Contact> = new DocumentType<Contact>({
     mri: {type: $MriKey},
     displayName: {type: $DisplayName},
     displayNameSource: {type: $DisplayNameSource},
+    phones: {type: new ArrayType({itemType: $Phone, maxLength: Infinity}), optional: true},
     profile: {type: $ContactProfile},
     agent: {type: $Agent, optional: true},
     authorized: {type: new BooleanType()},
@@ -47,6 +66,9 @@ export const $Contact: DocumentType<Contact> = new DocumentType<Contact>({
     blocked: {type: new BooleanType()},
     creationTime: {type: new DateType()},
     relationshipHistory: {type: $RelationshipHistory, optional: true},
+    suggested: {type: new BooleanType(), optional: true},
+    phoneHashes: {type: new ArrayType({itemType: new JsonType(), maxLength: Infinity}), optional: true},
   },
   rename: CaseStyle.SnakeCase,
+  ignoreExtraKeys: true,
 });

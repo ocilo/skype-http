@@ -12,6 +12,7 @@ import { $ContactGroup, ContactGroup } from "../../types/contact-group";
 export interface GetUserResult {
   contacts: Contact[];
   // TODO(demurgos): Rename to `blockList`?
+  // {mri: MriKey}[]
   blocklist: any[];
   groups: ContactGroup[];
   /**

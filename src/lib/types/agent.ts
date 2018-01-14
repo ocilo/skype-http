@@ -58,4 +58,5 @@ export const $Agent: DocumentType<Agent> = new DocumentType<Agent>({
     stageInfo: {type: new JsonType(), optional: true},
   },
   rename: CaseStyle.SnakeCase,
+  ignoreExtraKeys: true,
 });

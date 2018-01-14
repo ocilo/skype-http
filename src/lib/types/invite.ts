@@ -41,4 +41,5 @@ export const $Invite: DocumentType<Invite> = new DocumentType<Invite>({
     invites: {type: new ArrayType({itemType: $InviteMessage, maxLength: Infinity})},
   },
   rename: CaseStyle.SnakeCase,
+  ignoreExtraKeys: true,
 });
