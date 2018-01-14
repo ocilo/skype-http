@@ -1,6 +1,7 @@
 # Next
 
 - **[Fix]** Do not throw on unexpected extra keys when reading responses.
+- **[Fix]** Fix message host resolution (API change).
 
 # 0.0.14 (2018-01-12)
 

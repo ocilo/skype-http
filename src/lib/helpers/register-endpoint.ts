@@ -93,7 +93,10 @@ export async function registerEndpoint(
       throw new EndpointRegistrationError(LoginRateLimitExceeded.create(req, res), tries);
     }
 
-    const expectedStatusCode: Set<number> = new Set([201, 301]);
+    // TODO: Check eventual changes in the API. I'm not sure if 301 is still used
+    // 404 was seen the 2017-01-14, with the following body:
+    // '{"errorCode":752,"message":"User is in a different cloud. See \'Location\' header for users current cloud."}'
+    const expectedStatusCode: Set<number> = new Set([201, 301, 404]);
     if (!expectedStatusCode.has(res.statusCode)) {
       throw new EndpointRegistrationError(UnexpectedHttpStatusError.create(res, expectedStatusCode, req), tries);
     }
@@ -109,7 +112,9 @@ export async function registerEndpoint(
       throw new Incident("ParseError", {res}, "Expected `Location` header to have host");
     }
     // Handle redirections, up to `retry` times
-    if (location.host !== messagesHostname) { // mainly when 301, but sometimes when 201
+    // Redirections happen mostly when 301, but sometimes when 201
+    // TODO: It may have changed to mostly 404.
+    if (location.host !== messagesHostname) {
       messagesHostname = location.host;
       continue;
     }
