@@ -34,7 +34,7 @@ export interface ContactProfile {
    * - `"Foo &amp; bar"`
    */
   mood?: string;
-  name: Name;
+  name?: Name;
   about?: string;
 
   /**
@@ -57,7 +57,7 @@ export const $ContactProfile: DocumentType<ContactProfile> = new DocumentType<Co
     locations: {type: new ArrayType({itemType: $Location, maxLength: Infinity}), optional: true},
     phones: {type: new ArrayType({itemType: $Phone, maxLength: Infinity}), optional: true},
     mood: {type: new Ucs2StringType({maxLength: Infinity}), optional: true},
-    name: {type: $Name},
+    name: {type: $Name, optional: true},
     about: {type: new Ucs2StringType({maxLength: Infinity}), optional: true},
     website: {type: new Ucs2StringType({maxLength: Infinity}), optional: true},
     language: {type: new Ucs2StringType({maxLength: Infinity}), optional: true},
