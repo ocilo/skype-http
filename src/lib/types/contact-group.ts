@@ -21,9 +21,9 @@ export interface ContactGroup {
 
 export const $ContactGroup: DocumentType<ContactGroup> = new DocumentType<ContactGroup>({
   properties: {
-    id: {type: new Ucs2StringType({maxLength: Infinity})},
-    name: {type: new Ucs2StringType({maxLength: Infinity})},
-    isFavorite: {type: new BooleanType()},
+    id: { type: new Ucs2StringType({ maxLength: Infinity }) },
+    name: { type: new Ucs2StringType({ maxLength: Infinity }) },
+    isFavorite: { type: new BooleanType(), optional: true },
   },
   rename: CaseStyle.SnakeCase,
   ignoreExtraKeys: true,
