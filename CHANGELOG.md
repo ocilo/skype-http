@@ -2,6 +2,8 @@
 
 - **[Fix]** Do not throw on unexpected extra keys when reading responses.
 - **[Fix]** Fix message host resolution (API change).
+- **[Fix]** Mark `isFavorite` in `ContactGroup` as optional.
+- **[Fix]** Mark `name` in `ContactProfile` as optional.
 
 # 0.0.14 (2018-01-12)
 
