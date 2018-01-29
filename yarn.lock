@@ -3109,7 +3109,7 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
 
-kryo@^0.6.0-build.161:
+kryo@^0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/kryo/-/kryo-0.6.0.tgz#e0ca4f357e77dddd02e103d028a25a225582cd3c"
   dependencies:
@@ -5421,6 +5421,10 @@ typescript@2.4.1:
 typescript@2.7.0-dev.20180109:
   version "2.7.0-dev.20180109"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.7.0-dev.20180109.tgz#8ffb23a38903b7ba7abff12b7d5c10dc2675c987"
+
+typescript@^2.7.0-rc:
+  version "2.7.0-rc"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.7.0-rc.tgz#bf86a065a3a0be1e072c3fb7d64e8976f33b8365"
 
 uglify-js@^2.6, uglify-js@^2.6.1, uglify-js@^2.8.29:
   version "2.8.29"
