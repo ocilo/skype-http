@@ -1,9 +1,9 @@
+import { $Boolean } from "kryo/builtins/boolean";
+import { $Date } from "kryo/builtins/date";
 import { CaseStyle } from "kryo/case-style";
+import { AnyType } from "kryo/types/any";
 import { ArrayType } from "kryo/types/array";
-import { BooleanType } from "kryo/types/boolean";
-import { DateType } from "kryo/types/date";
-import { DocumentType } from "kryo/types/document";
-import { JsonType } from "kryo/types/json";
+import { DocumentIoType, DocumentType } from "kryo/types/document";
 import { Ucs2StringType } from "kryo/types/ucs2-string";
 import { $Agent, Agent } from "./agent";
 import { $ContactProfile, ContactProfile } from "./contact-profile";
@@ -52,7 +52,7 @@ export interface Contact {
   phoneHashes?: any[];
 }
 
-export const $Contact: DocumentType<Contact> = new DocumentType<Contact>({
+export const $Contact: DocumentIoType<Contact> = new DocumentType<Contact>(() => ({
   properties: {
     personId: {type: $MriKey},
     mri: {type: $MriKey},
@@ -61,14 +61,13 @@ export const $Contact: DocumentType<Contact> = new DocumentType<Contact>({
     phones: {type: new ArrayType({itemType: $Phone, maxLength: Infinity}), optional: true},
     profile: {type: $ContactProfile},
     agent: {type: $Agent, optional: true},
-    authorized: {type: new BooleanType()},
+    authorized: {type: $Boolean},
     authCertificate: {type: new Ucs2StringType({maxLength: Infinity}), optional: true},
-    blocked: {type: new BooleanType()},
-    creationTime: {type: new DateType()},
+    blocked: {type: $Boolean},
+    creationTime: {type: $Date},
     relationshipHistory: {type: $RelationshipHistory, optional: true},
-    suggested: {type: new BooleanType(), optional: true},
-    phoneHashes: {type: new ArrayType({itemType: new JsonType(), maxLength: Infinity}), optional: true},
+    suggested: {type: $Boolean, optional: true},
+    phoneHashes: {type: new ArrayType({itemType: new AnyType(), maxLength: Infinity}), optional: true},
   },
-  rename: CaseStyle.SnakeCase,
-  ignoreExtraKeys: true,
-});
+  changeCase: CaseStyle.SnakeCase,
+}));

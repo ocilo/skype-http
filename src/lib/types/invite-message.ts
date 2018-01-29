@@ -1,5 +1,5 @@
-import { DateType } from "kryo/types/date";
-import { DocumentType } from "kryo/types/document";
+import { $Date } from "kryo/builtins/date";
+import { DocumentIoType, DocumentType } from "kryo/types/document";
 import { Ucs2StringType } from "kryo/types/ucs2-string";
 
 /**
@@ -17,10 +17,9 @@ export interface InviteMessage {
   time: Date;
 }
 
-export const $InviteMessage: DocumentType<InviteMessage> = new DocumentType<InviteMessage>({
+export const $InviteMessage: DocumentIoType<InviteMessage> = new DocumentType<InviteMessage>({
   properties: {
     message: {type: new Ucs2StringType({maxLength: Infinity})},
-    time: {type: new DateType()},
+    time: {type: $Date},
   },
-  ignoreExtraKeys: true,
 });

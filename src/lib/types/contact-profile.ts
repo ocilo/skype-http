@@ -1,6 +1,6 @@
 import { CaseStyle } from "kryo/case-style";
 import { ArrayType } from "kryo/types/array";
-import { DocumentType } from "kryo/types/document";
+import { DocumentIoType, DocumentType } from "kryo/types/document";
 import { Ucs2StringType } from "kryo/types/ucs2-string";
 import { $IsoDate, IsoDate } from "./iso-date";
 import { $Location, Location } from "./location";
@@ -49,7 +49,7 @@ export interface ContactProfile {
   language?: string;
 }
 
-export const $ContactProfile: DocumentType<ContactProfile> = new DocumentType<ContactProfile>({
+export const $ContactProfile: DocumentIoType<ContactProfile> = new DocumentType<ContactProfile>({
   properties: {
     avatarUrl: {type: $Url, optional: true},
     birthday: {type: $IsoDate, optional: true},
@@ -62,6 +62,5 @@ export const $ContactProfile: DocumentType<ContactProfile> = new DocumentType<Co
     website: {type: new Ucs2StringType({maxLength: Infinity}), optional: true},
     language: {type: new Ucs2StringType({maxLength: Infinity}), optional: true},
   },
-  rename: CaseStyle.SnakeCase,
-  ignoreExtraKeys: true,
+  changeCase: CaseStyle.SnakeCase,
 });

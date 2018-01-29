@@ -4,6 +4,7 @@ import * as apiUri from "../api-uri";
 import { UnexpectedHttpStatusError } from "../errors/http";
 import { SkypeToken } from "../interfaces/api/context";
 import * as io from "../interfaces/http-io";
+import { JSON_READER } from "../json-reader";
 import { $ApiProfile, ApiProfile } from "../types/api-profile";
 import { Url } from "../types/url";
 
@@ -24,17 +25,11 @@ export async function getSelfProfile(
   if (response.statusCode !== 200) {
     UnexpectedHttpStatusError.create(response, new Set([200]), request);
   }
-  let parsed: any;
-  try {
-    parsed = JSON.parse(response.body);
-  } catch (err) {
-    throw new Incident(err, "UnexpectedResponseBody", {body: response.body});
-  }
   let result: ApiProfile;
   try {
-    result = $ApiProfile.readJson(parsed);
+    result = $ApiProfile.read(JSON_READER, response.body);
   } catch (err) {
-    throw new Incident(err, "UnexpectedResult", {body: parsed});
+    throw new Incident(err, "UnexpectedResponseBody", {body: response.body});
   }
   return result;
 }

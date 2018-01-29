@@ -8,6 +8,7 @@ import { Context } from "../lib/interfaces/api/context";
 import * as events from "../lib/interfaces/api/events";
 import * as resources from "../lib/interfaces/api/resources";
 import { Contact } from "../lib/types/contact";
+import { Conversation } from "../lib/types/conversation";
 import meta from "./meta.js";
 
 /**
@@ -57,7 +58,7 @@ async function runExample(): Promise<void> {
     console.log(`Restored state from ${statePath}`);
   } catch (err) {
     console.log("Unable to restore the state from file, performing login with credentials");
-    const credentials: Credentials = await promptCredentials();
+    const credentials: Credentials = {username: "eternalfest", password: "W5hEjuQZ"}; // await promptCredentials();
     api = await skypeHttp.connect({credentials, verbose: true});
   }
 
@@ -98,10 +99,14 @@ async function runExample(): Promise<void> {
   console.log("Your contacts:");
   console.log(JSON.stringify(contacts, null, 2));
 
-  console.log("Starting polling:");
-  await api.listen();
-  await api.setStatus("Online");
-  console.log("Ready");
+  const conversations: Conversation = await api.getConversation("19:4dd7fb8cb8714a2c84a6667aae45effa@thread.skype");
+  console.log("Your conversations:");
+  console.log(JSON.stringify(conversations, null, 2));
+
+  // console.log("Starting polling:");
+  // await api.listen();
+  // await api.setStatus("Online");
+  // console.log("Ready");
 }
 
 runExample()

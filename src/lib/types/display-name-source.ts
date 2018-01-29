@@ -1,5 +1,5 @@
 import { CaseStyle } from "kryo/case-style";
-import { SimpleEnumType } from "kryo/types/simple-enum";
+import { TsEnumType } from "kryo/types/ts-enum";
 
 export enum DisplayNameSource {
   Identifier,
@@ -10,7 +10,7 @@ export enum DisplayNameSource {
   UserEdits,
 }
 
-export const $DisplayNameSource: SimpleEnumType<DisplayNameSource> = new SimpleEnumType<DisplayNameSource>({
+export const $DisplayNameSource: TsEnumType<DisplayNameSource> = new TsEnumType<DisplayNameSource>({
   enum: DisplayNameSource,
-  rename: CaseStyle.SnakeCase,
+  changeCase: CaseStyle.SnakeCase,
 });

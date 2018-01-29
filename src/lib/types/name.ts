@@ -1,5 +1,5 @@
 import { CaseStyle } from "kryo/case-style";
-import { DocumentType } from "kryo/types/document";
+import { DocumentIoType, DocumentType } from "kryo/types/document";
 import { Ucs2StringType } from "kryo/types/ucs2-string";
 
 /**
@@ -19,13 +19,12 @@ export interface Name {
   company?: string;
 }
 
-export const $Name: DocumentType<Name> = new DocumentType<Name>({
+export const $Name: DocumentIoType<Name> = new DocumentType<Name>({
   properties: {
     first: {type: new Ucs2StringType({maxLength: Infinity}), optional: true},
     surname: {type: new Ucs2StringType({maxLength: Infinity}), optional: true},
     nickname: {type: new Ucs2StringType({maxLength: Infinity}), optional: true},
     company: {type: new Ucs2StringType({maxLength: Infinity}), optional: true},
   },
-  rename: CaseStyle.SnakeCase,
-  ignoreExtraKeys: true,
+  changeCase: CaseStyle.SnakeCase,
 });

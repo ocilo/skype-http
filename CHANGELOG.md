@@ -1,5 +1,8 @@
 # Next
 
+- **[Breaking change]** Update interfaces of the objects handled by the conversation API:
+  conversations and messages. The objects are now type-checked at runtime. The interfaces are
+  defined in `lib/types`.
 - **[Fix]** Do not throw on unexpected extra keys when reading responses.
 - **[Fix]** Fix message host resolution (API change).
 - **[Fix]** Mark `isFavorite` in `ContactGroup` as optional.

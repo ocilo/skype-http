@@ -2,20 +2,20 @@ import events from "events";
 import { acceptContactRequest } from "./api/accept-contact-request";
 import { declineContactRequest } from "./api/decline-contact-request";
 import { getContact } from "./api/get-contact";
-import { getConversation } from "./api/get-conversation";
-import { getConversations } from "./api/get-conversations";
 import { sendImage } from "./api/send-image";
 import { sendMessage } from "./api/send-message";
 import { setStatus } from "./api/set-status";
-import { ContactsInterface, ContactsService } from "./contacts/contacts";
+import { ContactService, ContactServiceInterface } from "./contacts/contacts";
+import { ConversationService, ConversationServiceInterface } from "./conversation/conversation";
 import * as api from "./interfaces/api/api";
 import { Contact as _Contact } from "./interfaces/api/contact";
 import { Context as ApiContext } from "./interfaces/api/context";
-import { Conversation } from "./interfaces/api/conversation";
 import * as apiEvents from "./interfaces/api/events";
 import { HttpIo } from "./interfaces/http-io";
+import { MriKey } from "./mri";
 import { MessagesPoller } from "./polling/messages-poller";
 import { Contact } from "./types/contact";
+import { Conversation } from "./types/conversation";
 import { Invite } from "./types/invite";
 
 export interface ApiEvents extends NodeJS.EventEmitter {
@@ -27,7 +27,8 @@ export class Api extends events.EventEmitter implements ApiEvents {
   context: ApiContext;
   messagesPoller: MessagesPoller;
 
-  private readonly contactsService: ContactsInterface;
+  private readonly contactService: ContactServiceInterface;
+  private readonly conversationService: ConversationServiceInterface;
 
   constructor(context: ApiContext, io: HttpIo) {
     super();
@@ -37,7 +38,8 @@ export class Api extends events.EventEmitter implements ApiEvents {
     this.messagesPoller.on("error", (err: Error) => this.emit("error", err));
     // tslint:disable-next-line:no-void-expression
     this.messagesPoller.on("event-message", (ev: apiEvents.EventMessage) => this.handlePollingEvent(ev));
-    this.contactsService = new ContactsService(this.io);
+    this.contactService = new ContactService(this.io);
+    this.conversationService = new ConversationService(this.io);
   }
 
   async acceptContactRequest(contactUsername: string): Promise<this> {
@@ -51,7 +53,7 @@ export class Api extends events.EventEmitter implements ApiEvents {
   }
 
   async getContactInvites(): Promise<Invite[]> {
-    return this.contactsService.getInvites(this.context);
+    return this.contactService.getInvites(this.context);
   }
 
   async getContact(contactId: string): Promise<_Contact> {
@@ -59,15 +61,15 @@ export class Api extends events.EventEmitter implements ApiEvents {
   }
 
   async getContacts(): Promise<Contact[]> {
-    return this.contactsService.getContacts(this.context);
+    return this.contactService.getContacts(this.context);
   }
 
-  async getConversation(conversationId: string): Promise<Conversation> {
-    return getConversation(this.io, this.context, conversationId);
+  async getConversation(conversationId: MriKey): Promise<Conversation> {
+    return this.conversationService.getConversationById(this.context, conversationId);
   }
 
   async getConversations(): Promise<Conversation[]> {
-    return getConversations(this.io, this.context);
+    return this.conversationService.getConversations(this.context);
   }
 
   async sendMessage(message: api.NewMessage, conversationId: string): Promise<api.SendMessageResult> {
@@ -110,6 +112,7 @@ export class Api extends events.EventEmitter implements ApiEvents {
     }
 
     // Prevent infinite-loop (echo itself)
+    // TODO: Remove this
     if (ev.resource.from.username === this.context.username) {
       return;
     }
