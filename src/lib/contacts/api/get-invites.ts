@@ -1,6 +1,6 @@
 import { CaseStyle } from "kryo/case-style";
 import { ArrayType } from "kryo/types/array";
-import { DocumentType } from "kryo/types/document";
+import { DocumentIoType, DocumentType } from "kryo/types/document";
 import { $Invite, Invite } from "../../types/invite";
 
 /**
@@ -13,9 +13,9 @@ export interface GetInvitesResult {
 /**
  * @internal
  */
-export const $GetInvitesResult: DocumentType<GetInvitesResult> = new DocumentType<GetInvitesResult>({
+export const $GetInvitesResult: DocumentIoType<GetInvitesResult> = new DocumentType<GetInvitesResult>({
   properties: {
     inviteList: {type: new ArrayType({itemType: $Invite, maxLength: Infinity})},
   },
-  rename: CaseStyle.SnakeCase,
+  changeCase: CaseStyle.SnakeCase,
 });

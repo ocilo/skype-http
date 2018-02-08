@@ -1,5 +1,5 @@
 import { CaseStyle } from "kryo/case-style";
-import { DocumentType } from "kryo/types/document";
+import { DocumentIoType, DocumentType } from "kryo/types/document";
 import { Ucs2StringType } from "kryo/types/ucs2-string";
 
 export interface Phone {
@@ -13,11 +13,10 @@ export interface Phone {
   number: string;
 }
 
-export const $Phone: DocumentType<Phone> = new DocumentType<Phone>({
+export const $Phone: DocumentIoType<Phone> = new DocumentType<Phone>({
   properties: {
     type: {type: new Ucs2StringType({maxLength: Infinity})},
     number: {type: new Ucs2StringType({maxLength: Infinity})},
   },
-  rename: CaseStyle.SnakeCase,
-  ignoreExtraKeys: true,
+  changeCase: CaseStyle.SnakeCase,
 });

@@ -1,7 +1,8 @@
+import { $Any } from "kryo/builtins/any";
 import { CaseStyle } from "kryo/case-style";
+import { AnyType } from "kryo/types/any";
 import { ArrayType } from "kryo/types/array";
-import { DocumentType } from "kryo/types/document";
-import { JsonType } from "kryo/types/json";
+import { DocumentIoType, DocumentType } from "kryo/types/document";
 import { Ucs2StringType } from "kryo/types/ucs2-string";
 import { $AgentInfo, AgentInfo } from "./agent-info";
 
@@ -49,14 +50,13 @@ export interface Agent {
   stageInfo?: any;
 }
 
-export const $Agent: DocumentType<Agent> = new DocumentType<Agent>({
+export const $Agent: DocumentIoType<Agent> = new DocumentType<Agent>({
   properties: {
-    capabilities: {type: new ArrayType({itemType: new JsonType(), maxLength: Infinity}), optional: true},
+    capabilities: {type: new ArrayType({itemType: $Any, maxLength: Infinity}), optional: true},
     type: {type: new Ucs2StringType({maxLength: Infinity})},
     trust: {type: new Ucs2StringType({maxLength: Infinity})},
     info: {type: $AgentInfo},
-    stageInfo: {type: new JsonType(), optional: true},
+    stageInfo: {type: new AnyType(), optional: true},
   },
-  rename: CaseStyle.SnakeCase,
-  ignoreExtraKeys: true,
+  changeCase: CaseStyle.SnakeCase,
 });

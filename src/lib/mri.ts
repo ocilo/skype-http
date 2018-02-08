@@ -51,10 +51,10 @@ export enum MriType {
   Pstn = "pstn",
 
   /**
-   * This is not the official name (but it is likely).
+   * This is not the official name (but it is likely) for group conversations / threads.
    * This MRI type was added to properly handle the type code `19`.
    */
-  GroupConversation = "group_conversation",
+  Thread = "thread",
 }
 
 /**
@@ -70,7 +70,7 @@ const MRI_TYPE_TO_TYPE_CODE: Map<MriType, MriTypeCode> = new Map<MriType, MriTyp
   [MriType.Msn, "1"],
   [MriType.Skype, "8"],
   [MriType.Pstn, "4"],
-  [MriType.GroupConversation, "19"],
+  [MriType.Thread, "19"],
 ]);
 
 const MRI_TYPE_FROM_TYPE_CODE: Map<MriTypeCode, MriType> = reverseMap(MRI_TYPE_TO_TYPE_CODE);
@@ -80,7 +80,7 @@ const MRI_TYPE_FROM_TYPE_CODE: Map<MriTypeCode, MriType> = reverseMap(MRI_TYPE_T
  *
  * @internal
  */
-export type MriTypeName = "agent" | "lync" | "msn" | "skype" | "pstn" | "group_conversation";
+export type MriTypeName = "agent" | "lync" | "msn" | "skype" | "pstn" | "thread";
 
 const MRI_TYPE_TO_TYPE_NAME: Map<MriType, MriTypeName> = new Map<MriType, MriTypeName>([
   [MriType.Agent, "agent"],
@@ -88,7 +88,7 @@ const MRI_TYPE_TO_TYPE_NAME: Map<MriType, MriTypeName> = new Map<MriType, MriTyp
   [MriType.Msn, "msn"],
   [MriType.Skype, "skype"],
   [MriType.Pstn, "pstn"],
-  [MriType.GroupConversation, "group_conversation"],
+  [MriType.Thread, "thread"],
 ]);
 
 const MRI_TYPE_FROM_TYPE_NAME: Map<MriTypeName, MriType> = reverseMap(MRI_TYPE_TO_TYPE_NAME);
@@ -265,7 +265,7 @@ export function parse(mri: MriKey): ParsedMriKey {
   // We can cast here because `mriTypeFromTypeCode` tests the validity of the MRI code.
   const type: MriType = mriTypeFromTypeCode(match[1] as MriTypeCode);
   const id: string = match[2];
-  if (isValidId(id)) {
+  if (!isValidId(id)) {
     throw new Incident("InvalidMriId", {id});
   }
   return {type, id};
