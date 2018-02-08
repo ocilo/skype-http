@@ -1,5 +1,5 @@
 import _ from "lodash";
-
+import { Members, AllUsers } from "./interfaces/native-api/conversation";
 /**
  * Returns the number of seconds since epoch.
  *
@@ -98,3 +98,16 @@ export function parseHeaderParams(params: string): Map<string, string> {
 
   return result;
 }
+
+
+
+export function getMembers(allUsers: AllUsers): Array<Members> {
+  return Object.keys(allUsers).reduce(
+    (acc: Array<any>, key: string) => {
+      const role = key === 'admins' ? 'Admin' : 'User';
+      const parsedGroup = allUsers[key].map((id: string) => ({id, role}));
+
+      return [...acc, ...parsedGroup];
+  }, []);
+};
+

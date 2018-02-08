@@ -8,6 +8,14 @@ export interface ThreadProperties {
   version?: string;
 }
 
+// https://github.com/OllieTerrance/SkPy.docs/blob/master/protocol/chat.rst#join-urls
+export interface Join {
+  Blob: string,
+  Id: string,
+  JoinUrl: string,
+  ThreadId: string,
+}
+
 export interface Conversation {
   // https://{host}/v1/threads/{19:threadId} or // https://{host}/v1/users/ME/contacts/{8:contactId}
   targetLink: string;
@@ -41,6 +49,15 @@ export interface ThreadMember {
   userTile: string;
   // can be an empty string
   friendlyName: string;
+}
+
+export interface AllUsers {
+  [type: string]: string[];
+}
+
+export interface Members {
+  id: string;
+  role: 'Admin' | 'User' | string;
 }
 
 export interface Thread {

@@ -6,6 +6,9 @@ import { getConversation } from "./api/get-conversation";
 import { getConversations } from "./api/get-conversations";
 import { sendImage } from "./api/send-image";
 import { sendMessage } from "./api/send-message";
+import { setConversationTopic } from "./api/set-conversation-topic";
+import { getJoinUrl } from "./api/get-join-url";
+import { createConversation } from "./api/create-conversation";
 import { setStatus } from "./api/set-status";
 import { ContactsInterface, ContactsService } from "./contacts/contacts";
 import * as api from "./interfaces/api/api";
@@ -17,6 +20,7 @@ import { HttpIo } from "./interfaces/http-io";
 import { MessagesPoller } from "./polling/messages-poller";
 import { Contact } from "./types/contact";
 import { Invite } from "./types/invite";
+import { AllUsers } from "./interfaces/native-api/conversation";
 
 export interface ApiEvents extends NodeJS.EventEmitter {
 
@@ -72,6 +76,18 @@ export class Api extends events.EventEmitter implements ApiEvents {
 
   async sendMessage(message: api.NewMessage, conversationId: string): Promise<api.SendMessageResult> {
     return sendMessage(this.io, this.context, message, conversationId);
+  }
+
+  async setConversationTopic(conversationId: string, topic: string): Promise<void> {
+    return setConversationTopic(this.io, this.context, conversationId, topic);
+  }
+
+  async getJoinUrl(conversationId: string): Promise<string> {
+    return getJoinUrl(this.io, this.context, conversationId);
+  }
+
+  async createConversation(allUsers: AllUsers): Promise<any> {
+    return createConversation(this.io, this.context, allUsers);
   }
 
   async sendImage(message: api.NewImage, conversationId: string): Promise<api.SendMessageResult> {
