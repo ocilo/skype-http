@@ -10,12 +10,12 @@ import { ConversationService, ConversationServiceInterface } from "./conversatio
 import * as api from "./interfaces/api/api";
 import { Contact as _Contact } from "./interfaces/api/contact";
 import { Context as ApiContext } from "./interfaces/api/context";
-import * as apiEvents from "./interfaces/api/events";
 import { HttpIo } from "./interfaces/http-io";
 import { MriKey } from "./mri";
 import { MessagesPoller } from "./polling/messages-poller";
 import { Contact } from "./types/contact";
 import { Conversation } from "./types/conversation";
+import { SkypeEvent } from "./types/events/skype-event";
 import { Invite } from "./types/invite";
 
 export interface ApiEvents extends NodeJS.EventEmitter {
@@ -36,8 +36,7 @@ export class Api extends events.EventEmitter implements ApiEvents {
     this.io = io;
     this.messagesPoller = new MessagesPoller(this.io, this.context);
     this.messagesPoller.on("error", (err: Error) => this.emit("error", err));
-    // tslint:disable-next-line:no-void-expression
-    this.messagesPoller.on("event-message", (ev: apiEvents.EventMessage) => this.handlePollingEvent(ev));
+    this.messagesPoller.on("event", (event: SkypeEvent) => this.emit("event", event));
     this.contactService = new ContactService(this.io);
     this.conversationService = new ConversationService(this.io);
   }
@@ -102,25 +101,5 @@ export class Api extends events.EventEmitter implements ApiEvents {
   async stopListening(): Promise<this> {
     this.messagesPoller.stop();
     return Promise.resolve(this);
-  }
-
-  protected handlePollingEvent(ev: apiEvents.EventMessage): void {
-    this.emit("event", ev);
-
-    if (ev.resource === null) {
-      return;
-    }
-
-    // Prevent infinite-loop (echo itself)
-    // TODO: Remove this
-    if (ev.resource.from.username === this.context.username) {
-      return;
-    }
-
-    if (ev.resource.type === "Text") {
-      this.emit("Text", ev.resource);
-    } else if (ev.resource.type === "RichText") {
-      this.emit("RichText", ev.resource);
-    }
   }
 }

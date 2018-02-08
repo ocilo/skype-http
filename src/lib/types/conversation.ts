@@ -5,8 +5,8 @@ import { DocumentIoType, DocumentType } from "kryo/types/document";
 import { TryUnionType } from "kryo/types/try-union";
 import { $ConversationType, ConversationType } from "./conversation-type";
 import { $EmptyObject, EmptyObject } from "./empty-object";
-import { $Message, Message } from "./message";
 import { $MriKey, MriKey } from "./mri-key";
+import { $MessageResource, MessageResource } from "./resources/message-resource";
 import { $ThreadProperties, ThreadProperties } from "./thread-properties";
 import { $Url, Url } from "./url";
 
@@ -42,7 +42,7 @@ export interface Conversation {
    */
   version: number; // a timestamp ? example:
 
-  lastMessage: EmptyObject | Message;
+  lastMessage: EmptyObject | MessageResource;
 
   /**
    * Examples:
@@ -70,7 +70,7 @@ export const $Conversation: DocumentIoType<Conversation> = new DocumentType<Conv
     id: {type: $MriKey},
     type: {type: $ConversationType},
     version: {type: $Uint53},
-    lastMessage: {type: new TryUnionType({variants: [$EmptyObject, $Message]})},
+    lastMessage: {type: new TryUnionType({variants: [$EmptyObject, $MessageResource]})},
     messages: {type: $Url},
     members: {type: new ArrayType({itemType: $MriKey, maxLength: Infinity}), optional: true},
   },

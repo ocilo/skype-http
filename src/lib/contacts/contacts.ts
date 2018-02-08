@@ -53,7 +53,7 @@ export class ContactService implements ContactServiceInterface {
     };
     const response: io.Response = await this.httpIo.get(request);
     if (response.statusCode !== 200) {
-      UnexpectedHttpStatusError.create(response, new Set([200]), request);
+      throw UnexpectedHttpStatusError.create(response, new Set([200]), request);
     }
     let result: GetInvitesResult;
     try {

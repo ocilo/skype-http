@@ -33,6 +33,7 @@
     "@types/cheerio": "^0.22.7",
     "@types/form-data": "^2.2.1",
     "@types/lodash": "^4.14.92",
+    "@types/object-inspect": "^1.4.0",
     "@types/request": "^2.0.9",
     "@types/tough-cookie": "^2.3.2",
     "async-file": "^2.0.2",
@@ -43,6 +44,7 @@
     "js-sha256": "^0.9.0",
     "kryo": "^0.7.0-beta.2",
     "lodash": "^4.17.4",
+    "object-inspect": "^1.5.0",
     "request": "^2.83.0",
     "tough-cookie": "^2.3.3"
   },
@@ -67,6 +69,7 @@
   },
   "nyc": {
     "include": [
+      "build/test/lib/**/*.js",
       "build/test/lib/**/*.mjs"
     ],
     "reporter": [

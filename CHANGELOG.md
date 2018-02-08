@@ -7,6 +7,8 @@
 - **[Fix]** Fix message host resolution (API change).
 - **[Fix]** Mark `isFavorite` in `ContactGroup` as optional.
 - **[Fix]** Mark `name` in `ContactProfile` as optional.
+- **[Fix]** Throw errors on unexpected HTTP status code
+- **[Fix]** Distribute compiled `.js` files and `.ts` sources in distinct directories (#85)
 - **[Internal]** Run tests and coverage on `.mjs` files.
 
 # 0.0.14 (2018-01-12)

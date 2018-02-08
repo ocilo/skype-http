@@ -42,7 +42,7 @@ export async function getConversationById(
 
   const response: io.Response = await httpIo.get(request);
   if (response.statusCode !== 200) {
-    UnexpectedHttpStatusError.create(response, new Set([200]), request);
+    throw UnexpectedHttpStatusError.create(response, new Set([200]), request);
   }
   let result: Conversation;
   try {
