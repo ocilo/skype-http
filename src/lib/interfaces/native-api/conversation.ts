@@ -10,10 +10,10 @@ export interface ThreadProperties {
 
 // https://github.com/OllieTerrance/SkPy.docs/blob/master/protocol/chat.rst#join-urls
 export interface Join {
-  Blob: string,
-  Id: string,
-  JoinUrl: string,
-  ThreadId: string,
+  Blob: string;
+  Id: string;
+  JoinUrl: string;
+  ThreadId: string;
 }
 
 export interface Conversation {
@@ -57,7 +57,7 @@ export interface AllUsers {
 
 export interface Members {
   id: string;
-  role: 'Admin' | 'User' | string;
+  role: "Admin" | "User" | string;
 }
 
 export interface Thread {

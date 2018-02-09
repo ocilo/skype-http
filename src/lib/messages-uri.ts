@@ -28,12 +28,12 @@ function buildThreads(): string[] {
 
 // /v1/threads/{thread}
 function buildThread(thread: string): string[] {
-  return thread === '' ? buildThreads() : buildThreads().concat(thread);
+  return thread === "" ? buildThreads() : buildThreads().concat(thread);
 }
 
 // /v1/threads/{thread}/properties
 function buildProperties(thread: string): string[] {
-  return buildThread(thread).concat('properties');
+  return buildThread(thread).concat("properties");
 }
 
 // /v1/users

@@ -24,10 +24,10 @@ export async function setConversationTopic(
     uri,
     cookies: apiContext.cookies,
     body: JSON.stringify(requestBody),
-    queryString: {name: 'topic'},
+    queryString: {name: "topic"},
     headers: {
-      'RegistrationToken': apiContext.registrationToken.raw,
-      'Content-type': 'application/json',
+      "RegistrationToken": apiContext.registrationToken.raw,
+      "Content-type": "application/json",
     },
   };
   const res: io.Response = await io.put(requestOptions);
