@@ -1,5 +1,6 @@
 import events from "events";
 import { acceptContactRequest } from "./api/accept-contact-request";
+import { addMemberToConversation } from "./api/add-member";
 import { createConversation } from "./api/create-conversation";
 import { declineContactRequest } from "./api/decline-contact-request";
 import { getContact } from "./api/get-contact";
@@ -10,7 +11,6 @@ import { sendImage } from "./api/send-image";
 import { sendMessage } from "./api/send-message";
 import { setConversationTopic } from "./api/set-conversation-topic";
 import { setStatus } from "./api/set-status";
-import { addMemberToConversation } from "./api/add-member";
 import { ContactsInterface, ContactsService } from "./contacts/contacts";
 import * as api from "./interfaces/api/api";
 import { Contact as _Contact } from "./interfaces/api/contact";

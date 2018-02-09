@@ -1,10 +1,7 @@
 import { Incident } from "incident";
 import { Context } from "../interfaces/api/context";
 import * as io from "../interfaces/http-io";
-import { AllUsers, Members } from "../interfaces/native-api/conversation";
 import * as messagesUri from "../messages-uri";
-import { getMembers } from "../utils";
-import { member } from "../messages-uri";
 
 interface RequestBody {
   role: "User" | "Admin" | string;
@@ -15,7 +12,7 @@ export async function addMemberToConversation(
   apiContext: Context,
   memberId: string,
   converstionId: string,
-  role = 'User',
+  role = "User",
 ): Promise<void> {
 
   // `https://{host}}/v1/threads/${converstionId}/members/${memberId}`,
@@ -27,8 +24,8 @@ export async function addMemberToConversation(
     cookies: apiContext.cookies,
     body: JSON.stringify(requestBody),
     headers: {
-      RegistrationToken: apiContext.registrationToken.raw,
-      'Content-type': 'application/json',
+      "RegistrationToken": apiContext.registrationToken.raw,
+      "Content-type": "application/json",
     },
   };
 
