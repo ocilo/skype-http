@@ -36,6 +36,16 @@ function buildProperties(thread: string): string[] {
   return buildThread(thread).concat("properties");
 }
 
+// /v1/threads/{thread}/members
+function buildMembers(thread: string): string[] {
+  return buildThread(thread).concat("members");
+}
+
+// /v1/threads/{thread}/members/{member}
+function buildMember(thread: string, member: string): string[] {
+  return buildMembers(thread).concat(member);
+}
+
 // /v1/users
 function buildUsers(): string[] {
   return buildV1().concat("users");
@@ -140,6 +150,10 @@ function get(host: string, p: string) {
 
 export function thread(host: string, threadId: string): string {
   return get(host, joinPath(buildThread(threadId)));
+}
+
+export function member(host: string, threadId: string, member: string): string {
+  return get(host, joinPath(buildMember(threadId, member)));
 }
 
 export function properties(host: string, threadId: string): string {
