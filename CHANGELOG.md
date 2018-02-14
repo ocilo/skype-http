@@ -1,9 +1,14 @@
 # Next
 
+- **[Feature]** Add `setConversationTopic(conversationId: string, topic: string)`
+- **[Feature]** Add `getJoinUrl(conversationId: string)`
+- **[Feature]** Add `addMemberToConversation(conversationId: string, memberId: string)`
+- **[Feature]** Add `createConversation(allUsers: AllUsers)`
 - **[Fix]** Do not throw on unexpected extra keys when reading responses.
 - **[Fix]** Fix message host resolution (API change).
 - **[Fix]** Mark `isFavorite` in `ContactGroup` as optional.
 - **[Fix]** Mark `name` in `ContactProfile` as optional.
+- **[Fix]** Move `.ts` sources to a different directory than `.d.ts` and `.js` in dist build
 - **[Internal]** Run tests and coverage on `.mjs` files.
 
 # 0.0.14 (2018-01-12)
