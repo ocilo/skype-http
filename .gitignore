@@ -4,6 +4,7 @@
 # JetBrains products (Webstorm, IntelliJ IDEA, ...)
 .idea/
 *.iml
+.vscode
 
 ###############################################################################
 # Build                                                                       #
