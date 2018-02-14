@@ -28,7 +28,7 @@ function buildThreads(): string[] {
 
 // /v1/threads/{thread}
 function buildThread(thread: string): string[] {
-  return thread === "" ? buildThreads() : buildThreads().concat(thread);
+  return buildThreads().concat(thread);
 }
 
 // /v1/threads/{thread}/properties
@@ -146,6 +146,10 @@ function getOrigin(host: string): string {
 
 function get(host: string, p: string) {
   return url.resolve(getOrigin(host), p);
+}
+
+export function threads(host: string): string {
+  return get(host, joinPath(buildThreads()));
 }
 
 export function thread(host: string, threadId: string): string {

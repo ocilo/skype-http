@@ -21,7 +21,7 @@ export async function createConversation(
     members,
   };
 
-  const uri: string = messagesUri.thread(apiContext.registrationToken.host, "");
+  const uri: string = messagesUri.threads(apiContext.registrationToken.host);
 
   const requestOptions: io.PostOptions = {
     uri,
@@ -36,12 +36,18 @@ export async function createConversation(
   const res: io.Response = await io.post(requestOptions);
 
   if (res.statusCode !== 201) {
-    return Promise.reject(new Incident("create-conversation", "Received wrong return code"));
+    throw new Incident("create-conversation", "Received wrong return code");
   }
 
-  const location: string = res.headers.location;
-  const id: any = location.split("/").pop();
-
+  const location: string | undefined = res.headers.location;
+  if (location === undefined) {
+    throw new Incident("create-conversation", "Missing `Location` response header");
+  }
+  // TODO: Parse URL properly / more reliable checks
+  const id: string | undefined = location.split("/").pop();
+  if (id === undefined) {
+    throw new Incident("create-conversation", "Unable to read conversation ID");
+  }
   // conversation ID
   return id;
 }
