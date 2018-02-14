@@ -1,4 +1,4 @@
-# Next
+# 0.0.15 (2018-02-14)
 
 - **[Feature]** Add `setConversationTopic(conversationId: string, topic: string)`
 - **[Feature]** Add `getJoinUrl(conversationId: string)`
