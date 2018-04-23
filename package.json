@@ -62,7 +62,7 @@
     "pre-commit": "^1.2.2",
     "ts-node": "^4.1.0",
     "tslint": "^5.9.1",
-    "turbo-gulp": "^0.16.2",
+    "turbo-gulp": "^0.17.0",
     "typescript": "2.7.0-rc"
   },
   "nyc": {
