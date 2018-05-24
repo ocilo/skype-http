@@ -35,7 +35,7 @@ export async function createConversation(
 
   const res: io.Response = await io.post(requestOptions);
 
-  if (res.statusCode !== 201) {
+  if (res.statusCode !== 201 && res.statusCode !== 207) {
     throw new Incident("create-conversation", "Received wrong return code");
   }
 
