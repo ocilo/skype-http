@@ -60,7 +60,7 @@
     "minimist": "^1.2.0",
     "mocha": "^5.0.1",
     "pre-commit": "^1.2.2",
-    "ts-node": "^4.1.0",
+    "ts-node": "^6.2.0",
     "tslint": "^5.9.1",
     "turbo-gulp": "^0.16.2",
     "typescript": "2.7.0-rc"
