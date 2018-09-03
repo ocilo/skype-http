@@ -35,6 +35,7 @@ export async function sendImage(
       "Authorization": `skype_token ${apiContext.skypeToken.value}`,
       "Content-Type": "application/json",
       "Content-Length": bodyNewObjectStr.length.toString(10),
+      "X-Client-Version": "0/0.0.0.0",
     },
   };
   const resNewObject: io.Response = await io.post(requestOptionsNewObject);
