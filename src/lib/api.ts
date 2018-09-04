@@ -6,6 +6,7 @@ import { declineContactRequest } from "./api/decline-contact-request";
 import { getContact } from "./api/get-contact";
 import { getConversation } from "./api/get-conversation";
 import { getConversations } from "./api/get-conversations";
+import { getImage } from "./api/get-image";
 import { getJoinUrl } from "./api/get-join-url";
 import { sendImage } from "./api/send-image";
 import { sendMessage } from "./api/send-message";
@@ -17,6 +18,7 @@ import { Contact as _Contact } from "./interfaces/api/contact";
 import { Context as ApiContext } from "./interfaces/api/context";
 import { Conversation } from "./interfaces/api/conversation";
 import * as apiEvents from "./interfaces/api/events";
+import { FileResource } from "./interfaces/api/resources";
 import { HttpIo } from "./interfaces/http-io";
 import { AllUsers } from "./interfaces/native-api/conversation";
 import { MessagesPoller } from "./polling/messages-poller";
@@ -97,6 +99,10 @@ export class Api extends events.EventEmitter implements ApiEvents {
 
   async sendImage(message: api.NewImage, conversationId: string): Promise<api.SendMessageResult> {
     return sendImage(this.io, this.context, message, conversationId);
+  }
+
+  async getMedia(resource: FileResource): Promise<api.MediaDownloaded> {
+    return getImage(this.io, this.context, resource);
   }
 
   getState(): ApiContext.Json {

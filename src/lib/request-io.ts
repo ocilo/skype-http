@@ -21,6 +21,30 @@ function asRequestOptions(ioOptions: io.GetOptions | io.PostOptions | io.PutOpti
   return result;
 }
 
+export async function getImageContent(options: io.GetOptions): Promise<io.Response> {
+  return new Promise<io.Response>((resolve, reject) => {
+    const requestOptions: request.Options = asRequestOptions(options);
+    requestOptions.encoding = "base64";
+
+    request.get(requestOptions, (error, response, body) => {
+      if (error) {
+        return reject(error);
+      }
+      if (response.statusCode === undefined) {
+        return reject(new Error("Missing status code"));
+      }
+
+      const ioResponse: io.Response = {
+        statusCode: response.statusCode,
+        body,
+        headers: response.headers,
+      };
+
+      resolve(ioResponse);
+    });
+  });
+}
+
 /**
  * Send a GET request
  *
@@ -103,4 +127,5 @@ export const requestIo: io.HttpIo = {
   get,
   post,
   put,
+  getImageContent,
 };
