@@ -10,7 +10,15 @@ export async function getImage(
   messageResource: FileResource,
 ): Promise<MediaDownloaded> {
 
-  const originUri: string = messageResource.uri_thumbnail.replace("imgt1", "imgpsh_fullsize");
+  const originUri: string = messageResource.uri +
+    (messageResource.type === "RichText/UriObject" ?
+    "/views/imgpsh_fullsize" :
+      messageResource.type === "RichText/Media_GenericFile" ?
+        "/views/original" : "");
+
+  if (originUri === messageResource.uri) {
+    return Promise.reject(new Incident("get-media", "Received wrong type of resource file"));
+  }
 
   const requestOptions: io.GetOptions = {
     uri: originUri,
