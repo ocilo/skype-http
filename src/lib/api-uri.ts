@@ -1,6 +1,6 @@
 import path from "path";
 import url from "url";
-import { SKYPEWEB_API_SKYPE_HOST } from "./consts";
+import { SKYPEWEB_API_SKYPE_HOST, SKYPEWEB_CONTACTS_HOST } from "./consts";
 
 export const DEFAULT_USER: string = "self";
 
@@ -29,9 +29,19 @@ function buildContacts(username: string): string[] {
   return buildUser(username).concat("contacts");
 }
 
+// /users/:user/invites
+function buildInvites(username: string): string[] {
+  return buildUser(username).concat("invites");
+}
+
 // /users/:user/contacts/auth-request/:contact
 function buildAuthRequest(username: string, contact: string): string[] {
   return buildContacts(username).concat("auth-request", contact);
+}
+
+// /users/:user/invites/:contact
+function buildInviteRequest(username: string, contact: string): string[] {
+  return buildInvites(username).concat(contact);
 }
 
 // /users/:user/contacts/auth-request/:contact/accept
@@ -42,6 +52,10 @@ function buildAuthRequestAccept(username: string, contact: string): string[] {
 // /users/:user/contacts/auth-request/:contact/decline
 function buildAuthRequestDecline(username: string, contact: string): string[] {
   return buildAuthRequest(username, contact).concat("decline");
+}
+
+function buildInviteRequestAccept(username: string, contact: string): string[] {
+  return buildInviteRequest(username, contact).concat("accept");
 }
 
 // /users/:user/displayname
@@ -95,8 +109,16 @@ function getOrigin(): string {
   return "https://" + SKYPEWEB_API_SKYPE_HOST;
 }
 
+function getContact(): string {
+  return `https://${SKYPEWEB_CONTACTS_HOST}`;
+}
+
 function get(p: string) {
   return url.resolve(getOrigin(), p);
+}
+
+function getC(p: string) {
+  return url.resolve(getContact(), p);
 }
 
 export function displayName(username: string): string {
@@ -112,7 +134,7 @@ export function userProfiles(): string {
 }
 
 export function authRequestAccept(username: string, contact: string): string {
-  return get(joinPath(buildAuthRequestAccept(username, contact)));
+  return getC(joinPath(buildInviteRequestAccept(username, contact)));
 }
 
 export function authRequestDecline(username: string, contact: string): string {
