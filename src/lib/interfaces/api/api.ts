@@ -40,3 +40,10 @@ export interface FullId extends ParsedId {
   typeName: string;
   raw: string;
 }
+
+export interface MediaDownloaded {
+  content: string;
+  uri_origin: string;
+  file_size?: number;
+  original_file_name: string;
+}

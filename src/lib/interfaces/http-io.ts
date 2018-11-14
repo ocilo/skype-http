@@ -30,4 +30,6 @@ export interface HttpIo {
   post(options: PostOptions): Promise<Response>;
 
   put(options: PutOptions): Promise<Response>;
+
+  getImageContent(options: GetOptions): Promise<Response>;
 }
