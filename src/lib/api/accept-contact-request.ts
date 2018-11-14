@@ -4,7 +4,7 @@ import { Context } from "../interfaces/api/context";
 import * as io from "../interfaces/http-io";
 
 export async function acceptContactRequest(io: io.HttpIo, apiContext: Context, contactUsername: string): Promise<void> {
-  const requestOptions: io.GetOptions = {
+  const requestOptions: io.PutOptions = {
     uri: apiUri.authRequestAccept(apiContext.username, contactUsername),
     cookies: apiContext.cookies,
     headers: {
@@ -12,7 +12,7 @@ export async function acceptContactRequest(io: io.HttpIo, apiContext: Context, c
     },
   };
   const res: io.Response = await io.put(requestOptions);
-  if (res.statusCode !== 201) {
+  if (res.statusCode !== 200) {
     return Promise.reject(new Incident("net", "Failed to accept contact"));
   }
 }
