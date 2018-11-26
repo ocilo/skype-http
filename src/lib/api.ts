@@ -1,4 +1,4 @@
-import events from "events";
+import * as events from "events";
 import { acceptContactRequest } from "./api/accept-contact-request";
 import { addMemberToConversation } from "./api/add-member";
 import { createConversation } from "./api/create-conversation";

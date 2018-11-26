@@ -1,7 +1,7 @@
 import { CaseStyle } from "kryo/case-style";
+import { AnyType } from "kryo/types/any";
 import { ArrayType } from "kryo/types/array";
 import { DocumentType } from "kryo/types/document";
-import { JsonType } from "kryo/types/json";
 import { Ucs2StringType } from "kryo/types/ucs2-string";
 
 /**
@@ -33,10 +33,10 @@ export interface AgentInfo {
 
 export const $AgentInfo: DocumentType<AgentInfo> = new DocumentType<AgentInfo>({
   properties: {
-    capabilities: {type: new ArrayType({itemType: new JsonType(), maxLength: Infinity}), optional: true},
-    trusted: {type: new JsonType()},
+    capabilities: {type: new ArrayType({itemType: new AnyType(), maxLength: Infinity}), optional: true},
+    trusted: {type: new AnyType()},
     type: {type: new Ucs2StringType({maxLength: Infinity})},
   },
-  rename: CaseStyle.SnakeCase,
-  ignoreExtraKeys: true,
+  changeCase: CaseStyle.SnakeCase,
+  noExtraKeys: true,
 });

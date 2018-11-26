@@ -1,4 +1,5 @@
 import { Incident } from "incident";
+import { JsonReader } from "kryo/readers/json";
 import toughCookie from "tough-cookie";
 import * as apiUri from "../api-uri";
 import { UnexpectedHttpStatusError } from "../errors/http";
@@ -30,9 +31,14 @@ export async function getSelfProfile(
   } catch (err) {
     throw new Incident(err, "UnexpectedResponseBody", {body: response.body});
   }
+  const reader: JsonReader = new JsonReader();
   let result: ApiProfile;
   try {
-    result = $ApiProfile.readJson(parsed);
+    if ($ApiProfile.read) {
+      result = $ApiProfile.read(reader, response.body);
+    } else {
+      throw Error("read should always be defined");
+    }
   } catch (err) {
     throw new Incident(err, "UnexpectedResult", {body: parsed});
   }

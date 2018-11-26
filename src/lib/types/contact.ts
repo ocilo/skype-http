@@ -1,9 +1,9 @@
 import { CaseStyle } from "kryo/case-style";
+import { AnyType } from "kryo/types/any";
 import { ArrayType } from "kryo/types/array";
 import { BooleanType } from "kryo/types/boolean";
 import { DateType } from "kryo/types/date";
 import { DocumentType } from "kryo/types/document";
-import { JsonType } from "kryo/types/json";
 import { Ucs2StringType } from "kryo/types/ucs2-string";
 import { $Agent, Agent } from "./agent";
 import { $ContactProfile, ContactProfile } from "./contact-profile";
@@ -67,8 +67,8 @@ export const $Contact: DocumentType<Contact> = new DocumentType<Contact>({
     creationTime: {type: new DateType()},
     relationshipHistory: {type: $RelationshipHistory, optional: true},
     suggested: {type: new BooleanType(), optional: true},
-    phoneHashes: {type: new ArrayType({itemType: new JsonType(), maxLength: Infinity}), optional: true},
+    phoneHashes: {type: new ArrayType({itemType: new AnyType(), maxLength: Infinity}), optional: true},
   },
-  rename: CaseStyle.SnakeCase,
-  ignoreExtraKeys: true,
+  changeCase: CaseStyle.SnakeCase,
+  noExtraKeys: true,
 });

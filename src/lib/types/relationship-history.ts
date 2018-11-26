@@ -1,7 +1,7 @@
 import { CaseStyle } from "kryo/case-style";
+import { AnyType } from "kryo/types/any";
 import { ArrayType } from "kryo/types/array";
 import { DocumentType } from "kryo/types/document";
-import { JsonType } from "kryo/types/json";
 
 export interface RelationshipHistory {
   /**
@@ -37,8 +37,8 @@ export interface RelationshipHistory {
 
 export const $RelationshipHistory: DocumentType<RelationshipHistory> = new DocumentType<RelationshipHistory>({
   properties: {
-    sources: {type: new ArrayType({itemType: new JsonType(), maxLength: Infinity})},
+    sources: {type: new ArrayType({itemType: new AnyType(), maxLength: Infinity})},
   },
-  rename: CaseStyle.SnakeCase,
-  ignoreExtraKeys: true,
+  changeCase: CaseStyle.SnakeCase,
+  noExtraKeys: true,
 });
