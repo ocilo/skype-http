@@ -17,5 +17,5 @@ export const $GetInvitesResult: DocumentType<GetInvitesResult> = new DocumentTyp
   properties: {
     inviteList: {type: new ArrayType({itemType: $Invite, maxLength: Infinity})},
   },
-  rename: CaseStyle.SnakeCase,
+  changeCase: CaseStyle.SnakeCase,
 });

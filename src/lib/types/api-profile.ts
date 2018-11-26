@@ -1,12 +1,13 @@
-import { VersionedType } from "kryo/types";
+import { AnyType } from "kryo/types/any";
 import { ArrayType } from "kryo/types/array";
 import { DocumentType } from "kryo/types/document";
-import { JsonType } from "kryo/types/json";
 import { NullType } from "kryo/types/null";
 import { TryUnionType } from "kryo/types/try-union";
 import { Ucs2StringType } from "kryo/types/ucs2-string";
 import { $Url, Url } from "./url";
+/*  Codln't figure out how to por this code, mainly how to make TryUnionType work with NullType
 
+import { VersionedType } from "kryo/core";
 function nullable(type: VersionedType<any, any, any, any>): VersionedType<any, any, any, any> {
   return new TryUnionType({
     variants: [
@@ -15,7 +16,7 @@ function nullable(type: VersionedType<any, any, any, any>): VersionedType<any, a
     ],
   });
 }
-
+*/
 /**
  * Represents a profile returned by the general API (api.skype.com)
  *
@@ -91,31 +92,31 @@ export interface ApiProfile {
   phoneOffice: any | null;
   mood: any | null;
   richMood: any | null;
-  avatarUrl: Url;
+  avatarUrl: any | null;
   username: string;
 }
 
 export const $ApiProfile: DocumentType<ApiProfile> = new DocumentType<ApiProfile>({
   properties: {
     firstname: {type: new Ucs2StringType({maxLength: Infinity})},
-    lastname: {type: nullable(new Ucs2StringType({maxLength: Infinity}))},
-    birthday: {type: new JsonType()},
-    gender: {type: new JsonType()},
-    language: {type: new JsonType()},
-    country: {type: new JsonType()},
-    province: {type: new JsonType()},
-    city: {type: new JsonType()},
-    homepage: {type: new JsonType()},
-    about: {type: new JsonType()},
+    lastname: {type: new Ucs2StringType({maxLength: Infinity})},
+    birthday: {type: new AnyType()},
+    gender: {type: new AnyType()},
+    language: {type: new AnyType()},
+    country: {type: new AnyType()},
+    province: {type: new AnyType()},
+    city: {type: new AnyType()},
+    homepage: {type: new AnyType()},
+    about: {type: new AnyType()},
     emails: {type: new ArrayType({itemType: new Ucs2StringType({maxLength: Infinity}), maxLength: Infinity})},
-    jobtitle: {type: new JsonType()},
-    phoneMobile: {type: new JsonType()},
-    phoneHome: {type: new JsonType()},
-    phoneOffice: {type: new JsonType()},
-    mood: {type: new JsonType()},
-    richMood: {type: new JsonType()},
-    avatarUrl: {type: nullable($Url)},
+    jobtitle: {type: new AnyType()},
+    phoneMobile: {type: new AnyType()},
+    phoneHome: {type: new AnyType()},
+    phoneOffice: {type: new AnyType()},
+    mood: {type: new AnyType()},
+    richMood: {type: new AnyType()},
+    avatarUrl: {type: new AnyType()},
     username: {type: new Ucs2StringType({maxLength: Infinity})},
   },
-  ignoreExtraKeys: true,
+  noExtraKeys: true,
 });

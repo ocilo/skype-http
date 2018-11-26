@@ -1,4 +1,5 @@
 import { Incident } from "incident";
+import { JsonReader } from "kryo/readers/json";
 import { UnexpectedHttpStatusError } from "../../errors/http";
 import { Context } from "../../interfaces/api/context";
 import * as io from "../../interfaces/http-io";
@@ -28,10 +29,15 @@ export async function getContacts(httpIo: io.HttpIo, apiContext: Context): Promi
   } catch (err) {
     throw new Incident(err, "UnexpectedResponseBody", {body: response.body});
   }
-
+  const reader: JsonReader = new JsonReader();
   let result: GetUserResult;
   try {
-    result = $GetUserResult.readJson(parsed);
+
+        if ($GetUserResult.read) {
+          result = $GetUserResult.read(reader, response.body);
+        } else {
+          throw Error("read should always be defined");
+        }
   } catch (err) {
     throw new Incident(err, "UnexpectedResult", {body: parsed});
   }
