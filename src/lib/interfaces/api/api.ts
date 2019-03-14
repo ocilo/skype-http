@@ -31,6 +31,11 @@ export interface NewImage {
   name: string;
 }
 
+export interface NewDocument {
+  file: string;
+  name: string;
+}
+
 export interface ParsedId {
   id: string;
   typeKey: string;
