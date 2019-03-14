@@ -7,6 +7,7 @@ import { getContact } from "./api/get-contact";
 import { getConversation } from "./api/get-conversation";
 import { getConversations } from "./api/get-conversations";
 import { getJoinUrl } from "./api/get-join-url";
+import { sendDocument } from "./api/send-document";
 import { sendImage } from "./api/send-image";
 import { sendMessage } from "./api/send-message";
 import { setConversationTopic } from "./api/set-conversation-topic";
@@ -77,6 +78,10 @@ export class Api extends events.EventEmitter implements ApiEvents {
 
   async sendMessage(message: api.NewMessage, conversationId: string): Promise<api.SendMessageResult> {
     return sendMessage(this.io, this.context, message, conversationId);
+  }
+
+  async sendDocument(message: api.NewDocument, conversationId: string): Promise<api.SendMessageResult> {
+    return sendDocument(this.io, this.context, message, conversationId);
   }
 
   async setConversationTopic(conversationId: string, topic: string): Promise<void> {
