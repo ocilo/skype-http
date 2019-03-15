@@ -26,7 +26,7 @@ export interface NewMessage {
   textContent: string;
 }
 
-export interface NewImage {
+export interface NewMediaMessage {
   file: string;
   name: string;
 }

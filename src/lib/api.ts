@@ -7,6 +7,7 @@ import { getContact } from "./api/get-contact";
 import { getConversation } from "./api/get-conversation";
 import { getConversations } from "./api/get-conversations";
 import { getJoinUrl } from "./api/get-join-url";
+import { sendAudio } from "./api/send-audio";
 import { sendImage } from "./api/send-image";
 import { sendMessage } from "./api/send-message";
 import { setConversationTopic } from "./api/set-conversation-topic";
@@ -95,7 +96,11 @@ export class Api extends events.EventEmitter implements ApiEvents {
     return createConversation(this.io, this.context, allUsers);
   }
 
-  async sendImage(message: api.NewImage, conversationId: string): Promise<api.SendMessageResult> {
+  async sendAudio(message: api.NewMediaMessage, conversationId: string): Promise<api.SendMessageResult> {
+    return sendAudio(this.io, this.context, message, conversationId);
+  }
+
+  async sendImage(message: api.NewMediaMessage, conversationId: string): Promise<api.SendMessageResult> {
     return sendImage(this.io, this.context, message, conversationId);
   }
 
