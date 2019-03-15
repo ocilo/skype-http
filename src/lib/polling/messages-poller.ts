@@ -125,6 +125,9 @@ function formatMessageResource(nativeResource: nativeResources.MessageResource):
     case "RichText/Media_Video":
       // tslint:disable-next-line:max-line-length
       return formatMediaVideoResource(formatFileResource(formatGenericMessageResource(nativeResource, nativeResource.messagetype), <nativeMessageResources.MediaVideo> nativeResource), <nativeMessageResources.MediaVideo> nativeResource);
+    case "RichText/Media_AudioMsg":
+    // tslint:disable-next-line:max-line-length
+      return formatMediaAudioResource(formatFileResource(formatGenericMessageResource(nativeResource, nativeResource.messagetype), <nativeMessageResources.MediaAudio> nativeResource), <nativeMessageResources.MediaAudio> nativeResource);
     case "RichText/Media_GenericFile":
       // tslint:disable-next-line:max-line-length
       return formatMediaGenericFileResource(formatFileResource(formatGenericMessageResource(nativeResource, nativeResource.messagetype), <nativeMessageResources.MediaGenericFile> nativeResource), <nativeMessageResources.MediaGenericFile> nativeResource);
@@ -158,7 +161,8 @@ function formatMessageResource(nativeResource: nativeResources.MessageResource):
 type NativeFileResouce =
   nativeMessageResources.MediaGenericFile
   | nativeMessageResources.UriObject
-  | nativeMessageResources.MediaVideo;
+  | nativeMessageResources.MediaVideo
+  | nativeMessageResources.MediaAudio;
 
 function formatFileResource(retObj: resources.Resource, native: NativeFileResouce): resources.FileResource {
   const ret: resources.FileResource = retObj as resources.FileResource;
@@ -189,6 +193,14 @@ function formatMediaGenericFileResource(
 function formatMediaVideoResource(
   retObj: resources.FileResource,
   native: nativeMessageResources.MediaVideo,
+): resources.RichTextMediaGenericFileResource {
+  const ret: resources.RichTextMediaGenericFileResource = retObj as resources.RichTextMediaGenericFileResource;
+  return ret;
+}
+
+function formatMediaAudioResource(
+  retObj: resources.FileResource,
+  _native: nativeMessageResources.MediaAudio,
 ): resources.RichTextMediaGenericFileResource {
   const ret: resources.RichTextMediaGenericFileResource = retObj as resources.RichTextMediaGenericFileResource;
   return ret;

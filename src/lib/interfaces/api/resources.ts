@@ -8,7 +8,7 @@ export interface CallParticipant {
 
 export declare type ResourceType = "Text" | "RichText" | "Control/ClearTyping" | "Control/Typing" | "RichText/UriObject"
   | "RichText/Media_GenericFile" | "Signal/Flamingo" | "Event/Call" | "RichText/Location" | "ConversationUpdate"
-  | "RichText/Media_Video";
+  | "RichText/Media_Video" | "RichText/Media_AudioMsg";
 
 export interface Resource {
   type: ResourceType;
@@ -52,6 +52,10 @@ export interface RichTextMediaGenericFileResource extends FileResource {
 
 export interface RichTextMediaVideoResource extends FileResource {
   type: "RichText/Media_Video";
+}
+
+export interface RichTextMediaAudioResource extends FileResource {
+  type: "RichText/Media_AudioMsg";
 }
 
 export interface RichTextUriObjectResource extends FileResource {
